@@ -1,0 +1,6 @@
+*.*
+!*.txt
+!*.md
+!*.py
+!*.pickle
+!*.rst
