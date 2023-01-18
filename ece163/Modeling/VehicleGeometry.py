@@ -128,6 +128,23 @@ class VehicleGeometry():
 		"""
 		newPoints = self.vertices
 
+		
 		# Student code goes here
+		#my thought process - basically this is the function that updates 
+		#the MAV in the GUI application based on the lower-right user inputs
+
+		#go thru each point and calculate its new body position based on the
+		#euler angles and offsets provided
+		#PinB = [RotationMatrixVtoB][PinV]
         
-		return newPoints
+		
+		#PinV is the inertial frame origin (0,0,0) plus the offset provided.
+		
+		for point in newPoints:
+			PinV = [x,y,z]
+			DCM = Rotations.euler2DCM(yaw, pitch, roll)
+			point = MatrixMath.dotProduct(DCM,PinV)
+
+
+		return Rotations.ned2enu(newPoints)
+		 
