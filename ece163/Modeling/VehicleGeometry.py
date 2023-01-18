@@ -142,7 +142,7 @@ class VehicleGeometry():
 
 		DCM = Rotations.euler2DCM(yaw, pitch, roll)
 		newPoints = MatrixMath.multiply(newPoints, DCM)
-		newPoints = MatrixMath.transpose(newPoints)
+		newPoints = MatrixMath.offset(newPoints,x,y,z)
 			
 
 		return Rotations.ned2enu(newPoints)
