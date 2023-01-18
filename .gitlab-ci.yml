@@ -9,5 +9,5 @@ runtest:
     - curl -OLs ${TESTING_BASE_URL}/${TESTING_SECRET}/ECE163_Lab${TESTING_LAB}_data.pickle
     - curl -o TestTools.py -Ls ${TESTING_BASE_URL}/${TESTING_SECRET}/TestTools.txt
     - curl -o Lab_${TESTING_LAB}_Test.py -Ls ${TESTING_BASE_URL}/${TESTING_SECRET}/Lab_${TESTING_LAB}_Test.txt
-    - python3 Lab_${TESTING_LAB}_Test.py -v DETAIL
+    - python3 Lab_${TESTING_LAB}_Test.py -v STUDENT
     - /bin/rm -f ECE163_Lab${TESTING_LAB}_data.pickle Lab_${TESTING_LAB}_Test.py TestTools.py
