@@ -24,21 +24,21 @@ def euler2DCM(yaw, pitch, roll):
 
     matrix=[[0,0,0],[0,0,0],[0,0,0]]
     #first row of DCM
-    matrix[0][0] = math.cos(roll) * math.cos(yaw)
-    matrix[0][1] = math.cos(roll) * math.sin(yaw)
-    matrix[0][2] = -1 * math.sin(roll)
+    matrix[0][0] = math.cos(pitch) * math.cos(yaw)
+    matrix[0][1] = math.cos(pitch) * math.sin(yaw)
+    matrix[0][2] = -1 * math.sin(pitch)
 
     #second row
-    matrix[1][0] = math.sin(pitch)*math.sin(roll)*math.cos(yaw) - math.cos(roll)*math.sin(yaw)
-    matrix[1][1] = math.sin(pitch)*math.sin(roll)*math.sin(yaw) + math.cos(pitch)*math.cos(yaw)
-    matrix[1][2] = math.sin(pitch)*math.cos(roll)
+    matrix[1][0] = math.sin(roll)*math.sin(pitch)*math.cos(yaw) - math.cos(roll)*math.sin(yaw)
+    matrix[1][1] = math.sin(roll)*math.sin(pitch)*math.sin(yaw) + math.cos(roll)*math.cos(yaw)
+    matrix[1][2] = math.sin(roll)*math.cos(pitch)
 
     #third row
-    matrix[2][0] = math.cos(pitch)*math.sin(roll)*math.cos(yaw) + math.sin(pitch)*math.sin(yaw)
-    matrix[2][1] = math.cos(pitch)*math.sin(roll)*math.sin(yaw) - math.sin(pitch)*math.cos(yaw)
-    matrix[2][2] = math.cos(pitch)*math.cos(roll)
+    matrix[2][0] = math.cos(roll)*math.sin(pitch)*math.cos(yaw) + math.sin(roll)*math.sin(yaw)
+    matrix[2][1] = math.cos(roll)*math.sin(pitch)*math.sin(yaw) - math.sin(roll)*math.cos(yaw)
+    matrix[2][2] = math.cos(roll)*math.cos(pitch)
 
-    return matrix;
+    return matrix
 
 
 #points is a Nx3 matrix of points (x,y,z);

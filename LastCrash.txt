@@ -10,13 +10,13 @@ Traceback (most recent call last):
   File "/home/robertgaines/Documents/ECE163/regaines/ece163/Display/vehicleDisplay.py", line 55, in __init__
     rawPoints = [[y*metersToPixelRatio for y in x] for x in self.vehicleDrawInstance.getNewPoints(0, 0, 0, 0, 0, 0)]
                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/robertgaines/Documents/ECE163/regaines/ece163/Modeling/VehicleGeometry.py", line 146, in getNewPoints
-    point = MatrixMath.multiply(DCM, PinV)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/robertgaines/Documents/ECE163/regaines/ece163/Modeling/VehicleGeometry.py", line 147, in getNewPoints
+    point = MatrixMath.multiply(MatrixMath.transpose(DCM), point)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/robertgaines/Documents/ECE163/regaines/ece163/Utilities/MatrixMath.py", line 15, in multiply
     result = [[sum(a * b for a, b in zip(A_row, B_col)) for B_col in zip(*B)] for A_row in A]
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/robertgaines/Documents/ECE163/regaines/ece163/Utilities/MatrixMath.py", line 15, in <listcomp>
     result = [[sum(a * b for a, b in zip(A_row, B_col)) for B_col in zip(*B)] for A_row in A]
                                                                      ^^^^^^^
-TypeError: 'int' object is not iterable
+TypeError: 'float' object is not iterable

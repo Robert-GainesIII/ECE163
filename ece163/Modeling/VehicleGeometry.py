@@ -139,13 +139,10 @@ class VehicleGeometry():
         
 		
 		#PinV is the inertial frame origin (0,0,0) plus the offset provided.
-		
-		for point in newPoints:
-			PinV = [[x],[y],[z]]
-			DCM = Rotations.euler2DCM(yaw, pitch, roll)
-			point = MatrixMath.multiply(DCM, PinV) # now we have a updated point in body frame we must now convert into inertial
-			point = MatrixMath.multiply(MatrixMath.transpose(DCM), point)
-			
+
+		DCM = Rotations.euler2DCM(yaw, pitch, roll)
+		newPoints = MatrixMath.multiply(newPoints, DCM)
+		newPoints = MatrixMath.transpose(newPoints)
 			
 
 		return Rotations.ned2enu(newPoints)
