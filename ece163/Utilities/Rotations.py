@@ -21,9 +21,8 @@ def dcm2Euler(DCM):
 
 def euler2DCM(yaw, pitch, roll):
 
-    col=4
-    rows=3
-    matrix=[[0]*col for i in range(rows)]
+
+    matrix=[[0,0,0],[0,0,0],[0,0,0]]
     #first row of DCM
     matrix[0][0] = math.cos(roll) * math.cos(yaw)
     matrix[0][1] = math.cos(roll) * math.sin(yaw)
