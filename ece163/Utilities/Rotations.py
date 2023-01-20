@@ -16,7 +16,7 @@ def dcm2Euler(DCM):
         DCM[0][2] = 1
     elif DCM[0][2] < -1:
         DCM[0][2] = -1 
-    pitch = -1 * math.sinh(DCM[0][2])  #check for +-1 bounds
+    pitch = -1 * math.asin(DCM[0][2])  #check for +-1 bounds
     roll = math.atan2(DCM[1][2], DCM[2][2])
 
 
