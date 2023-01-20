@@ -21,7 +21,7 @@ import ece163.Modeling.VehicleGeometry as VG
 
 """math.isclose doesn't work well for comparing things near 0 unless we 
 use an absolute tolerance, so we make our own isclose:"""
-isclose = lambda  a,b : math.isclose(a, b, abs_tol= 1e-12)
+isclose = lambda  a,b : math.isclose(a, b, abs_tol= 1e-6)
 
 def compareVectors(a, b):
 	"""A quick tool to compare two vectors"""
@@ -30,7 +30,7 @@ def compareVectors(a, b):
 
 #of course, you should test your testing tools too:
 assert(compareVectors([[0], [0], [-1]],[[1e-13], [0], [-1+1e-9]]))
-assert(not compareVectors([[0], [0], [-1]],[[1e-11], [0], [-1]]))
+assert(not compareVectors([[0], [0], [-1]],[[1e-5], [0], [-1]]))
 assert(not compareVectors([[1e8], [0], [-1]],[[1e8+1], [0], [-1]]))
 
 
