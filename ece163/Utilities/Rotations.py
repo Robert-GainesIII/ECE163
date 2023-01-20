@@ -12,7 +12,10 @@ def dcm2Euler(DCM):
     #returns yaw,pitch,roll in radians
     
     yaw = math.atan2(DCM[0][1], DCM[0][0])
-    
+    if DCM[0][2] > 1:
+        DCM[0][2] = 1
+    elif DCM[0][2] < -1:
+        DCM[0][2] = -1 
     pitch = math.sinh(DCM[0][2])  #check for +-1 bounds
     roll = math.atan2(DCM[1][2], DCM[2][2])
 
