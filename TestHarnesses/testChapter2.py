@@ -30,7 +30,7 @@ def compareVectors(a, b):
 
 #of course, you should test your testing tools too:
 assert(compareVectors([[0], [0], [-1]],[[1e-13], [0], [-1+1e-9]]))
-assert(not compareVectors([[0], [0], [-1]],[[1e-5], [0], [-1]]))
+assert(not compareVectors([[0], [0], [-1]],[[1e-8], [0], [-1]]))
 assert(not compareVectors([[1e8], [0], [-1]],[[1e8+1], [0], [-1]]))
 
 
