@@ -10,10 +10,15 @@ from . import MatrixMath
 def dcm2Euler(DCM):
     yaw = pitch = roll = 0
     #returns yaw,pitch,roll in radians
-
-    roll = math.sinh(DCM[0][2])  #check for +-1 bounds
-    pitch = math.atan2(DCM[1][2], DCM[2][2])
+    
     yaw = math.atan2(DCM[0][1], DCM[0][0])
+    
+    pitch = math.sinh(DCM[0][2])  #check for +-1 bounds
+    roll = math.atan2(DCM[1][2], DCM[2][2])
+
+
+
+
     a = [yaw, pitch, roll]
 
     return a
