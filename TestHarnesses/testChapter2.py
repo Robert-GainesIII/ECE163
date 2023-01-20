@@ -49,6 +49,7 @@ def evaluateTest(test_name, boolean):
 	return boolean
 
 
+
 #%% Euler2dcm():
 print("Beginning testing of Rotations.Euler2dcm()")
 
@@ -69,6 +70,108 @@ Students, add more tests here.
 You aren't required to use the testing framework we've started here, 
 but it will work just fine.
 """
+
+
+
+cur_test = "Euler2dcm test 2"
+R = Rotations.euler2DCM((-3/4) * math.pi, (1/3) * math.pi, (1/4) * math.pi)
+orig_vec = [[0,0,0],[0,0,0],[0,0,0]]
+expected_vec = [[1,0,0],[0,1,0],[0,0,1]]
+actual_vec = mm.multiply(R, orig_vec)
+if not evaluateTest(cur_test, compareVectors(expected_vec, actual_vec) ):
+	print(f"{expected_vec} != {actual_vec}")
+
+
+cur_test = "Euler2dcm test 3"
+R = Rotations.euler2DCM(0, 0, 0)
+orig_vec = [[0,0,0],[0,0,0],[0,0,0]]
+expected_vec = [[-1*(math.sqrt(2))/4, -1*(math.sqrt(2))/4, -1*(math.sqrt(3))/2],
+				[1/2 - ((math.sqrt(3))/4), (-1/2) - ((math.sqrt(3))/4),(math.sqrt(2))/4 ],
+				[(-1/2) - ((math.sqrt(3))/4), 1/2 - ((math.sqrt(3))/4),(math.sqrt(2))/4]]
+actual_vec = mm.multiply(R, orig_vec)
+if not evaluateTest(cur_test, compareVectors(expected_vec, actual_vec) ):
+	print(f"{expected_vec} != {actual_vec}")
+
+
+
+print("Beginning testing of Rotations.Euler2dcm()")
+cur_test = "dcm2Euler test 1"
+R = Rotations.dcm2Euler([-1*(math.sqrt(2))/4, -1*(math.sqrt(2))/4, -1*(math.sqrt(3))/2],
+				[1/2 - ((math.sqrt(3))/4), (-1/2) - ((math.sqrt(3))/4),(math.sqrt(2))/4 ],
+				[(-1/2) - ((math.sqrt(3))/4), 1/2 - ((math.sqrt(3))/4),(math.sqrt(2))/4])
+expected_ans = [(-3/4) * math.pi, (1/3) * math.pi, (1/4) * math.pi]
+
+if not R == expected_ans:
+	passed.append(cur_test)
+else:
+	failed.append(cur_test)
+
+
+
+cur_test = "dcm2Euler test 2"
+R = Rotations.dcm2Euler([[1,0,0],[0,1,0],[0,0,1]])
+expected_ans = [0,0,0]
+if not R == expected_ans:
+	passed.append(cur_test)
+else:
+	failed.append(cur_test)
+
+
+print("Beginning testing of Rotations.ned2enu()")
+cur_test = "ned2enu test 1"
+R = Rotations.ned2enu([[0,1,-1]])
+expected_ans = [[1,0,1]]
+if not R == expected_ans:
+	passed.append(cur_test)
+else:
+	failed.append(cur_test)
+
+
+
+cur_test = "ned2enu test 2"
+R = Rotations.ned2enu([[1,2,3]])
+expected_ans = [[2,1,-3]]
+if not R == expected_ans:
+	passed.append(cur_test)
+else:
+	failed.append(cur_test)
+
+
+
+
+print("Beginning testing of VehicleGeometry.newPoints()")
+cur_test = "newPoints test 1"
+R = Rotations.euler2DCM(0, 0, 0)
+orig_vec = [[0,0,0],[0,0,0],[0,0,0]]
+expected_vec = [[-1*(math.sqrt(2))/4, -1*(math.sqrt(2))/4, -1*(math.sqrt(3))/2],
+				[1/2 - ((math.sqrt(3))/4), (-1/2) - ((math.sqrt(3))/4),(math.sqrt(2))/4 ],
+				[(-1/2) - ((math.sqrt(3))/4), 1/2 - ((math.sqrt(3))/4),(math.sqrt(2))/4]]
+actual_vec = mm.multiply(R, orig_vec)
+if not evaluateTest(cur_test, compareVectors(expected_vec, actual_vec) ):
+	print(f"{expected_vec} != {actual_vec}")
+
+
+
+cur_test = "newPoints test 2"
+R = Rotations.euler2DCM(0, 0, 0)
+orig_vec = [[0,0,0],[0,0,0],[0,0,0]]
+expected_vec = [[-1*(math.sqrt(2))/4, -1*(math.sqrt(2))/4, -1*(math.sqrt(3))/2],
+				[1/2 - ((math.sqrt(3))/4), (-1/2) - ((math.sqrt(3))/4),(math.sqrt(2))/4 ],
+				[(-1/2) - ((math.sqrt(3))/4), 1/2 - ((math.sqrt(3))/4),(math.sqrt(2))/4]]
+actual_vec = mm.multiply(R, orig_vec)
+if not evaluateTest(cur_test, compareVectors(expected_vec, actual_vec) ):
+	print(f"{expected_vec} != {actual_vec}")
+
+
+
+
+
+
+
+
+
+
+
 
 #%% Print results:
 
