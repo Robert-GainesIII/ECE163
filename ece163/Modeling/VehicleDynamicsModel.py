@@ -43,12 +43,13 @@ class VehicleDynamicsModel:
         FORCES = [[forcesnmoments.Fx],[forcesnmoments.Fy],[forcesnmoments.Fz]]
         MOMENTS = [[forcesnmoments.Mx],[forcesnmoments.My],[forcesnmoments.Mz]]
         
+        #derivative of positon
         PosistionDerivative = MatrixMath.multiply(MatrixMath.transpose(state.DCM), VELOCITY)
         dState.pn = PosistionDerivative[0][0]
         dState.pe = PosistionDerivative[1][0]
         dState.pd = PosistionDerivative[2][0]
 
-
+        #derivative of euler angles
         MATRIX_FOR_EULER_DERIVATIVES = [
                     [1, math.sin(state.roll)*math.tan(state.pitch), math.cos(state.roll)*math.tan(state.pitch)],
                     [0, math.cos(state.roll), -1*math.sin(state.roll)],
@@ -60,6 +61,7 @@ class VehicleDynamicsModel:
         dState.roll = [2][0]
 
 
+        #Deriative of velocity
         SKEW_TIMES_VELOCITIES = [
             [state.r * state.v - state.q * state.w],
             [state.p * state.w - state.r * state.u],
@@ -70,16 +72,29 @@ class VehicleDynamicsModel:
         dState.v = [1][0]
         dState.w = [2][0]
 
-        dState.p
-        dState.q
-        dState.r 
+        
+        #Derivative of angular rates
+        PQR_DOT_TERM1 = [
+            [VPC.Jzz/VPC.Jdet, 0, VPC.Jxz/VPC.Jdet],
+            [0, 1/VPC.Jyy, 0],
+            [VPC.Jxz/VPC.Jdet, 0, VPC.Jxx/VPC.Jdet]
+        ]
+        PQR_DOT_TERM2 = MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),MatrixMath.multiply(VPC.Jbody, ANGULAR_RATES))
+        pqrDerivative = MatrixMath.multiply(PQR_DOT_TERM1, MatrixMath.add(PQR_DOT_TERM2, MOMENTS))
+        dState.p = pqrDerivative[0][0]
+        dState.q = pqrDerivative[1][0]
+        dState.r = pqrDerivative[2][0]
+
+
+        #derivitve of Rotation Matrix
+        dState.R = MatrixMath.scalarMultiply(-1, MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),state.R))
 
 
         return state
 
     def getVehicleDerivative(self):
 
-        return self.state
+        return self.dot
 
     def getVehicleState(self):
 
@@ -92,9 +107,9 @@ class VehicleDynamicsModel:
     
     def setVehicleDot(self, dot):
 
-        dot = self.dot
+        self.dot = dot
 
     def setVehicleState(self, state):
 
-        state = self.state
+        self.state = state
         
