@@ -19,8 +19,25 @@ class VehicleDynamicsModel:
         newState = States.vehicleState()
         return newState
 
+    #used by integrate state to forward propogate the DCM rotation Matrix 
     def Rexp(self, dT, state, dot):
         rexp = 0
+        NORM = math.hypot(state.p, state.q, state.r)
+        sx = MatrixMath.skew(state.p,state.q,state.r)
+        IDENTITY =[[1,0,0],[0,1,0],[0,0,1]]
+        if NORM < 0.2:
+            #different taylor series approximation equations
+            sinTermApprox = dT - ((math.pow(dT,3)*math.pow(NORM,2))/6) + ((math.pow(dT,5)*math.pow(NORM,4))/120)
+            cosTermApprox = (dT*dT)/2 - ((math.pow(dT,4)*math.pow(NORM,2))/24) + ((math.pow(dT,6)*math.pow(NORM,4))/720)
+            rexp = MatrixMath.subtract(IDENTITY,MatrixMath.add(MatrixMath.scalarMultiply(sinTermApprox,sx),MatrixMath.scalarMultiply(cosTermApprox, MatrixMath.multiply(sx,sx))))
+        else:
+            #stuff from hw1.py
+            
+            angularMag = NORM
+            trigTerm = angularMag * dT
+            term1 = MatrixMath.subtract(IDENTITY, MatrixMath.scalarMultiply(math.sin(trigTerm)/angularMag, sx))
+            rexp = MatrixMath.add(term1, MatrixMath.scalarMultiply((1-math.cos(trigTerm))/math.pow(angularMag,2),MatrixMath.multiply(sx,sx)))
+
         return rexp
 
     def Update(self,forcesnmoments):
