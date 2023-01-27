@@ -31,7 +31,7 @@ class VehicleDynamicsModel:
         Rexp = self.Rexp(dT,state, dot)
         Rnext = MatrixMath.multiply(Rexp, state.R)
 
-        fE = self.forwardEuler(dT,state,dot)
+        fE = self.ForwardEuler(dT,state,dot)
 
         newState = States.vehicleState(fE.pn, fE.pe, fE.pd, fE.u, fE.v, fE.w, fE.p, fE.q, fE.r, Rnext)
         return newState
