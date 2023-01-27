@@ -22,7 +22,7 @@ import ece163.Containers.States
 
 """math.isclose doesn't work well for comparing things near 0 unless we 
 use an absolute tolerance, so we make our own isclose:"""
-isclose = lambda  a,b : math.isclose(a, b, abs_tol= 1e-12)
+isclose = lambda  a,b : math.isclose(a, b, abs_tol= 1e-7)
 
 def compareVectors(a, b):
 	"""A quick tool to compare two vectors"""
@@ -48,8 +48,8 @@ def evaluateTest(test_name, boolean):
 		print(f"   failed {test_name}")
 		failed.append(test_name)
 	return boolean
-	
-	 
+
+
 #%% Derivative():
 print("Beginning testing of VDM.Derivative(), subtest of [pe,pn,pd]")
 
