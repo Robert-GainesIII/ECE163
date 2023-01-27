@@ -42,9 +42,10 @@ class VehicleDynamicsModel:
 
     def Update(self,forcesnmoments):
 
-        print("start of update")
+        #print("start of update")
+        pass
 
-        print("end of update.")
+        #print("end of update.")
 
     def derivative(self,state, forcesnmoments):
         #compute the derivative of the given state with the provided forces n moments then return 
