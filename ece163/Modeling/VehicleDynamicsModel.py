@@ -104,7 +104,7 @@ class VehicleDynamicsModel:
             [VPC.Jxz/VPC.Jdet, 0, VPC.Jxx/VPC.Jdet]
         ]
         #jinverse multplied by -skew*j*pqr + moments
-        pqrDerivative = MatrixMath.multiply(VPC.JinvBody, MatrixMath.add(MatrixMath.multiply(MatrixMath.multiply(MatrixMath.multiply(-1,SKEW),VPC.Jbody),ANGULAR_RATES), MOMENTS))
+        pqrDerivative = MatrixMath.multiply(VPC.JinvBody, MatrixMath.add(MatrixMath.multiply(MatrixMath.multiply(MatrixMath.scalarMultiply(-1,SKEW),VPC.Jbody),ANGULAR_RATES), MOMENTS))
         dState.p = pqrDerivative[0][0]
         dState.q = pqrDerivative[1][0]
         dState.r = pqrDerivative[2][0]
