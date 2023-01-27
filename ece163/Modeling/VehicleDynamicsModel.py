@@ -14,8 +14,8 @@ class VehicleDynamicsModel:
     def ForwardEuler(self, dT, state, dot):
         newState = States.vehicleState()
         newState.pn = state.pn + dot.pn*dT
-        newState.pn = state.pn + dot.pn*dT
-        newState.pn = state.pn + dot.pn*dT
+        newState.pe = state.pe + dot.pe*dT
+        newState.pd = state.pd + dot.pd*dT
 
         newState.p = state.p + dot.p*dT
         newState.q = state.q + dot.q*dT
