@@ -72,7 +72,7 @@ class VehicleDynamicsModel:
         
         state = self.getVehicleState()
         derivative = self.derivative(state,forcesnmoments)
-        integrated = self.IntegrateState(state.dT, state, derivative)
+        integrated = self.IntegrateState(self.dT, state, derivative)
         self.setVehicleState(integrated)
         #print("end of update.")
 
