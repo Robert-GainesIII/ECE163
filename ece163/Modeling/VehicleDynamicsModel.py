@@ -62,6 +62,7 @@ class VehicleDynamicsModel:
         VELOCITY = [[state.u],[state.v],[state.w]]
         EULERS = [[state.roll], [state.pitch], [state.yaw] ]
         ANGULAR_RATES = [[state.p],[state.q],[state.r]]
+        SKEW = MatrixMath.skew(state.p,state.q,state.r)
         
         FORCES = [[forcesnmoments.Fx],[forcesnmoments.Fy],[forcesnmoments.Fz]]
         MOMENTS = [[forcesnmoments.Mx],[forcesnmoments.My],[forcesnmoments.Mz]]
@@ -102,8 +103,8 @@ class VehicleDynamicsModel:
             [0, 1/VPC.Jyy, 0],
             [VPC.Jxz/VPC.Jdet, 0, VPC.Jxx/VPC.Jdet]
         ]
-        PQR_DOT_TERM2 = MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),MatrixMath.multiply(VPC.Jbody, ANGULAR_RATES))
-        pqrDerivative = MatrixMath.multiply(PQR_DOT_TERM1, MatrixMath.add(PQR_DOT_TERM2, MOMENTS))
+        #jinverse multplied by -skew*j*pqr + moments
+        pqrDerivative = MatrixMath.multiply(VPC.JinvBody, MatrixMath.add(MatrixMath.multiply(MatrixMath.multiply(MatrixMath.multiply(-1,SKEW),VPC.Jbody),ANGULAR_RATES), MOMENTS))
         dState.p = pqrDerivative[0][0]
         dState.q = pqrDerivative[1][0]
         dState.r = pqrDerivative[2][0]
