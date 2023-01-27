@@ -33,7 +33,7 @@ class VehicleDynamicsModel:
 
         fE = self.ForwardEuler(dT,state,dot)
 
-        newState = States.vehicleState(fE.pn, fE.pe, fE.pd, fE.u, fE.v, fE.w, fE.p, fE.q, fE.r, Rnext)
+        newState = States.vehicleState(pn=fE.pn, pe=fE.pe, pd=fE.pd, u=fE.u, v=fE.v, w=fE.w, p=fE.p, q=fE.q, r=fE.r, dcm=Rnext)
         return newState
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
