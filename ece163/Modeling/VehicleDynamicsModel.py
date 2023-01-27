@@ -25,10 +25,10 @@ class VehicleDynamicsModel:
         q = state.q + (dot.q * dT/2)
         r = state.r + (dot.r * dT/2)
 
-        
+
         rexp = 0
-        NORM = math.hypot(state.p, state.q, state.r)
-        sx = MatrixMath.skew(state.p,state.q,state.r)
+        NORM = math.hypot(p, q, r)
+        sx = MatrixMath.skew(p,q,r)
         IDENTITY =[[1,0,0],[0,1,0],[0,0,1]]
         if NORM < 0.2:
             #different taylor series approximation equations
