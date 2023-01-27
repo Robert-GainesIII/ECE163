@@ -61,7 +61,7 @@ class VehicleDynamicsModel:
         MOMENTS = [[forcesnmoments.Mx],[forcesnmoments.My],[forcesnmoments.Mz]]
         
         #derivative of positon
-        PosistionDerivative = MatrixMath.multiply(MatrixMath.transpose(state.DCM), VELOCITY)
+        PosistionDerivative = MatrixMath.multiply(MatrixMath.transpose(state.R), VELOCITY)
         dState.pn = PosistionDerivative[0][0]
         dState.pe = PosistionDerivative[1][0]
         dState.pd = PosistionDerivative[2][0]
