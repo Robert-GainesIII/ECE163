@@ -13,10 +13,27 @@ class VehicleDynamicsModel:
 
     def ForwardEuler(self, dT, state, dot):
         newState = States.vehicleState()
+        newState.pn = state.pn + dot.pn*dT
+        newState.pn = state.pn + dot.pn*dT
+        newState.pn = state.pn + dot.pn*dT
+
+        newState.p = state.p + dot.p*dT
+        newState.q = state.q + dot.q*dT
+        newState.r = state.r + dot.r*dT
+
+        newState.u = state.u + dot.u*dT
+        newState.v = state.v + dot.v*dT
+        newState.w = state.w + dot.w*dT
         return newState
     
     def IntegrateState(self, dT, state, dot):
-        newState = States.vehicleState()
+        #calculate forward integration for pqr,PnPePd, uvw
+        Rexp = self.Rexp(dT,state, dot)
+        Rnext = MatrixMath.multiply(Rexp, state.R)
+
+        fE = self.forwardEuler(dT,state,dot)
+
+        newState = States.vehicleState(fE.pn, fE.pe, fE.pd, fE.u, fE.v, fE.w, fE.p, fE.q, fE.r, Rnext)
         return newState
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
@@ -48,7 +65,7 @@ class VehicleDynamicsModel:
     def Update(self,forcesnmoments):
 
         #print("start of update")
-        pass
+        
 
         #print("end of update.")
 
