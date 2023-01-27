@@ -34,7 +34,7 @@ class VehicleDynamicsModel:
             #different taylor series approximation equations
             sinTermApprox = dT - ((math.pow(dT,3)*math.pow(NORM,2))/6) + ((math.pow(dT,5)*math.pow(NORM,4))/120)
             cosTermApprox = (dT*dT)/2 - ((math.pow(dT,4)*math.pow(NORM,2))/24) + ((math.pow(dT,6)*math.pow(NORM,4))/720)
-            rexp = MatrixMath.add(MatrixMath.subtract(IDENTITY,MatrixMath.multiply(sinTermApprox,sx)), MatrixMath.scalarMultiply(cosTermApprox, MatrixMath.multiply(sx,sx)))
+            rexp = MatrixMath.add(MatrixMath.subtract(IDENTITY,MatrixMath.scalarMultiply(sinTermApprox,sx)), MatrixMath.scalarMultiply(cosTermApprox, MatrixMath.multiply(sx,sx)))
         else:
             #stuff from hw1.py
             
