@@ -86,15 +86,11 @@ class VehicleDynamicsModel:
 
 
         #Deriative of velocity
-        SKEW_TIMES_VELOCITIES = [
-            [state.r * state.v - state.q * state.w],
-            [state.p * state.w - state.r * state.u],
-            [state.q * state.u - state.p * state.v]
-        ]
-        VelocityDerivative = MatrixMath.add(SKEW_TIMES_VELOCITIES, MatrixMath.scalarMultiply(1/VPC.mass, FORCES))
-        dState.u = [0][0]
-        dState.v = [1][0]
-        dState.w = [2][0]
+        NEGSKEW = MatrixMath.scalarMultiply(-1, SKEW)
+        VelocityDerivative = MatrixMath.add(MatrixMath.multiply(NEGSKEW,VELOCITY), MatrixMath.scalarMultiply(1/VPC.mass, FORCES))
+        dState.u = VelocityDerivative[0][0]
+        dState.v = VelocityDerivative[1][0]
+        dState.w = VelocityDerivative[2][0]
 
         
         #Derivative of angular rates
