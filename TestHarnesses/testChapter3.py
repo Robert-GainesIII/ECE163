@@ -48,29 +48,29 @@ def evaluateTest(test_name, boolean):
 		print(f"   failed {test_name}")
 		failed.append(test_name)
 	return boolean
-
-
-#%% Euler2dcm():
-print("Beginning testing of Rotations.Euler2dcm()")
+	
+	 
+#%% Derivative():
+print("Beginning testing of VDM.Derivative(), subtest of [pe,pn,pd]")
 
 cur_test = "Derivative test p_dot x dir"
 
 testVDM = VDM.VehicleDynamicsModel()
-testState = InputsVS()
-testFm = FM()
+testState = States.vehicleState()
+testFm = Inputs.forcesMoments()
 testState.pitch = 30*math.pi/180
+testState.R = Rotations.euler2DCM(0.0,testState.pitch,0.0)
 testState.u = 10
 testDot = testVDM.derivative(testState, testFm)
 
-if testDot.pd < 0:
-	print("passed!")
+print("With a velocity of u = 10 m/s, and pitch = 30deg:\n")
+resultPdot = [[testDot.pn],[testDot.pe],[testDot.pd]]
+expectedPdot = [[10*math.sqrt(3)/2],[0],[-10/2]]
+
+if compareVectors(resultPdot,expectedPdot):
+ print("passed!")
 else:
-	print("failed :(")
-
-
-
-#%%  
-
+ print("failed :(")
 """
 Students, add more tests here.  
 You aren't required to use the testing framework we've started here, 
