@@ -113,7 +113,7 @@ class VehicleDynamicsModel:
         dState.R = MatrixMath.scalarMultiply(-1, MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),state.R))
 
 
-        return state
+        return dState
 
     def getVehicleDerivative(self):
 
