@@ -13,6 +13,7 @@ class VehicleAerodynamicsModel:
     def __init__(self, initialSpeed = VPC.InitialSpeed, initialHeight = VPC.InitialDownPosition):
         #create class instance of vehicle dynamics
         self.dynamicsModel = VehicleDynamicsModel.VehicleDynamicsModel()
+        print(self.dynamicsModel)
         self.state = self.dynamicsModel.getVehicleState()
         self.dot = self.dynamicsModel.getVehicleDerivative()
         self.dT = self.dynamicsModel.dT
