@@ -29,7 +29,7 @@ class VehicleAerodynamicsModel:
 
     def setVehicleState(self, state):
         self.dynamicsModel.setVehicleState(state)
-        
+        return
 
     def getVehicleDynamicsModel(self):
         pass
