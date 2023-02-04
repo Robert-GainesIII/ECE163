@@ -33,7 +33,8 @@ class VehicleAerodynamicsModel:
         return
 
     def getVehicleDynamicsModel(self):
-        pass
+        
+        return self.dynamicsModel
 
     def update(self):
         pass
