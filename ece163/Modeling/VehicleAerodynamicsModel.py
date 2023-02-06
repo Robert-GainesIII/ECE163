@@ -38,7 +38,7 @@ def Cl_fromA(alpha):
 def Cd_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
     sigmasss = (alpha, VPC.alpha0, 0.5)
-
+    print("im annoyed.")
     x = ( 1 - sigmasss )* cd_attached(alpha) + sigmasss * cl_seperated(alpha)
     print(x)    
     return x
