@@ -164,7 +164,10 @@ class VehicleAerodynamicsModel:
     def aeroForces(self, state):
         
         forcesnMoments = Inputs.forcesMoments()
-        fl = calcLiftForce(state.Va, state.beta)
+        va = math.hypot(state.u, state.v, state.w)
+        slideslip = math.sinh(state.v / va)
+        alpha = math.tanh(state.w/ state.u)
+        fl = calcLiftForce(va, slideslip, alpha, state.p)
 
         return forcesnMoments
 
