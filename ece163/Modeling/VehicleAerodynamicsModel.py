@@ -32,7 +32,7 @@ def cl_seperated(alpha):
 
 def cd_seperated(alpha):
     x = 2 * math.pow(math.sin(alpha), 2)
-    print("cd_seperated =" +_ x)
+    print("cd_seperated =" + x)
     return x
 
 def Cl_fromA(alpha):
