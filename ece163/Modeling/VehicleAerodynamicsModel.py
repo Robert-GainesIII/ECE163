@@ -162,13 +162,20 @@ class VehicleAerodynamicsModel:
     #of Beard 4.5, and the first four terms of Beard 4.14, 4.15, and 4.16.
     
     def aeroForces(self, state):
-        
+        print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
         va = math.hypot(state.u, state.v, state.w)
-        slideslip = math.sinh(state.v / va)
-        alpha = math.tanh(state.w/ state.u)
+        if(va != 0):
+            slideslip = math.sinh(state.v / va)
+        else:
+            slideslip = 0
+        
+        if(state.u != 0):
+            alpha = math.tanh(state.w/ state.u)
+        else:
+            alpha = 0
         fl = calcLiftForce(va, slideslip, alpha, state.p)
-
+        print("end aeroForces")
         return forcesnMoments
 
     def controlForces(self, state, controls):
