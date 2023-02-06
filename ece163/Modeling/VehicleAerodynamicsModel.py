@@ -64,6 +64,53 @@ def sigma(a, a0, M):
     den = (1 + np.exp(-M*(a-a0)))*(1 + np.exp(M*(a+a0)))
     return num/den
 
+#EQUATION 4.6
+def calcLiftForce(Va, slideslip, alpha, pitchrate):
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
+    fLiftTerm2 = Cl_fromA(alpha)
+    fLiftTerm3 = (VPC.CLq * VPC.c * pitchrate)/(2*Va)
+    return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
+#EQUATION 4.7
+def calcDragForce(Va, slideslip, alpha, pitchrate):
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
+    fLiftTerm2 = Cd_fromA(alpha)
+    fLiftTerm3 = (VPC.CDq * VPC.c * pitchrate)/(2*Va)
+    return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
+#EQUATION 4.5
+def calcMoment(Va, slideslip, alpha, pitchrate):
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.c
+    fLiftTerm2 = VPC.CM0
+    fLiftTerm3 = VPC.CMalpha * alpha
+    fLiftTerm4 = (VPC.CMq* VPC.c * pitchrate)/(2*Va)
+    return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4)
+
+#EQUATION 4.14
+def calcFy(Va, slideslip, alpha, pitchrate, rollrate):
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
+    fLiftTerm2 = VPC.CY0
+    fLiftTerm3 = VPC.CYbeta * slideslip
+    fLiftTerm4 = (VPC.CYp* VPC.b * pitchrate)/(2*Va)
+    fLiftTerm5 = (VPC.CYr* VPC.b * rollrate)/(2*Va)
+    return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
+
+#EQUATION 4.15
+def calcMomentL(Va, slideslip, alpha, pitchrate, rollrate):
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
+    fLiftTerm2 = VPC.Cl0
+    fLiftTerm3 = VPC.Clbeta * slideslip
+    fLiftTerm4 = (VPC.Clp* VPC.b * pitchrate)/(2*Va)
+    fLiftTerm5 = (VPC.Clr* VPC.b * rollrate)/(2*Va)
+    return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
+
+#EQUATION 4.16
+def calcMomentN(Va, slideslip, alpha, pitchrate, rollrate):
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
+    fLiftTerm2 = VPC.Cn0
+    fLiftTerm3 = VPC.Cnbeta * slideslip
+    fLiftTerm4 = (VPC.Cnp* VPC.b * pitchrate)/(2*Va)
+    fLiftTerm5 = (VPC.Cnr* VPC.b * rollrate)/(2*Va)
+    return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
+
 class VehicleAerodynamicsModel:
     
     def __init__(self, initialSpeed = VPC.InitialSpeed, initialHeight = VPC.InitialDownPosition):
@@ -111,10 +158,13 @@ class VehicleAerodynamicsModel:
         return Cl_alpha, Cd_alpha, Cm_alpha
 
 
-
+    #you’ll be calculating the first two terms of Beard 4.6 and 4.7, the first three terms
+    #of Beard 4.5, and the first four terms of Beard 4.14, 4.15, and 4.16.
+    
     def aeroForces(self, state):
         
         forcesnMoments = Inputs.forcesMoments()
+        fl = calcLiftForce(state.Va, state.beta)
 
         return forcesnMoments
 
