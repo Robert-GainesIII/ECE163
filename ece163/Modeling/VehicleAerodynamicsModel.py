@@ -113,7 +113,10 @@ class VehicleAerodynamicsModel:
 
 
     def aeroForces(self, state):
-        pass
+        
+        forcesnMoments = Inputs.forcesMoments()
+
+        return forcesnMoments
 
     def controlForces(self, state, controls):
         pass
