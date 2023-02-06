@@ -42,7 +42,7 @@ def Cd_fromA(alpha):
     print("problem is with sigma function")
 
 
-    return  (1 - sigma) * cd_attached(alpha) + sigma*cl_seperated(alpha)
+    return  1 - sigma * (cd_attached(alpha) + sigma*cl_seperated(alpha))
 
 
 #blending function
