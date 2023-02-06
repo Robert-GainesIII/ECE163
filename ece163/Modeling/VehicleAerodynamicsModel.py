@@ -68,8 +68,9 @@ def sigma(a, a0, M):
 def calcLiftForce(Va, slideslip, alpha, pitchrate):
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
     fLiftTerm2 = Cl_fromA(alpha)
-    fLiftTerm3 = (VPC.CLq * VPC.c * pitchrate)/(2*Va)
     print("calc flift died on third term")
+    fLiftTerm3 = (VPC.CLq * VPC.c * pitchrate)/(2*Va)
+    print("nvm")
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
 def calcDragForce(Va, slideslip, alpha, pitchrate):
