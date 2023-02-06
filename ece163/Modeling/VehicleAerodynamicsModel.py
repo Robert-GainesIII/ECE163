@@ -1,5 +1,5 @@
 """
-Engineer: Robert Gaines
+Engineer: Robert Gaines III
 File Name : VehicleAerodynamicsModel.py
 Purpose : Contains functions to compute aerodynamic forces and moments acting on the MAV given certain control surface inputs
 """
