@@ -23,7 +23,7 @@ def cl_attached(alpha):
 
 def cd_attached(alpha):
     print("calculating cd attached")
-    x = VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2))/(math.pi * math.e * VPC.AR)
+    x = VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2))/(math.pi * VPC.e* VPC.AR)
     print("cd_attached= " + str(x))
     return x
 
