@@ -57,7 +57,7 @@ class VehicleAerodynamicsModel:
     def gravityForces(self, state):
 
         forcesnMoments = Inputs.forcesMoments()
-        forceVector = [[forcesnMoments.Fx],[forcesnMoments.Fy],[9.8*VPC.mass]]
+        forceVector = [[forcesnMoments.Fx],[forcesnMoments.Fy],[VPC.g0*VPC.mass]]
         gravityInBody = MatrixMath.multiply(state.R, forceVector)
 
         forcesnMoments.Fx = gravityInBody[0][0]
