@@ -69,6 +69,7 @@ def calcLiftForce(Va, slideslip, alpha, pitchrate):
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
     fLiftTerm2 = Cl_fromA(alpha)
     fLiftTerm3 = (VPC.CLq * VPC.c * pitchrate)/(2*Va)
+    print("calc flift died on third term")
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
 def calcDragForce(Va, slideslip, alpha, pitchrate):
@@ -175,6 +176,7 @@ class VehicleAerodynamicsModel:
             alpha = math.tanh(state.w/ state.u)
         else:
             alpha = 0
+        print("calculated beta now for actaul function")
         fl = calcLiftForce(va, slideslip, alpha, state.p)
         print("end aeroForces")
         return forcesnMoments
