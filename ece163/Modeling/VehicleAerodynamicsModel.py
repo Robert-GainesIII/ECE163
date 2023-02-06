@@ -26,7 +26,7 @@ class VehicleAerodynamicsModel:
         pass
     
     def getVehicleState(self):
-        pass
+        return self.dynamicsModel.getVehicleState()
 
     def setVehicleState(self, state):
         self.dynamicsModel.setVehicleState(state)
@@ -37,22 +37,37 @@ class VehicleAerodynamicsModel:
         return self.dynamicsModel
 
     def update(self):
+
+        self.state = self.getVehicleState()
+        
+
+    #:param alpha, Angle of Attack [rad]
+    # return: 
+    #Coefficient of Lift, CL_alpha (unitless), Coefficient of Drag,
+    #CD_alpha (unitless), Coefficoent of Moment, CM_alpha (unitless)
+    def CalculateCoeff_alpha(self, alpha):
         pass
 
-    def CalculateCoeff_alpha(self):
+    def aeroForces(self, state):
         pass
 
-    def aeroForces(self):
+    def controlForces(self, state, controls):
         pass
 
-    def controlForces(self):
+    def gravityForces(self, state):
+
+        forcesnMoments = Inputs.forcesMoments()
+        forceVector = [[forcesnMoments.Fx],[forcesnMoments.Fy],[9.8*VPC.mass]]
+        gravityInBody = MatrixMath.multiply(state.R, forceVector)
+
+        forcesnMoments.Fx = gravityInBody[0][0]
+        forcesnMoments.Fy = gravityInBody[1][0]
+        forcesnMoments.Fz = gravityInBody[2][0]
+
+        return forcesnMoments
+
+    def CalculatePropForces(self, Va, Throttle):
         pass
 
-    def gravityForces(self):
-        pass
-
-    def CalculatePropForces(self):
-        pass
-
-    def updateForces(self):
+    def updateForces(self, state, controls, wind=None):
         pass
