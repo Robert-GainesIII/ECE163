@@ -134,7 +134,11 @@ class VehicleAerodynamicsModel:
         return forcesnMoments
 
     def CalculatePropForces(self, Va, Throttle):
-        pass
+        Fprop = 0
+        Mprop = 0
+
+        
+        return (Fprop, Mprop)
 
     def updateForces(self, state, controls, wind=None):
         pass
