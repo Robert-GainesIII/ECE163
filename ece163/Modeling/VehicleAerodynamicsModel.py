@@ -119,7 +119,9 @@ class VehicleAerodynamicsModel:
         return forcesnMoments
 
     def controlForces(self, state, controls):
-        pass
+        forcesnMoments = Inputs.forcesMoments()
+
+        return forcesnMoments
 
     def gravityForces(self, state):
 
