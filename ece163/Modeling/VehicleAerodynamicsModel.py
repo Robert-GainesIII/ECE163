@@ -17,7 +17,7 @@ import numpy as np
 
 def cl_attached(alpha):
     print("calculating cl attached")
-    x = VPC.Cl0 + VPC.CLalpha * alpha
+    x = VPC.CL0 + VPC.CLalpha * alpha
     print("cl_attached= " + str(x))
     return x
 
