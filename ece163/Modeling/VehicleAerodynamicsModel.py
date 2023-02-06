@@ -102,15 +102,12 @@ class VehicleAerodynamicsModel:
     #Coefficient of Lift, CL_alpha (unitless), Coefficient of Drag,
     #CD_alpha (unitless), Coefficoent of Moment, CM_alpha (unitless)
     def CalculateCoeff_alpha(self, alpha):
-        print("hellooooo")
         Cd_alpha = Cd_fromA(alpha)  
-        print("test2")
         Cl_alpha = Cl_fromA(alpha)
-        print("t3")
         Cm_alpha = VPC.CM0 + VPC.CMalpha * alpha
-        print("returning CdAlpha = " + Cd_alpha)
-        print("returning ClAlpha = " + Cl_alpha)
-        print("returning CmAlpha = " + Cm_alpha)
+        print("returning CdAlpha = " + str(Cd_alpha))
+        print("returning ClAlpha = " + str(Cl_alpha))
+        print("returning CmAlpha = " + str(Cm_alpha))
         return Cd_alpha, Cl_alpha, Cm_alpha
 
 
