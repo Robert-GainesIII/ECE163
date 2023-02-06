@@ -143,4 +143,7 @@ class VehicleAerodynamicsModel:
         return (Fprop, Mprop)
 
     def updateForces(self, state, controls, wind=None):
-        pass
+        total = 0
+
+
+        return total
