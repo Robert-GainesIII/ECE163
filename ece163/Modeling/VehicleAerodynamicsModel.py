@@ -92,7 +92,7 @@ class VehicleAerodynamicsModel:
         
         return self.dynamicsModel
 
-    def update(self):
+    def Update(self, controls):
 
         self.state = self.getVehicleState()
         
