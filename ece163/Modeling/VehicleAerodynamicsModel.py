@@ -165,11 +165,12 @@ class VehicleAerodynamicsModel:
         print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
         va = math.hypot(state.u, state.v, state.w)
+
         if(va != 0):
             slideslip = math.sinh(state.v / va)
         else:
             slideslip = 0
-        
+        print("calculated Beta now for alpha")
         if(state.u != 0):
             alpha = math.tanh(state.w/ state.u)
         else:
