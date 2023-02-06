@@ -49,7 +49,7 @@ def Cl_fromA(alpha):
 
 def Cd_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
-    sigmasss = (alpha, VPC.alpha0, 0.5)
+    sigmasss = sigma(alpha, VPC.alpha0, 0.5)
     print(sigmasss)
     a = cd_attached(alpha)
     s = cl_seperated(alpha)
