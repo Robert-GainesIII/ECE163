@@ -87,7 +87,9 @@ class VehicleAerodynamicsModel:
     def CalculateCoeff_alpha(self, alpha):
         print("hellooooo")
         Cd_alpha = Cd_fromA(alpha)  
+        print("test2")
         Cl_alpha = Cl_fromA(alpha)
+        print("t3")
         Cm_alpha = VPC.CM0 + VPC.CMalpha * alpha
         print("returning CdAlpha = " + Cd_alpha)
         print("returning ClAlpha = " + Cl_alpha)
