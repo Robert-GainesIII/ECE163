@@ -143,7 +143,6 @@ class VehicleAerodynamicsModel:
         return (Fprop, Mprop)
 
     def updateForces(self, state, controls, wind=None):
-        total = 0
+        forcesnMoments = Inputs.forcesMoments()
 
-
-        return total
+        return forcesnMoments
