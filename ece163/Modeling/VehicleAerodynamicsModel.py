@@ -16,16 +16,24 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 def cl_attached(alpha):
-    return VPC.Cl0 + VPC.CLalpha * alpha
+    x = VPC.Cl0 + VPC.CLalpha * alpha
+    print("cl_attached= " + x)
+    return x
 
 def cd_attached(alpha):
-    return VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2))/(math.pi * math.e * VPC.AR)
+    x = VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2))/(math.pi * math.e * VPC.AR)
+    print("cd_attached= " + x)
+    return x
 
 def cl_seperated(alpha):
-    return 2 *math.sin(alpha) * math.cos(alpha)
+    x = 2 *math.sin(alpha) * math.cos(alpha)
+    print("cl_seperated= " + x)
+    return x
 
 def cd_seperated(alpha):
-    return 2 * math.pow(math.sin(alpha), 2)
+    x = 2 * math.pow(math.sin(alpha), 2)
+    print("cd_seperated =" +_ x)
+    return x
 
 def Cl_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
