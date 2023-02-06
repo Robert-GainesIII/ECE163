@@ -29,17 +29,14 @@ def cd_seperated(alpha):
 
 def Cl_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
-    print("in fucntion")
+  
     sigmasss = (alpha, VPC.alpha0, 0.5)
-    print("problem is with sigma function")
 
     return  (1 - sigmasss) * cl_attached(alpha) + sigmasss*cd_seperated(alpha)
 
 def Cd_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
-    print("in fucntion")
     sigmasss = (alpha, VPC.alpha0, 0.5)
-    print("problem is with sigma function")
 
 
     return ( 1 - sigmasss )* cd_attached(alpha) + sigmasss * cl_seperated(alpha)
