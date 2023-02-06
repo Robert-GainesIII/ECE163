@@ -108,7 +108,7 @@ class VehicleAerodynamicsModel:
         print("returning CdAlpha = " + str(Cd_alpha))
         print("returning ClAlpha = " + str(Cl_alpha))
         print("returning CmAlpha = " + str(Cm_alpha))
-        return Cd_alpha, Cl_alpha, Cm_alpha
+        return Cl_alpha, Cd_alpha, Cm_alpha
 
 
 
