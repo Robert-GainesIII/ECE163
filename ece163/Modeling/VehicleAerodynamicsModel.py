@@ -37,7 +37,10 @@ def Cl_fromA(alpha):
 
 def Cd_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
+    print("in fucntion")
     sigma = (alpha, VPC.alpha0, 0.5)
+    print("problem is with sigma function")
+
 
     return  (1 - sigma) * cd_attached(alpha) + sigma*cl_seperated(alpha)
 
