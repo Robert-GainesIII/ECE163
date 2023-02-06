@@ -89,7 +89,7 @@ class VehicleAerodynamicsModel:
         Cl_alpha = Cl_fromA(alpha)
         Cm_alpha = VPC.CM0 + VPC.CMalpha * alpha
          
-        return Cd_alpha, Cl_alpha, Cm_alpha
+        return (Cd_alpha, Cl_alpha, Cm_alpha)
 
 
 
