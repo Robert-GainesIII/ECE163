@@ -65,52 +65,105 @@ def sigma(a, a0, M):
     return num/den
 
 #EQUATION 4.6
-def calcLiftForce(Va, slideslip, alpha, pitchrate):
+def calcLiftForce(state):
+    Va = math.hypot(state.u, state.v, state.w)
+    alpha = math.tanh(state.w/state.u)
+    if math.isclose(Va, 0.0):
+        c_2Va = 1.0
+        b_2Va = 1.0
+    else:
+        c_2Va = 0.5 * VPC.c * state.q / Va
+        b_2Va = 0.5 * VPC.b / Va
+
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
     fLiftTerm2 = Cl_fromA(alpha)
-    print("calc flift died on third term")
-    fLiftTerm3 = (VPC.CLq * VPC.c * pitchrate)/(2*Va)
-    print("nvm")
+    fLiftTerm3 = (VPC.CLq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
-def calcDragForce(Va, slideslip, alpha, pitchrate):
+def calcDragForce(state):
+    Va = math.hypot(state.u, state.v, state.w)
+    alpha = math.tanh(state.w/state.u)
+    if math.isclose(Va, 0.0):
+        c_2Va = 1.0
+        b_2Va = 1.0
+    else:
+        c_2Va = 0.5 * VPC.c * state.q / Va
+        b_2Va = 0.5 * VPC.b / Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
     fLiftTerm2 = Cd_fromA(alpha)
-    fLiftTerm3 = (VPC.CDq * VPC.c * pitchrate)/(2*Va)
+    fLiftTerm3 = (VPC.CDq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.5
-def calcMoment(Va, slideslip, alpha, pitchrate):
+def calcMoment(state):
+    Va = math.hypot(state.u, state.v, state.w)
+    alpha = math.tanh(state.w/state.u)
+    if math.isclose(Va, 0.0):
+        c_2Va = 1.0
+        b_2Va = 1.0
+    else:
+        c_2Va = 0.5 * VPC.c * state.q / Va
+        b_2Va = 0.5 * VPC.b / Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.c
     fLiftTerm2 = VPC.CM0
     fLiftTerm3 = VPC.CMalpha * alpha
-    fLiftTerm4 = (VPC.CMq* VPC.c * pitchrate)/(2*Va)
+    fLiftTerm4 = (VPC.CMq* c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4)
 
 #EQUATION 4.14
-def calcFy(Va, slideslip, alpha, pitchrate, rollrate):
+def calcFy(state):
+    Va = math.hypot(state.u, state.v, state.w)
+    alpha = math.tanh(state.w/state.u)
+    slideslip = math.sinh(state.v/Va)
+
+    if math.isclose(Va, 0.0):
+        c_2Va = 1.0
+        b_2Va = 1.0
+    else:
+        c_2Va = 0.5 * VPC.c * state.q / Va
+        b_2Va = 0.5 * VPC.b / Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
     fLiftTerm2 = VPC.CY0
     fLiftTerm3 = VPC.CYbeta * slideslip
-    fLiftTerm4 = (VPC.CYp* VPC.b * pitchrate)/(2*Va)
-    fLiftTerm5 = (VPC.CYr* VPC.b * rollrate)/(2*Va)
+    fLiftTerm4 = (VPC.CYp* b_2Va* state.p)
+    fLiftTerm5 = (VPC.CYr* b_2Va * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.15
-def calcMomentL(Va, slideslip, alpha, pitchrate, rollrate):
+def calcMomentL(state):
+    Va = math.hypot(state.u, state.v, state.w)
+    alpha = math.tanh(state.w/state.u)
+    slideslip = math.sinh(state.v/Va)
+
+    if math.isclose(Va, 0.0):
+        c_2Va = 1.0
+        b_2Va = 1.0
+    else:
+        c_2Va = 0.5 * VPC.c * state.q / Va
+        b_2Va = 0.5 * VPC.b / Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cl0
     fLiftTerm3 = VPC.Clbeta * slideslip
-    fLiftTerm4 = (VPC.Clp* VPC.b * pitchrate)/(2*Va)
-    fLiftTerm5 = (VPC.Clr* VPC.b * rollrate)/(2*Va)
+    fLiftTerm4 = (VPC.Clp* b_2Va * state.p)
+    fLiftTerm5 = (VPC.Clr* b_2Va * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.16
-def calcMomentN(Va, slideslip, alpha, pitchrate, rollrate):
+def calcMomentN(state):
+    Va = math.hypot(state.u, state.v, state.w)
+    alpha = math.tanh(state.w/state.u)
+    slideslip = math.sinh(state.v/Va)
+
+    if math.isclose(Va, 0.0):
+        c_2Va = 1.0
+        b_2Va = 1.0
+    else:
+        c_2Va = 0.5 * VPC.c * state.q / Va
+        b_2Va = 0.5 * VPC.b / Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cn0
     fLiftTerm3 = VPC.Cnbeta * slideslip
-    fLiftTerm4 = (VPC.Cnp* VPC.b * pitchrate)/(2*Va)
-    fLiftTerm5 = (VPC.Cnr* VPC.b * rollrate)/(2*Va)
+    fLiftTerm4 = (VPC.Cnp* VPC.b * state.p)
+    fLiftTerm5 = (VPC.Cnr* VPC.b * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 class VehicleAerodynamicsModel:
@@ -166,19 +219,9 @@ class VehicleAerodynamicsModel:
     def aeroForces(self, state):
         print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
-        va = math.hypot(state.u, state.v, state.w)
-
-        if(va != 0):
-            slideslip = math.sinh(state.v / va)
-        else:
-            slideslip = 0
-        print("calculated Beta now for alpha")
-        if(state.u != 0):
-            alpha = math.tanh(state.w/ state.u)
-        else:
-            alpha = 0
+        
         print("calculated beta now for actaul function")
-        fl = calcLiftForce(va, slideslip, alpha, state.p)
+        fl = calcLiftForce(state)
         print("end aeroForces")
         return forcesnMoments
 
