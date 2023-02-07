@@ -65,7 +65,7 @@ def sigma(a, a0, M):
     return num/den
 
 #EQUATION 4.6
-def calcLiftForce(state):
+def calcLiftForce(state, coef):
    
   
     
@@ -73,31 +73,31 @@ def calcLiftForce(state):
      
 
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
-    fLiftTerm2 = Cl_fromA(state.alpha)
+    fLiftTerm2 = coef[0]
     fLiftTerm3 = (VPC.CLq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
-def calcDragForce(state):
+def calcDragForce(state, coef):
   
     c_2Va = 0.5 * VPC.c * state.q / state.Va
     
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
-    fLiftTerm2 = Cd_fromA(state.alpha)
+    fLiftTerm2 = coef[1]
     fLiftTerm3 = (VPC.CDq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.5
-def calcMoment(state):
+def calcMoment(state, coef):
    
     c_2Va = 0.5 * VPC.c * state.q / state.Va
 
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.c
     fLiftTerm2 = VPC.CM0
-    fLiftTerm3 = VPC.CMalpha * state.alpha
+    fLiftTerm3 = coef[2] * state.alpha
     fLiftTerm4 = (VPC.CMq* c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4)
 
 #EQUATION 4.14
-def calcFy(state):
+def calcFy(state, coef):
     
     b_2Va = 0.5 * VPC.b / state.Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
@@ -108,7 +108,7 @@ def calcFy(state):
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.15
-def calcMomentL(state):
+def calcMomentL(state, coef):
     
     b_2Va = 0.5 * VPC.b / state.Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
@@ -119,7 +119,7 @@ def calcMomentL(state):
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.16
-def calcMomentN(state):
+def calcMomentN(state, coef):
     
     b_2Va = 0.5 * VPC.b / state.Va
 
@@ -188,6 +188,7 @@ class VehicleAerodynamicsModel:
     def aeroForces(self, state):
         print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
+        coef = self.CalculateCoeff_alpha(state.alpha)
         if(math.isclose(state.Va, 0)):
             Fl = 0
             Fd = 0
@@ -198,12 +199,12 @@ class VehicleAerodynamicsModel:
         else:
         
            # print("calculated beta now for actaul function")
-            Fl = calcLiftForce(state)
-            Fd = calcDragForce(state)
-            l = calcMomentL(state)
-            m = calcMoment(state)
-            n = calcMomentN(state)
-            Fy = calcFy(state)
+            Fl = calcLiftForce(state,coef)
+            Fd = calcDragForce(state,coef)
+            l = calcMomentL(state,coef)
+            m = calcMoment(state,coef)
+            n = calcMomentN(state,coef)
+            Fy = calcFy(state,coef)
 
             #print("end aeroForces")
             forcesnMoments.Fx = Fl
