@@ -286,7 +286,7 @@ class VehicleAerodynamicsModel:
         else:
             state.beta = math.asin(state.v/math.hypot(state.u, state.v, state.w))
 
-        aF = self.aeroForces(state.Va, controls.Throttle)
+        aF = self.aeroForces(state)
         cF = self.controlForces(state, controls)
         gF = self.gravityForces(state)
 
