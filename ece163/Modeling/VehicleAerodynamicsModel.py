@@ -222,6 +222,7 @@ class VehicleAerodynamicsModel:
 
     def controlForces(self, state, controls):
         forcesnMoments = Inputs.forcesMoments()
+        Fprop = self.CalculatePropForces(state.Va, controls.Throttle)
         
         Fl =  1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CLdeltaE * controls.Elevator)
         Fd =  1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CDdeltaE * controls.Elevator)
@@ -242,8 +243,8 @@ class VehicleAerodynamicsModel:
         m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
         m_3 = MatrixMath.multiply(m_2, m_1)
         
-        forcesnMoments.Fx = m_3[0][0]
-        forcesnMoments.Fz = m_3[1][0]
+        forcesnMoments.Fx = m_3[0][0] + Fprop[0]
+        forcesnMoments.Fz = m_3[1][0] + Fprop[1]
         return forcesnMoments
 
     def gravityForces(self, state):
