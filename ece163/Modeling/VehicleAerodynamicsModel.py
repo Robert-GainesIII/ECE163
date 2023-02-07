@@ -186,7 +186,7 @@ class VehicleAerodynamicsModel:
     #of Beard 4.5, and the first four terms of Beard 4.14, 4.15, and 4.16.
     
     def aeroForces(self, state):
-        print("start aeroForces()")
+        #print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
         coef = self.CalculateCoeff_alpha(state.alpha)
         if(math.isclose(state.Va, 0)):
