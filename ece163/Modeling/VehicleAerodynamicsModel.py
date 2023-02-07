@@ -16,27 +16,27 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 def cl_attached(alpha):
-    print("calculating cl attached")
+    #print("calculating cl attached")
     x = VPC.CL0 + VPC.CLalpha * alpha
-    print("cl_attached= " + str(x))
+    #print("cl_attached= " + str(x))
     return x
 
 def cd_attached(alpha):
-    print("calculating cd attached")
+    #print("calculating cd attached")
     x = VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2))/(math.pi * VPC.e* VPC.AR)
-    print("cd_attached= " + str(x))
+    #print("cd_attached= " + str(x))
     return x
 
 def cl_seperated(alpha):
-    print("calculating cl seperated ")
+    #print("calculating cl seperated ")
     x = 2 *math.sin(alpha) * math.cos(alpha)
-    print("cl_seperated= " + str(x))
+    #print("cl_seperated= " + str(x))
     return x
 
 def cd_seperated(alpha):
-    print("calculating cd seperated ")
+    #print("calculating cd seperated ")
     x = 2 * math.pow(math.sin(alpha), 2)
-    print("cd_seperated =" + str(x))
+    #print("cd_seperated =" + str(x))
     return x
 
 def Cl_fromA(alpha):
@@ -196,7 +196,7 @@ class VehicleAerodynamicsModel:
             Fy = 0
         else:
         
-            print("calculated beta now for actaul function")
+           # print("calculated beta now for actaul function")
             Fl = calcLiftForce(state)
             Fd = calcDragForce(state)
             l = calcMomentL(state)
@@ -204,7 +204,7 @@ class VehicleAerodynamicsModel:
             n = calcMomentN(state)
             Fy = calcFy(state)
 
-            print("end aeroForces")
+            #print("end aeroForces")
             forcesnMoments.Fx = Fl
             forcesnMoments.Fy = Fy
             forcesnMoments.Fz = Fd
