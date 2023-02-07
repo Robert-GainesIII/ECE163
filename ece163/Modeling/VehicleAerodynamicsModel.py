@@ -69,8 +69,7 @@ def calcLiftForce(state):
     Va = math.hypot(state.u, state.v, state.w)
     alpha = math.tanh(state.w/state.u)
     if math.isclose(Va, 0.0):
-        c_2Va = 1.0
-        b_2Va = 1.0
+        return 0
     else:
         c_2Va = 0.5 * VPC.c * state.q / Va
         b_2Va = 0.5 * VPC.b / Va
@@ -111,9 +110,7 @@ def calcMoment(state):
 
 #EQUATION 4.14
 def calcFy(state):
-    Va = math.hypot(state.u, state.v, state.w)
-    alpha = math.tanh(state.w/state.u)
-    slideslip = math.sinh(state.v/Va)
+    
 
     if math.isclose(Va, 0.0):
         c_2Va = 1.0
@@ -159,6 +156,7 @@ def calcMomentN(state):
     else:
         c_2Va = 0.5 * VPC.c * state.q / Va
         b_2Va = 0.5 * VPC.b / Va
+
     fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cn0
     fLiftTerm3 = VPC.Cnbeta * slideslip
@@ -254,5 +252,10 @@ class VehicleAerodynamicsModel:
 
     def updateForces(self, state, controls, wind=None):
         forcesnMoments = Inputs.forcesMoments()
-
+        state.Va = math.hypot(state.u, state.v, state.w)
+        state.alpha = math.atan2(state.w,state.u)
+        if(math.isclose(state.Va, 0)):
+            state.beta = math.asin(state.v/math.hypot(state.u, state.v, state.w))
+        else:
+            state.beta = 0
         return forcesnMoments
