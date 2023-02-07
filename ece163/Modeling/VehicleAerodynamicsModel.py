@@ -222,7 +222,28 @@ class VehicleAerodynamicsModel:
 
     def controlForces(self, state, controls):
         forcesnMoments = Inputs.forcesMoments()
+        
+        Fl =  1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CLdeltaE * controls.Elevator)
+        Fd =  1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CDdeltaE * controls.Elevator)
+        l = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b * (VPC.CldeltaA * controls.Aileron + VPC.CldeltaR * controls.Rudder)
+        m = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S  * VPC.c * (VPC.CMdeltaE * controls.Elevator)
+        n = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b * (VPC.CndeltaA * controls.Aileron + VPC.CndeltaR * controls.Rudder)
+        Fy = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CYdeltaA * controls.Aileron + VPC.CYdeltaR * controls.Rudder)
 
+        #print("end aeroForces")
+        forcesnMoments.Fx = Fl
+        forcesnMoments.Fy = Fy
+        forcesnMoments.Fz = Fd
+        forcesnMoments.Mx = l
+        forcesnMoments.My = m
+        forcesnMoments.Mz = n
+
+        m_1 = [[-1*Fd],[-1*Fl]]
+        m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
+        m_3 = MatrixMath.multiply(m_2, m_1)
+        
+        forcesnMoments.Fx = m_3[0][0]
+        forcesnMoments.Fz = m_3[1][0]
         return forcesnMoments
 
     def gravityForces(self, state):
