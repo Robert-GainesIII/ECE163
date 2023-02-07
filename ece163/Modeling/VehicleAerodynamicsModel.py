@@ -78,86 +78,54 @@ def calcLiftForce(state):
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
 def calcDragForce(state):
-    Va = math.hypot(state.u, state.v, state.w)
-    alpha = math.tanh(state.w/state.u)
-    if math.isclose(Va, 0.0):
-        c_2Va = 1.0
-        b_2Va = 1.0
-    else:
-        c_2Va = 0.5 * VPC.c * state.q / Va
-        b_2Va = 0.5 * VPC.b / Va
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
-    fLiftTerm2 = Cd_fromA(alpha)
+  
+    c_2Va = 0.5 * VPC.c * state.q / state.Va
+    
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
+    fLiftTerm2 = Cd_fromA(state.alpha)
     fLiftTerm3 = (VPC.CDq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.5
 def calcMoment(state):
-    Va = math.hypot(state.u, state.v, state.w)
-    alpha = math.tanh(state.w/state.u)
-    if math.isclose(Va, 0.0):
-        c_2Va = 1.0
-        b_2Va = 1.0
-    else:
-        c_2Va = 0.5 * VPC.c * state.q / Va
-        b_2Va = 0.5 * VPC.b / Va
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.c
+   
+    c_2Va = 0.5 * VPC.c * state.q / state.Va
+
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.c
     fLiftTerm2 = VPC.CM0
-    fLiftTerm3 = VPC.CMalpha * alpha
+    fLiftTerm3 = VPC.CMalpha * state.alpha
     fLiftTerm4 = (VPC.CMq* c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4)
 
 #EQUATION 4.14
 def calcFy(state):
     
-
-    if math.isclose(Va, 0.0):
-        c_2Va = 1.0
-        b_2Va = 1.0
-    else:
-        c_2Va = 0.5 * VPC.c * state.q / Va
-        b_2Va = 0.5 * VPC.b / Va
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
+    b_2Va = 0.5 * VPC.b / state.Va
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
     fLiftTerm2 = VPC.CY0
-    fLiftTerm3 = VPC.CYbeta * slideslip
+    fLiftTerm3 = VPC.CYbeta * state.beta
     fLiftTerm4 = (VPC.CYp* b_2Va* state.p)
     fLiftTerm5 = (VPC.CYr* b_2Va * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.15
 def calcMomentL(state):
-    Va = math.hypot(state.u, state.v, state.w)
-    alpha = math.tanh(state.w/state.u)
-    slideslip = math.sinh(state.v/Va)
-
-    if math.isclose(Va, 0.0):
-        c_2Va = 1.0
-        b_2Va = 1.0
-    else:
-        c_2Va = 0.5 * VPC.c * state.q / Va
-        b_2Va = 0.5 * VPC.b / Va
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
+    
+    b_2Va = 0.5 * VPC.b / state.Va
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cl0
-    fLiftTerm3 = VPC.Clbeta * slideslip
+    fLiftTerm3 = VPC.Clbeta * state.beta
     fLiftTerm4 = (VPC.Clp* b_2Va * state.p)
     fLiftTerm5 = (VPC.Clr* b_2Va * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.16
 def calcMomentN(state):
-    Va = math.hypot(state.u, state.v, state.w)
-    alpha = math.tanh(state.w/state.u)
-    slideslip = math.sinh(state.v/Va)
+    
+    b_2Va = 0.5 * VPC.b / state.Va
 
-    if math.isclose(Va, 0.0):
-        c_2Va = 1.0
-        b_2Va = 1.0
-    else:
-        c_2Va = 0.5 * VPC.c * state.q / Va
-        b_2Va = 0.5 * VPC.b / Va
-
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S * VPC.b
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cn0
-    fLiftTerm3 = VPC.Cnbeta * slideslip
+    fLiftTerm3 = VPC.Cnbeta * state.beta
     fLiftTerm4 = (VPC.Cnp* VPC.b * state.p)
     fLiftTerm5 = (VPC.Cnr* VPC.b * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
@@ -171,6 +139,10 @@ class VehicleAerodynamicsModel:
         self.state = self.dynamicsModel.getVehicleState()
         self.dot = self.dynamicsModel.getVehicleDerivative()
         self.dT = self.dynamicsModel.dT
+        self.dynamicsModel.pe = VPC.InitialEastPosition
+        self.dynamicsModel.pn = VPC.InitialNorthPosition
+        self.dynamicsModel.pd = VPC.InitialDownPosition
+        self.dynamicsModel.u = VPC.InitialSpeed
 
         self.initialHeight = initialHeight
         self.initialSpeed = initialSpeed
@@ -225,8 +197,27 @@ class VehicleAerodynamicsModel:
         else:
         
             print("calculated beta now for actaul function")
-            fl = calcLiftForce(state)
+            Fl = calcLiftForce(state)
+            Fd = calcDragForce(state)
+            l = calcMomentL(state)
+            m = calcMoment(state)
+            n = calcMomentN(state)
+            Fy = calcFy(state)
+
         print("end aeroForces")
+        forcesnMoments.Fx = Fl
+        forcesnMoments.Fy = Fy
+        forcesnMoments.Fz = Fd
+        forcesnMoments.Mx = l
+        forcesnMoments.My = m
+        forcesnMoments.Mz = n
+
+        m_1 = [[-1*Fd],[-1*Fl]]
+        m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
+        m_3 = MatrixMath.multiply(m_2, m_1)
+        
+        forcesnMoments.Fx = m_3[0][0]
+        forcesnMoments.Fz = m_3[1][0]
         return forcesnMoments
 
     def controlForces(self, state, controls):
