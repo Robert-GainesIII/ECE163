@@ -126,8 +126,8 @@ def calcMomentN(state):
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cn0
     fLiftTerm3 = VPC.Cnbeta * state.beta
-    fLiftTerm4 = (VPC.Cnp* VPC.b * state.p)
-    fLiftTerm5 = (VPC.Cnr* VPC.b * state.r)
+    fLiftTerm4 = (VPC.Cnp* b_2Va * state.p)
+    fLiftTerm5 = (VPC.Cnr* b_2Va * state.r)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 class VehicleAerodynamicsModel:
@@ -209,8 +209,8 @@ class VehicleAerodynamicsModel:
             forcesnMoments.Fy = Fy
             forcesnMoments.Fz = Fd
             forcesnMoments.Mx = l
-            forcesnMoments.My = n
-            forcesnMoments.Mz = m
+            forcesnMoments.My = m
+            forcesnMoments.Mz = n
 
             m_1 = [[-1*Fd],[-1*Fl]]
             m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
