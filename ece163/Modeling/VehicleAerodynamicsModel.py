@@ -217,9 +217,17 @@ class VehicleAerodynamicsModel:
     def aeroForces(self, state):
         print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
+        if(math.isclose(state.Va, 0)):
+            Fl = 0
+            Fd = 0
+            l = 0
+            m = 0
+            n = 0
+            Fy = 0
+        else:
         
-        print("calculated beta now for actaul function")
-        fl = calcLiftForce(state)
+            print("calculated beta now for actaul function")
+            fl = calcLiftForce(state)
         print("end aeroForces")
         return forcesnMoments
 
