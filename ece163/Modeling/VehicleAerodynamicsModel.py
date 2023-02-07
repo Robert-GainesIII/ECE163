@@ -164,8 +164,9 @@ class VehicleAerodynamicsModel:
 
     def Update(self, controls):
 
-        self.state = self.getVehicleState()
-        
+        DIYAISCRAZY = self.dynamicsModel.getVehicleState()
+        f = self.updateForces(DIYAISCRAZY, controls)
+        self.dynamicsModel.Update(f)
 
     #:param alpha, Angle of Attack [rad]
     # return: 
