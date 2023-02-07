@@ -66,16 +66,14 @@ def sigma(a, a0, M):
 
 #EQUATION 4.6
 def calcLiftForce(state):
-    Va = math.hypot(state.u, state.v, state.w)
-    alpha = math.tanh(state.w/state.u)
-    if math.isclose(Va, 0.0):
-        return 0
-    else:
-        c_2Va = 0.5 * VPC.c * state.q / Va
-        b_2Va = 0.5 * VPC.b / Va
+   
+  
+    
+    c_2Va = 0.5 * VPC.c * state.q / state.Va
+     
 
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(Va, 2) * VPC.S
-    fLiftTerm2 = Cl_fromA(alpha)
+    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
+    fLiftTerm2 = Cl_fromA(state.alpha)
     fLiftTerm3 = (VPC.CLq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
