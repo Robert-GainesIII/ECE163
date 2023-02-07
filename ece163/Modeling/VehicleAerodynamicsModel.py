@@ -240,9 +240,9 @@ class VehicleAerodynamicsModel:
     def CalculatePropForces(self, Va, Throttle):
         Kt = 60/(2*math.pi*VPC.KV)
         a = (VPC.rho * math.pow(VPC.D_prop,5) * VPC.C_Q0)/(4*math.pow(math.pi,2))
-        b = (VPC.rho * math.pow(VPC.D_prop,4) * Va * VPC.C_Q1)/(2*math.pi) + Kt*Kt/VPC.R_motor
-        c = (VPC.rho * math.pow(VPC.D_prop,3) * math.pow(Va, 2) * VPC.C_Q2) - (Kt*VPC.V_max*Throttle)/VPC.R_motor + Kt*VPC.i0
-        omega = (-1*b + math.sqrt(math.pow(b,2) - 4*a*c))/2*a
+        b = (VPC.rho * math.pow(VPC.D_prop,4) * Va * VPC.C_Q1)/(2*math.pi) + (Kt*Kt)/VPC.R_motor
+        c = (VPC.rho * math.pow(VPC.D_prop,3) * math.pow(Va, 2) * VPC.C_Q2) - (Kt*((VPC.V_max*Throttle)/VPC.R_motor)) + Kt*VPC.i0
+        omega = (-1*b + math.sqrt(math.pow(b,2) - (4*a*c)))/(2*a)
         J =  (2* math.pi * Va)/omega*VPC.D_prop
         Ct = VPC.C_T0 + VPC.C_T1 * J + VPC.C_T2 * math.pow(J,2)
         Cq = VPC.C_Q0 + VPC.C_Q1 * J + VPC.C_Q2 * math.pow(J,2)
