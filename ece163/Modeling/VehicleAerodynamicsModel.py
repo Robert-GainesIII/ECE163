@@ -44,17 +44,17 @@ def Cl_fromA(alpha):
   
     sigmasss = sigma(alpha, VPC.alpha0, VPC.M)
     x = (1 - sigmasss) * cl_attached(alpha) + sigmasss*cl_seperated(alpha)
-    #print (x)
+    print (x)
     return  x
 
 def Cd_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
     sigmasss = sigma(alpha, VPC.alpha0, VPC.M)
-    #print(sigmasss)
+    print(sigmasss)
     a = cd_attached(alpha)
     s = cd_seperated(alpha)
     x = ( 1 - sigmasss )*  a + sigmasss * s
-    #print(x)    
+    print(x)    
     return x
 
 #blending function
@@ -65,7 +65,7 @@ def sigma(a, a0, M):
     return num/den
 
 #EQUATION 4.6
-def calcLiftForce(state, coef):
+def calcLiftForce(state):
    
   
     
@@ -73,31 +73,31 @@ def calcLiftForce(state, coef):
      
 
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
-    fLiftTerm2 = coef[0]
+    fLiftTerm2 = Cl_fromA(state.alpha)
     fLiftTerm3 = (VPC.CLq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
-def calcDragForce(state, coef):
+def calcDragForce(state):
   
     c_2Va = 0.5 * VPC.c * state.q / state.Va
     
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
-    fLiftTerm2 = coef[1]
+    fLiftTerm2 = Cd_fromA(state.alpha)
     fLiftTerm3 = (VPC.CDq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.5
-def calcMoment(state, coef):
+def calcMoment(state):
    
     c_2Va = 0.5 * VPC.c * state.q / state.Va
 
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.c
     fLiftTerm2 = VPC.CM0
-    fLiftTerm3 = coef[2] * state.alpha
+    fLiftTerm3 = VPC.CMalpha * state.alpha
     fLiftTerm4 = (VPC.CMq* c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4)
 
 #EQUATION 4.14
-def calcFy(state, coef):
+def calcFy(state):
     
     b_2Va = 0.5 * VPC.b / state.Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
@@ -108,7 +108,7 @@ def calcFy(state, coef):
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.15
-def calcMomentL(state, coef):
+def calcMomentL(state):
     
     b_2Va = 0.5 * VPC.b / state.Va
     fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
@@ -119,7 +119,7 @@ def calcMomentL(state, coef):
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3 + fLiftTerm4 + fLiftTerm5)
 
 #EQUATION 4.16
-def calcMomentN(state, coef):
+def calcMomentN(state):
     
     b_2Va = 0.5 * VPC.b / state.Va
 
@@ -135,7 +135,7 @@ class VehicleAerodynamicsModel:
     def __init__(self, initialSpeed = VPC.InitialSpeed, initialHeight = VPC.InitialDownPosition):
         #create class instance of vehicle dynamics
         self.dynamicsModel = VehicleDynamicsModel.VehicleDynamicsModel()
-        #print(self.dynamicsModel)
+        print(self.dynamicsModel)
         self.state = self.dynamicsModel.getVehicleState()
         self.dot = self.dynamicsModel.getVehicleDerivative()
         self.dT = self.dynamicsModel.dT
@@ -176,9 +176,9 @@ class VehicleAerodynamicsModel:
         Cd_alpha = Cd_fromA(alpha)  
         Cl_alpha = Cl_fromA(alpha)
         Cm_alpha = VPC.CM0 + VPC.CMalpha * alpha
-        #print("returning CdAlpha = " + str(Cd_alpha))
-        #print("returning ClAlpha = " + str(Cl_alpha))
-        #print("returning CmAlpha = " + str(Cm_alpha))
+        print("returning CdAlpha = " + str(Cd_alpha))
+        print("returning ClAlpha = " + str(Cl_alpha))
+        print("returning CmAlpha = " + str(Cm_alpha))
         return Cl_alpha, Cd_alpha, Cm_alpha
 
 
@@ -186,9 +186,8 @@ class VehicleAerodynamicsModel:
     #of Beard 4.5, and the first four terms of Beard 4.14, 4.15, and 4.16.
     
     def aeroForces(self, state):
-        #print("start aeroForces()")
+        print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
-        coef = self.CalculateCoeff_alpha(state.alpha)
         if(math.isclose(state.Va, 0)):
             Fl = 0
             Fd = 0
@@ -199,12 +198,12 @@ class VehicleAerodynamicsModel:
         else:
         
            # print("calculated beta now for actaul function")
-            Fl = calcLiftForce(state,coef)
-            Fd = calcDragForce(state,coef)
-            l = calcMomentL(state,coef)
-            m = calcMoment(state,coef)
-            n = calcMomentN(state,coef)
-            Fy = calcFy(state,coef)
+            Fl = calcLiftForce(state)
+            Fd = calcDragForce(state)
+            l = calcMomentL(state)
+            m = calcMoment(state)
+            n = calcMomentN(state)
+            Fy = calcFy(state)
 
             #print("end aeroForces")
             forcesnMoments.Fx = Fl
