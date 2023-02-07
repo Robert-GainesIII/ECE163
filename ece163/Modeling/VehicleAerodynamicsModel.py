@@ -285,4 +285,20 @@ class VehicleAerodynamicsModel:
             state.beta = math.asin(state.v/math.hypot(state.u, state.v, state.w))
         else:
             state.beta = 0
+
+        aF = self.aeroForces(state.Va, controls.Throttle)
+        cF = self.controlForces(state, controls)
+        gF = self.gravityForces(state)
+
+
+
+
+        forcesnMoments.Fx = aF.Fx + cF.Fx + gF.Fx
+        forcesnMoments.Fy = aF.Fy + cF.Fy + gF.Fy
+        forcesnMoments.Fz = aF.Fz + cF.Fz + gF.Fz
+
+        forcesnMoments.Mx = aF.Mx + cF.Mx
+        forcesnMoments.My = aF.My + cF.My
+        forcesnMoments.Mz = aF.Mz + cF.Mz
+        
         return forcesnMoments
