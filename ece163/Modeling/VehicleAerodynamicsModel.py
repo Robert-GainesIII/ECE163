@@ -152,10 +152,10 @@ class VehicleAerodynamicsModel:
         pass
     
     def getVehicleState(self):
-        return self.dynamicsModel.getVehicleState()
+        return self.dynamicsModel.state
 
     def setVehicleState(self, state):
-        self.dynamicsModel.setVehicleState(state)
+        self.dynamicsModel.state = state
         return
 
     def getVehicleDynamicsModel(self):
