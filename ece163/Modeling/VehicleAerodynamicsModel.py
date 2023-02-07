@@ -232,9 +232,9 @@ class VehicleAerodynamicsModel:
         Fy = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CYdeltaA * controls.Aileron + VPC.CYdeltaR * controls.Rudder)
 
         #print("end aeroForces")
-        forcesnMoments.Fx = Fl
+        forcesnMoments.Fx = Fd
         forcesnMoments.Fy = Fy
-        forcesnMoments.Fz = Fd
+        forcesnMoments.Fz = Fl
         forcesnMoments.Mx = l
         forcesnMoments.My = m
         forcesnMoments.Mz = n
