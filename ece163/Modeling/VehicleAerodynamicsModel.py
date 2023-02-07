@@ -44,17 +44,17 @@ def Cl_fromA(alpha):
   
     sigmasss = sigma(alpha, VPC.alpha0, VPC.M)
     x = (1 - sigmasss) * cl_attached(alpha) + sigmasss*cl_seperated(alpha)
-    print (x)
+    #print (x)
     return  x
 
 def Cd_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
     sigmasss = sigma(alpha, VPC.alpha0, VPC.M)
-    print(sigmasss)
+    #print(sigmasss)
     a = cd_attached(alpha)
     s = cd_seperated(alpha)
     x = ( 1 - sigmasss )*  a + sigmasss * s
-    print(x)    
+    #print(x)    
     return x
 
 #blending function
@@ -135,7 +135,7 @@ class VehicleAerodynamicsModel:
     def __init__(self, initialSpeed = VPC.InitialSpeed, initialHeight = VPC.InitialDownPosition):
         #create class instance of vehicle dynamics
         self.dynamicsModel = VehicleDynamicsModel.VehicleDynamicsModel()
-        print(self.dynamicsModel)
+        #print(self.dynamicsModel)
         self.state = self.dynamicsModel.getVehicleState()
         self.dot = self.dynamicsModel.getVehicleDerivative()
         self.dT = self.dynamicsModel.dT
@@ -176,9 +176,9 @@ class VehicleAerodynamicsModel:
         Cd_alpha = Cd_fromA(alpha)  
         Cl_alpha = Cl_fromA(alpha)
         Cm_alpha = VPC.CM0 + VPC.CMalpha * alpha
-        print("returning CdAlpha = " + str(Cd_alpha))
-        print("returning ClAlpha = " + str(Cl_alpha))
-        print("returning CmAlpha = " + str(Cm_alpha))
+        #print("returning CdAlpha = " + str(Cd_alpha))
+        #print("returning ClAlpha = " + str(Cl_alpha))
+        #print("returning CmAlpha = " + str(Cm_alpha))
         return Cl_alpha, Cd_alpha, Cm_alpha
 
 
