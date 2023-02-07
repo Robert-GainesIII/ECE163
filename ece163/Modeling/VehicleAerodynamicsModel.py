@@ -209,8 +209,8 @@ class VehicleAerodynamicsModel:
             forcesnMoments.Fy = Fy
             forcesnMoments.Fz = Fd
             forcesnMoments.Mx = l
-            forcesnMoments.My = m
-            forcesnMoments.Mz = n
+            forcesnMoments.My = n
+            forcesnMoments.Mz = m
 
             m_1 = [[-1*Fd],[-1*Fl]]
             m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
