@@ -145,5 +145,7 @@ class WindModel():
         self.myWindState.Wn = Wn
         self.myWindState.We = We
         self.myWindState.Wd = Wd
+        print("ugh")
         self.drydenParameters = drydenParameters
+        print("here we go again")
         #returns none
