@@ -20,17 +20,17 @@ class WindModel:
         self.H_u = [[0]]
 
 
-        self.Gamma_v = [[0]]
-        self.Phi_v =[[0]]
+        self.Gamma_v = [[0,0], [0,0]]
+        self.Phi_v =[[0], [0]]
         self.H_v = [[0]]
 
-        self.Gamma_w = [[0]]
-        self.Phi_w = [[0]]
+        self.Gamma_w = [[0,0],[0,0]]
+        self.Phi_w = [[0],[0]]
         self.H_w = [[0]]
 
-        self.Gamma = [[self.Gamma_u], [self.Gamma_v], [self.Gamma_w]]
-        self.Phi = [[self.Phi_u], [self.Phi_v], [self.Phi_w]]
-        self.H = [[self.H_u], [self.H_v], [self.H_w]]
+        #self.Gamma = [[self.Gamma_u], [self.Gamma_v], [self.Gamma_w]]
+        #self.Phi = [[self.Phi_u], [self.Phi_v], [self.Phi_w]]
+        #self.H = [[self.H_u], [self.H_v], [self.H_w]]
 
 
     def Update(self, uu = None, uv = None, uw = None):
