@@ -115,13 +115,13 @@ def crossProduct(A,B):
 
 def offset(A,x,y,z):
     """
-    Shift each column of matrix A by the corresponding entry x,y,z; raises arithmetic error if the matrix A is not [3xn]
+    Shift each column of matrix A by the corresponding entry x,y,z; raises arithmetic error if the matrix A is not [nx3]
 
-    :param A: Matrix to be shifted [3 x n]
+    :param A: Matrix to be shifted [n x 3]
     :param x: First column offset
     :param y: Second column offset
     :param z: Third column offset
-    :return: Shifted matrix [3 x n]
+    :return: Shifted matrix [n x 3]
     """
     if len(A[0]) != 3:
         raise ArithmeticError('Offset only works on [n x 3] matrices')

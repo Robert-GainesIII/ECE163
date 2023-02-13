@@ -76,7 +76,7 @@ class controlInputs:
 
 
 class drydenParameters:
-	def __init__(self, Lu=200.0, Lv=200.0, Lw=50.0, sigmau=1.06, sigmav=2.06, sigmaw=0.7):
+	def __init__(self, Lu=200.0, Lv=200.0, Lw=50.0, sigmau=1.06, sigmav=1.06, sigmaw=0.7):
 		"""
 		Defines the Dryden gust model parameters for use in wind modeling. Defaults are set to the Dryden low altitude
 		light turbulence model.

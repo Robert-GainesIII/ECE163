@@ -54,7 +54,7 @@ CLq = 7.95  # needs to be normalized by c/2*Va
 CLdeltaE = 0.13  # lift due to elevator deflection
 
 # Drag
-CDp = 0.06  # minimum drag
+CDp = 0.06  # minimum drag, derived from terminal velocity of 74m/s (148 knots)
 CDalpha = 0.03  # drag slope
 CD0 = 0.043  # intercept of linarized drag slope
 CDq = 0  # drag wrt pitch rate

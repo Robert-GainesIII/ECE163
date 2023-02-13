@@ -106,9 +106,9 @@ class windState:
         self.Wn = Wn
         self.We = We
         self.Wd = Wd
-        self.Wu = Wu    # Stochastic wing gust in body x-axis
-        self.Wv = Wv    # Stochastic wing gust in body y-axis
-        self.Ww = Ww    # Stochastic wing gust in body z-axis
+        self.Wu = Wu    # Stochastic wing gust in wind x-axis
+        self.Wv = Wv    # Stochastic wing gust in wind y-axis
+        self.Ww = Ww    # Stochastic wing gust in wind z-axis
         return
 
     def __repr__(self):
