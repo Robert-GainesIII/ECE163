@@ -54,17 +54,18 @@ class WindModel():
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(self.Gamma_v, uv))
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(self.Gamma_w, uw))
 
+        print("ugh")
         #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
         self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)
         self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)
         self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)
-
+        print("ugh2")
         #STEP 4 -> x- ↤ x+ : Update previous state
         self.Xu = Xu_plus
         self.Xv = Xv_plus
         self.Xw = Xw_plus
         #STEP 5 At next time step, Goto step (2)
-
+        print("ugh3")
 
     def reset(self):
         pass
