@@ -99,11 +99,11 @@ class WindModel():
                 if debug:print(H_v)
             else:
                 Phi_v = [
-                            [1,dT],
-                            [0,1]
+                            [1,0],
+                            [dT,1]
                         ]
-                Gamma_v = [[dT],[0]]
-                H_v = [[0, 0]]
+                Gamma_v = [[0],[0]]
+                H_v = [[1, 0]]
 
             
             #Discrete parameritized time equivalent dryden wind model equations in W axis
@@ -131,11 +131,11 @@ class WindModel():
                 if debug:print(H_w)
             else:
                 Phi_w = [
-                            [1,dT],
-                            [0,1]
+                            [1,0],
+                            [dT,1]
                         ]
-                Gamma_w = [[dT],[0]]
-                H_w = [[0, 0]]
+                Gamma_w = [[0],[0]]
+                H_w = [[1, 0]]
 
             
             
