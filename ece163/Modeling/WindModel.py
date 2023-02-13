@@ -44,7 +44,10 @@ class WindModel:
         pass
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParameters):
-        pass
+        
+        print(self.Gamma_u)
+        print(self.Gamma_v)
+        print(self.Gamma_w)
         #returns none
 
     def getDrydenTransferFns(self):
