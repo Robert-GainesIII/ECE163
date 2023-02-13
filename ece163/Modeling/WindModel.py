@@ -35,8 +35,8 @@ class WindModel():
         self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
 
         self.Xu = [[0]]
-        self.Xv = [[0,0]]
-        self.Xw = [[0,0]]
+        self.Xv = [[0],[0]]
+        self.Xw = [[0],[0]]
 
     def Update(self, uu = None, uv = None, uw = None):
 
