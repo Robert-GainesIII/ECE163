@@ -135,6 +135,7 @@ class VehicleAerodynamicsModel:
     def __init__(self, initialSpeed = VPC.InitialSpeed, initialHeight = VPC.InitialDownPosition):
         #create class instance of vehicle dynamics
         self.dynamicsModel = VehicleDynamicsModel.VehicleDynamicsModel()
+        self.myWindModel = WindModel.WindModel()
         #print(self.dynamicsModel)
         self.state = self.dynamicsModel.getVehicleState()
         self.dot = self.dynamicsModel.getVehicleDerivative()
@@ -303,3 +304,20 @@ class VehicleAerodynamicsModel:
         forcesnMoments.Mz = aF.Mz + cF.Mz
 
         return forcesnMoments
+
+    
+    def getWindModel(self):
+
+        return self.myWindModel
+
+    def setWindModel(self,windModel):
+
+        self.myWindModel = windModel
+
+    def CalculateAirspeed(self, state, wind):
+
+        va = 0
+        alpha = 0
+        beta = 0
+        return [va, alpha, beta]
+
