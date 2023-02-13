@@ -7,11 +7,11 @@ from ..Constants import VehiclePhysicalConstants as VPC
 
 class WindModel:
 
-    def __init__(self, dT = VPC.dT, Va = VPC.InitialSpeed, drydenParameters=VPC.DrydenNoWind):
+    def __init__(self, dT = VPC.dT, Va = VPC.InitialSpeed, drydenParamters=VPC.DrydenNoWind):
         
         self.dT = dT
         self.Va = Va
-        self.drydenParameters = drydenParameters
+        self.drydenParameters = drydenParamters
 
         self.myWindState = States.windState()
         self.x_u = [[],[],[]]
