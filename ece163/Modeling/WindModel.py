@@ -68,10 +68,10 @@ class WindModel():
             if debug: print("nah guess not.")
             #Discrete parameritized time equivalent dryden wind model equations in U axis
             
-            Phi_u = [[math.pow(VPC.e, uExponentTerm)]]
+            Phi_u = [[math.pow(math.e, uExponentTerm)]]
             if debug:print("Phi_u is:")
             if debug:print(Phi_u)
-            Gamma_u = [[drydenParameters.Lu/Va * (1 - math.pow(VPC.e, uExponentTerm))]]
+            Gamma_u = [[drydenParameters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
             if debug:print("Gamma_u is:")
             if debug:print(Gamma_u)
             H_u = [[drydenParameters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParameters.Lu))]]
@@ -79,7 +79,7 @@ class WindModel():
             if debug:print(H_u)
 
             #Discrete parameritized time equivalent dryden wind model equations in V axis
-            eTermV = math.pow(VPC.e, vExponentTerm)
+            eTermV = math.pow(math.e, vExponentTerm)
             gammaterm2_mat =[
                         [(1+vExponentTerm), -1*(math.pow((Va/drydenParameters.Lv),2))*dT],
                         [(dT), (1-vExponentTerm)]
@@ -89,7 +89,7 @@ class WindModel():
             if debug:print(Phi_v)
             phiterm2_mat =[
                             [dT],
-                            [math.pow((drydenParameters.Lv/Va),2)*(math.pow(VPC.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
+                            [math.pow((drydenParameters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
                         ]
             Gamma_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
             if debug:print("Gamma_v is:")
@@ -98,7 +98,7 @@ class WindModel():
             if debug:print("H_v is:")
             if debug:print(H_v)
             #Discrete parameritized time equivalent dryden wind model equations in W axis
-            eTermW = math.pow(VPC.e, wExponentTerm)
+            eTermW = math.pow(math.e, wExponentTerm)
             gammawterm2_mat =[
                         [(1+wExponentTerm), -1*(math.pow((Va/drydenParameters.Lw),2))*dT],
                         [(dT), (1-wExponentTerm)]
@@ -108,7 +108,7 @@ class WindModel():
             if debug:print(Phi_w)
             phiwterm2_mat =[
                             [dT],
-                            [math.pow((drydenParameters.Lw/Va),2)*(math.pow(VPC.e,(Va/drydenParameters.Lw*dT))-1) - (drydenParameters.Lw/Va*dT)]
+                            [math.pow((drydenParameters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lw*dT))-1) - (drydenParameters.Lw/Va*dT)]
                         ]
             Gamma_w = MatrixMath.scalarMultiply(eTermW, phiterm2_mat)
             if debug:print("Gamma_w is:")
