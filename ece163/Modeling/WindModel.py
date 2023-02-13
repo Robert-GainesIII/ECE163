@@ -55,9 +55,10 @@ class WindModel():
             if debug:print("ARITHMETIC ERROR RAISED")
             raise ArithmeticError
         else:
-            if debug: print("zero division at Lu, Lv, Lw term?")
+    
 
-            if drydenParameters.Lu == 0:    drydenParameters.Lu = 0.1
+            
+                
             uExponentTerm = -1*(Va*dT)/drydenParameters.Lu
 
             if drydenParameters.Lv == 0:    drydenParameters.Lv = 0.1
@@ -118,6 +119,27 @@ class WindModel():
             H_w = MatrixMath.scalarMultiply((drydenParameters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParameters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lw))]])
             if debug:print("H_w is:")
             if debug:print(H_w)
+
+
+            if drydenParameters.Lu == 0:
+                Phi_u = [[1]]
+                Gamma_u = [[0]]
+                H_u = [[0]]
+            
+            if drydenParameters.Lv == 0:
+                Phi_v = [
+                            [1,dT],
+                            [0,1]
+                        ]
+                Gamma_v = [[dT],[0]]
+                H_v = [[0, 0]]
+            if drydenParameters.Lw == 0:
+                Phi_w = [
+                            [1,dT],
+                            [0,1]
+                        ]
+                Gamma_w = [[dT],[0]]
+                H_w = [[0, 0]]
         
             self.Gamma_u = Gamma_u
             self.Phi_u = Phi_u
