@@ -59,7 +59,7 @@ class WindModel():
 
        
             #Discrete parameritized time equivalent dryden wind model equations in U axis
-            if drydenParameters.Lv != 0:    
+            if drydenParameters.Lu != 0:    
                 
                 uExponentTerm = -1*(Va*dT)/drydenParameters.Lu
                 Phi_u = [[math.pow(math.e, uExponentTerm)]]
