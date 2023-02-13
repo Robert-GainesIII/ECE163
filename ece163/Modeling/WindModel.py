@@ -5,7 +5,7 @@ from ..Utilities import MatrixMath
 from ..Constants import VehiclePhysicalConstants as VPC
 from ..Containers import Inputs
 
-debug = True
+debug = False
 
 class WindModel():
 
@@ -150,7 +150,5 @@ class WindModel():
         self.myWindState.Wn = Wn
         self.myWindState.We = We
         self.myWindState.Wd = Wd
-        print("ugh")
         self.drydenParameters = drydenParamters
-        print("here we go again")
         #returns none
