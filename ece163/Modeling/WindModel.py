@@ -59,8 +59,8 @@ class WindModel():
         #W = [[self.myWindState.Wu], [self.myWindState.Wv], [self.myWindState.Ww]]
         X = [[Xu_plus], [Xv_plus], [Xw_plus]]
         self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)[0][0]
-        self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)
-        self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)
+        self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)[0][0]
+        self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)[0][0]
         print("ugh2")
         #STEP 4 -> x- ↤ x+ : Update previous state
         self.Xu = Xu_plus
