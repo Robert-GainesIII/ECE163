@@ -62,7 +62,7 @@ class WindModel():
                 ]
         Gamma_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
         phiterm2_mat =[
-                        [dT],
+                        [dT, 0],
                         [math.pow((drydenParameters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
                     ]
         Phi_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
