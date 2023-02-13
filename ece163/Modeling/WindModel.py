@@ -39,7 +39,12 @@ class WindModel():
 
     def Update(self, uu = None, uv = None, uw = None):
 
-        pass
+        if uu is None :
+            uu = random . gauss (0 , 1)
+        if uv is None :
+            uv = random . gauss (0 , 1)
+        if uw is None :
+            uw = random . gauss (0 , 1)
         #returns nothings stored internally
 
     def reset(self):
