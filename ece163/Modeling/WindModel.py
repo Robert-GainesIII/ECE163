@@ -47,13 +47,13 @@ class WindModel():
         pass
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParameters):
-        uExponentTerm = -(Va/drydenParameters.Lu)*dT
-        vExponentTerm = -(Va/drydenParameters.Lv)*dT
-        wExponentTerm = -(Va/drydenParameters.Lw)*dT
+        uExponentTerm = -1*(Va/drydenParameters.Lu)*dT
+        vExponentTerm = -1*(Va/drydenParameters.Lv)*dT
+        wExponentTerm = -1*(Va/drydenParameters.Lw)*dT
         
         #Discrete parameritized time equivalent dryden wind model equations in U axis
         
-        Gamma_u = [[math.pow(math.e, uExponentTerm), 0]]
+        Gamma_u = [[math.pow(math.e, uExponentTerm)]]
         if debug:print("Gamma_u is:")
         if debug:print(Gamma_u)
         Phi_u = [[drydenParameters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
