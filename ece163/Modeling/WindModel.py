@@ -112,7 +112,7 @@ class WindModel():
                             [dT],
                             [math.pow((drydenParameters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lw*dT))-1) - (drydenParameters.Lw/Va*dT)]
                         ]
-            Gamma_w = MatrixMath.scalarMultiply(eTermW, phiterm2_mat)
+            Gamma_w = MatrixMath.scalarMultiply(eTermW, phiwterm2_mat)
             if debug:print("Gamma_w is:")
             if debug:print(Gamma_w)
             H_w = MatrixMath.scalarMultiply((drydenParameters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParameters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lw))]])
