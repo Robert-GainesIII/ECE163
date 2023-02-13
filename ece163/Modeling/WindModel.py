@@ -100,7 +100,7 @@ class WindModel():
             else:
                 Phi_v = [
                             [1,0],
-                            [dT,1]
+                            [0,1]
                         ]
                 Gamma_v = [[0],[0]]
                 H_v = [[1, 1]]
@@ -132,7 +132,7 @@ class WindModel():
             else:
                 Phi_w = [
                             [1,0],
-                            [dT,1]
+                            [0,1]
                         ]
                 Gamma_w = [[0],[0]]
                 H_w = [[1, 1]]
