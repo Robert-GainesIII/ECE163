@@ -58,7 +58,7 @@ class WindModel():
         #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
         #W = [[self.myWindState.Wu], [self.myWindState.Wv], [self.myWindState.Ww]]
         X = [[Xu_plus], [Xv_plus], [Xw_plus]]
-        self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)
+        self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)[0][0]
         self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)
         self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)
         print("ugh2")
