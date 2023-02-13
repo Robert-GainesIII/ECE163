@@ -6,7 +6,7 @@ from ..Constants import VehiclePhysicalConstants as VPC
 from ..Containers import Inputs
 
 
-class WindModel(dT = 0.01, Va = 25.0, drydenParamters = Inputs.drydenParameters(Lu=0.0, Lv=0.0, Lw = 0.0, sigmau = 0.0, sigmav = 0.0, sigmaw=0.0)):
+class WindModel():
 
     def __init__(self, dT = VPC.dT, Va = VPC.InitialSpeed, drydenParamters=VPC.DrydenNoWind):
         
