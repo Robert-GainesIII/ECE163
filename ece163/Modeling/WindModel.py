@@ -52,7 +52,7 @@ class WindModel():
         #Discrete parameritized time equivalent dryden wind model equations in U axis
         Gamma_u = [[math.pow(math.e, uExponentTerm)]]
         Phi_u = [[drydenParameters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
-        H_u = [[drydenParameters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParameters.Lu))]]
+        H_u = [[drydenParameters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParameters.Lu))],[0]]
 
         #Discrete parameritized time equivalent dryden wind model equations in V axis
         eTermV = math.pow(math.e, vExponentTerm)
