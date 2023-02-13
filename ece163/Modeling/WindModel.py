@@ -28,7 +28,7 @@ class WindModel:
         self.Phi_w = [[0],[0]]
         self.H_w = [[0,0]]
 
-        self.CreateDrydenTransferFns(self.Va, self.dT, self.drydenParameters)
+        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
 
         #self.Gamma = [[self.Gamma_u], [self.Gamma_v], [self.Gamma_w]]
         #self.Phi = [[self.Phi_u], [self.Phi_v], [self.Phi_w]]
@@ -43,7 +43,7 @@ class WindModel:
     def reset(self):
         pass
 
-    def CreateDrydenTransferFns(dT, Va, drydenParameters):
+    def CreateDrydenTransferFns(self, dT, Va, drydenParameters):
         pass
         #returns none
 
