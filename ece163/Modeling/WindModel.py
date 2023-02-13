@@ -6,6 +6,7 @@ from ..Constants import VehiclePhysicalConstants as VPC
 from ..Containers import Inputs
 
 debug = False
+count = 0
 
 class WindModel():
 
@@ -62,21 +63,27 @@ class WindModel():
         Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), MatrixMath.scalarMultiply(uu,self.Gamma_u))
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(uv, self.Gamma_v))
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(uw,self.Gamma_w))
-
+        if(count >= 100):
+            print (Xu_plus)
+            print (Xv_plus)
+            print (Xw_plus)
+            count = 0
+        else:
+            count +=1
 
         #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
         #W = [[self.myWindState.Wu], [self.myWindState.Wv], [self.myWindState.Ww]]
         X = [[Xu_plus], [Xv_plus], [Xw_plus]]
         self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)[0][0]
-        print(self.myWindState.Wu)
+        #print(self.myWindState.Wu)
     
 
         self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)[0][0]
-        print(self.myWindState.Wu)
+        #print(self.myWindState.Wu)
     
 
         self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)[0][0]
-        print(self.myWindState.Wu)
+        #print(self.myWindState.Wu)
 
     
         #STEP 4 -> x- ↤ x+ : Update previous state\
