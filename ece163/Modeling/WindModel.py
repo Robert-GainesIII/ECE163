@@ -55,10 +55,10 @@ class WindModel():
         
         Phi_u = [[math.pow(math.e, uExponentTerm)]]
         if debug:print("Phi_u is:")
-        if debug:print(Gamma_u)
+        if debug:print(Phi_u)
         Gamma_u = [[drydenParameters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
         if debug:print("Gamma_u is:")
-        if debug:print(Phi_u)
+        if debug:print(Gamma_u)
         H_u = [[drydenParameters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParameters.Lu))]]
         if debug:print("H_u is:")
         if debug:print(H_u)
@@ -71,14 +71,14 @@ class WindModel():
                 ]
         Phi_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
         if debug:print("Phi_v is:")
-        if debug:print(Gamma_v)
+        if debug:print(Phi_v)
         phiterm2_mat =[
                         [dT],
                         [math.pow((drydenParameters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
                     ]
         Gamma_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
         if debug:print("Gamma_v is:")
-        if debug:print(Phi_v)
+        if debug:print(Gamma_v)
         H_v = MatrixMath.scalarMultiply((drydenParameters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParameters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lv))]])
         if debug:print("H_v is:")
         if debug:print(H_v)
@@ -90,14 +90,14 @@ class WindModel():
                 ]
         Phi_w = MatrixMath.scalarMultiply(eTermW, gammaterm2_mat)
         if debug:print("Phi_w is:")
-        if debug:print(Gamma_w)
+        if debug:print(Phi_w)
         phiwterm2_mat =[
                         [dT],
                         [math.pow((drydenParameters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lw*dT))-1) - (drydenParameters.Lw/Va*dT)]
                     ]
         Gamma_w = MatrixMath.scalarMultiply(eTermW, phiterm2_mat)
         if debug:print("Gamma_w is:")
-        if debug:print(Phi_w)
+        if debug:print(Gamma_w)
         H_w = MatrixMath.scalarMultiply((drydenParameters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParameters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lw))]])
         if debug:print("H_w is:")
         if debug:print(H_w)
