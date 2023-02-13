@@ -16,8 +16,8 @@ class WindModel:
         self.myWindState = States.windState()
 
         self.Gamma_u = [[0]]
-        self.Phi_u = [[0]]
-        self.H_u = [[0]]
+        self.Phi_u = [[0,0]]
+        self.H_u = [[0,0,0]]
 
 
         self.Gamma_v = [[0,0], [0,0]]
