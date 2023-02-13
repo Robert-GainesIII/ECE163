@@ -21,7 +21,7 @@ class WindModel:
 
 
         self.Gamma_v = [[0,0], [0,0]]
-        self.Phi_v =[[0], [0]]
+        self.Phi_v =[[0,0], [0,0]]
         self.H_v = [[0],[0]]
 
         self.Gamma_w = [[0,0],[0,0]]
