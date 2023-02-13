@@ -18,18 +18,19 @@ class WindModel():
 
         self.myWindState = States.windState()
 
-        self.Gamma_u = 0
-        self.Phi_u = 0
-        self.H_u = 0
+        self.Gamma_u = [[0]]
+        self.Phi_u = [[0]]
+        self.H_u = [[0]]
 
 
-        self.Gamma_v = 0
-        self.Phi_v = 0
-        self.H_v = 0
+        self.Gamma_v = [[0,0],[0,0]]
+        self.Phi_v = [[0],[0]]
+        self.H_v = [[0,0]]
 
-        self.Gamma_w = 0
-        self.Phi_w = 0
-        self.H_w = 0
+        self.Gamma_w = [[0,0],[0,0]]
+        self.Phi_w = [[0],[0]]
+        self.H_w = [[0,0]]
+    
 
         self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
 
