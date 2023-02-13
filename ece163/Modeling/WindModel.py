@@ -103,7 +103,7 @@ class WindModel():
                             [dT,1]
                         ]
                 Gamma_v = [[0],[0]]
-                H_v = [[1, 0]]
+                H_v = [[1, 1]]
 
             
             #Discrete parameritized time equivalent dryden wind model equations in W axis
@@ -135,7 +135,7 @@ class WindModel():
                             [dT,1]
                         ]
                 Gamma_w = [[0],[0]]
-                H_w = [[1, 0]]
+                H_w = [[1, 1]]
 
             
             
