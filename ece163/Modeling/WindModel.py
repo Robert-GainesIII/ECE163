@@ -33,19 +33,38 @@ class WindModel():
 
         self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
 
-        self.Xu = [[self.Gamma_u], [self.Gamma_v], [self.Gamma_w]]
-        self.Xv = [[self.Phi_u], [self.Phi_v], [self.Phi_w]]
-        self.Xw = [[self.H_u], [self.H_v], [self.H_w]]
+        self.Xu = [[0]]
+        self.Xv = [[0], [0]]
+        self.Xw = [[0], [0]]
 
     def Update(self, uu = None, uv = None, uw = None):
 
         if uu is None :
-            uu = random . gauss (0 , 1)
+            uu = random.gauss(0 , 1)
         if uv is None :
-            uv = random . gauss (0 , 1)
+            uv = random.gauss(0 , 1)
         if uw is None :
-            uw = random . gauss (0 , 1)
+            uw = random.gauss(0 , 1)
         #returns nothings stored internally
+
+        #IMPLEMENT STEPS 2-5 FROM DRYDEN CHEAT SHEET
+
+        #STEP 2 -> x+ = Φx− + ΓuN : Update “state” using random input
+        Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), MatrixMath.scalarMultiply(self.Gamma_u, uu))
+        Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(self.Gamma_v, uv))
+        Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(self.Gamma_w, uw))
+
+        #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
+        self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)
+        self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)
+        self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)
+
+        #STEP 4 -> x- ↤ x+ : Update previous state
+        self.Xu = Xu_plus
+        self.Xv = Xv_plus
+        self.Xw = Xw_plus
+        #STEP 5 At next time step, Goto step (2)
+
 
     def reset(self):
         pass
