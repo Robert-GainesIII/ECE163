@@ -32,7 +32,7 @@ class WindModel():
         self.H_w = 0
         print("ugh")
         self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
-
+        print("ugh1.5")
         self.Xu = [[self.Gamma_u], [self.Gamma_v], [self.Gamma_w]]
         self.Xv = [[self.Phi_u], [self.Phi_v], [self.Phi_w]]
         self.Xw = [[self.H_u], [self.H_v], [self.H_w]]
