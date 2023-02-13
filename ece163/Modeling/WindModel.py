@@ -58,13 +58,13 @@ class WindModel():
             if debug: print("zero division at Lu, Lv, Lw term?")
 
             if drydenParameters.Lu == 0:    drydenParameters.Lu = 0.1
-            uExponentTerm = -1*(Va/drydenParameters.Lu)*dT
+            uExponentTerm = -1*(Va*dT/drydenParameters.Lu)
 
             if drydenParameters.Lv == 0:    drydenParameters.Lv = 0.1
-            vExponentTerm = -1*(Va/drydenParameters.Lv)*dT
+            vExponentTerm = -1*(Va*dT/drydenParameters.Lv)
 
             if drydenParameters.Lw == 0:    drydenParameters.Lw = 0.1
-            wExponentTerm = -1*(Va/drydenParameters.Lw)*dT
+            wExponentTerm = -1*(Va*dT/drydenParameters.Lw)
             if debug: print("nah guess not.")
             #Discrete parameritized time equivalent dryden wind model equations in U axis
             
