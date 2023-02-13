@@ -100,10 +100,12 @@ class WindModel():
             #Discrete parameritized time equivalent dryden wind model equations in W axis
             eTermW = math.pow(math.e, wExponentTerm)
             gammawterm2_mat =[
-                        [(1+wExponentTerm), -1*(math.pow((Va/drydenParameters.Lw),2))*dT],
-                        [(dT), (1-wExponentTerm)]
+                        [1+wExponentTerm, -1*(math.pow((Va/drydenParameters.Lw),2))*dT],
+                        [dT, 1-wExponentTerm]
                     ]
-            Phi_w = MatrixMath.scalarMultiply(eTermW, gammaterm2_mat)
+                    #BRUH KEEP TRACK OF BETTER VARIABLE NAMES 
+                    #ERROR WAS HARD TO TRACK BECUASE IT WAS USING A WRONG SIMILARY NAMES VARIABLE
+            Phi_w = MatrixMath.scalarMultiply(eTermW, gammawterm2_mat)
             if debug:print("Phi_w is:")
             if debug:print(Phi_w)
             phiwterm2_mat =[
