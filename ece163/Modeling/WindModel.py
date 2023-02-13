@@ -47,6 +47,7 @@ class WindModel():
         pass
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParameters):
+        if(Va <= 0):raise ArithmeticError
         uExponentTerm = -1*(Va/drydenParameters.Lu)*dT
         vExponentTerm = -1*(Va/drydenParameters.Lv)*dT
         wExponentTerm = -1*(Va/drydenParameters.Lw)*dT
