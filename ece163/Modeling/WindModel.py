@@ -5,9 +5,11 @@ from ..Utilities import MatrixMath
 from ..Constants import VehiclePhysicalConstants as VPC
 from ..Containers import Inputs
 
+debug = True
 
 class WindModel():
 
+    
     def __init__(self, dT = VPC.dT, Va = VPC.InitialSpeed, drydenParamters=VPC.DrydenNoWind):
         
         self.dT = dT
@@ -66,11 +68,11 @@ class WindModel():
                         [math.pow((drydenParameters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
                     ]
         Phi_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
-        print("Phi_v is:")
-        print(Phi_v)
+        if debug:print("Phi_v is:")
+        if debug:print(Phi_v)
         H_v = MatrixMath.scalarMultiply((drydenParameters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParameters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lv))]])
-        print("H_v is:")
-        print(H_v)
+        if debug:print("H_v is:")
+        if debug:print(H_v)
         #Discrete parameritized time equivalent dryden wind model equations in W axis
         eTermW = math.pow(math.e, wExponentTerm)
         gammawterm2_mat =[
