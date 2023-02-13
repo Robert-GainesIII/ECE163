@@ -145,12 +145,12 @@ class WindModel():
 
         self.myWindState = windState
 
-    def setWindModelParameters(self, Wn = 0.0, We = 0.0, Wd = 0.0, drydenParameters = VPC.DrydenNoWind):
+    def setWindModelParameters(self, Wn = 0.0, We = 0.0, Wd = 0.0, drydenParamters = VPC.DrydenNoWind):
 
         self.myWindState.Wn = Wn
         self.myWindState.We = We
         self.myWindState.Wd = Wd
         print("ugh")
-        self.drydenParameters = drydenParameters
+        self.drydenParameters = drydenParamters
         print("here we go again")
         #returns none
