@@ -74,7 +74,7 @@ class WindModel():
             else:
                 Phi_u = [[1]]
                 Gamma_u = [[0]]
-                H_u = [[0]]
+                H_u = [[1]]
 
             if drydenParameters.Lv != 0:    
                 vExponentTerm = -1*(Va*dT)/drydenParameters.Lv
