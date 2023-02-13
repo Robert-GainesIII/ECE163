@@ -63,13 +63,13 @@ class WindModel():
         Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), MatrixMath.scalarMultiply(uu,self.Gamma_u))
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(uv, self.Gamma_v))
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(uw,self.Gamma_w))
-        if(count >= 100):
+        if(self.count >= 100):
             print (Xu_plus)
             print (Xv_plus)
             print (Xw_plus)
-            count = 0
+            self.count = 0
         else:
-            count +=1
+            self.count +=1
 
         #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
         #W = [[self.myWindState.Wu], [self.myWindState.Wv], [self.myWindState.Ww]]
