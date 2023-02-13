@@ -64,7 +64,7 @@ class WindModel():
             vExponentTerm = -1*(Va*dT)/drydenParameters.Lv
 
             if drydenParameters.Lw == 0:    drydenParameters.Lw = 0.1
-            wExponentTerm = -1*(Va*dT)/drydenParameters.Lw)
+            wExponentTerm = -1*(Va*dT)/drydenParameters.Lw
             if debug: print("nah guess not.")
             #Discrete parameritized time equivalent dryden wind model equations in U axis
             
