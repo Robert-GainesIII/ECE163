@@ -52,9 +52,16 @@ class WindModel():
         wExponentTerm = -(Va/drydenParameters.Lw)*dT
         
         #Discrete parameritized time equivalent dryden wind model equations in U axis
+        
         Gamma_u = [[math.pow(math.e, uExponentTerm)]]
+        if debug:print("Gamma_u is:")
+        if debug:print(Gamma_u)
         Phi_u = [[drydenParameters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
+        if debug:print("Phi_u is:")
+        if debug:print(Phi_u)
         H_u = [[drydenParameters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParameters.Lu))]]
+        if debug:print("H_u is:")
+        if debug:print(H_u)
 
         #Discrete parameritized time equivalent dryden wind model equations in V axis
         eTermV = math.pow(math.e, vExponentTerm)
@@ -63,6 +70,8 @@ class WindModel():
                     [(dT), (1-vExponentTerm)]
                 ]
         Gamma_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
+        if debug:print("Gamma_v is:")
+        if debug:print(Gamma_v)
         phiterm2_mat =[
                         [dT],
                         [math.pow((drydenParameters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
@@ -80,14 +89,19 @@ class WindModel():
                     [(dT), (1-wExponentTerm)]
                 ]
         Gamma_w = MatrixMath.scalarMultiply(eTermW, gammaterm2_mat)
+        if debug:print("Gamma_w is:")
+        if debug:print(Gamma_w)
         phiwterm2_mat =[
                         [dT],
                         [math.pow((drydenParameters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lw*dT))-1) - (drydenParameters.Lw/Va*dT)]
                     ]
         Phi_w = MatrixMath.scalarMultiply(eTermW, phiterm2_mat)
+        if debug:print("Phi_w is:")
+        if debug:print(Phi_w)
         H_w = MatrixMath.scalarMultiply((drydenParameters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParameters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lw))]])
-
-        
+        if debug:print("H_w is:")
+        if debug:print(H_w)
+    
         self.Gamma_u = Gamma_u
         self.Phi_u = Phi_u
         self.H_u = H_u
