@@ -50,9 +50,9 @@ class WindModel():
         #IMPLEMENT STEPS 2-5 FROM DRYDEN CHEAT SHEET
         print("pre ugh")
         #STEP 2 -> x+ = Φx− + ΓuN : Update “state” using random input
-        Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), MatrixMath.scalarMultiply(self.Gamma_u, uu))
-        Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(self.Gamma_v, uv))
-        Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(self.Gamma_w, uw))
+        Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), MatrixMath.scalarMultiply(uu,self.Gamma_u))
+        Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(uv, self.Gamma_v))
+        Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(uw,self.Gamma_w))
 
         print("ugh")
         #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
