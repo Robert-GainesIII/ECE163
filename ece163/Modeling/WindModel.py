@@ -119,11 +119,11 @@ class WindModel():
         pass
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParamters):
-        if(Va <= 0):
+        if Va <= 0:
             
             raise ArithmeticError
         
-        if(drydenParamters == VPC.DrydenNoWind):
+        if drydenParamters == VPC.DrydenNoWind:
             Phi_u = [[1]]
             Gamma_u = [[0]]
             H_u = [[1]]
