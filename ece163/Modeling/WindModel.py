@@ -32,11 +32,14 @@ class WindModel():
         self.Phi_w = [[0],[0]]
         self.H_w = [[0,0]]
 
+
+        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
+        
         self.Xu = [[0]]
         self.Xv = [[0],[0]]
         self.Xw = [[0],[0]]
 
-        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
+        
 
     
 
