@@ -68,6 +68,7 @@ class WindModel():
         Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), uterm2)
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), vterm2)
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), wterm2)
+        """
         if(self.count >= 10):
             print("\gamma terms of forward euler equations for u,v,w respectively are: \n")
             print (self.Gamma_u, end ="")
@@ -86,6 +87,7 @@ class WindModel():
             self.count = 0
         else:
             self.count +=1
+        """
 
         #STEP 3 -> W[u,v,w] = Hx+ : Generate gusts from state
         #W = [[self.myWindState.Wu], [self.myWindState.Wv], [self.myWindState.Ww]]
