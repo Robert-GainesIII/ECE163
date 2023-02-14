@@ -122,106 +122,106 @@ class WindModel():
         if(Va <= 0):
             if debug:print("ARITHMETIC ERROR RAISED")
             raise ArithmeticError
-        else:
+        
     
 
        
-            #Discrete parameritized time equivalent dryden wind model equations in U axis
-            if drydenParamters.Lu != 0:    
-                
-                uExponentTerm = -1*(Va*dT)/drydenParamters.Lu
-                Phi_u = [[math.pow(math.e, uExponentTerm)]]
-                if debug:print("Phi_u is:")
-                if debug:print(Phi_u)
-                Gamma_u = [[drydenParamters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
-                if debug:print("Gamma_u is:")
-                if debug:print(Gamma_u)
-                H_u = [[drydenParamters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParamters.Lu))]]
-                if debug:print("H_u is:")
-                if debug:print(H_u)
-            else:
-                Phi_u = [[1]]
-                Gamma_u = [[0]]
-                H_u = [[1]]
+        #Discrete parameritized time equivalent dryden wind model equations in U axis
+        if drydenParamters.Lu != 0:    
+            
+            uExponentTerm = -1*(Va*dT)/drydenParamters.Lu
+            Phi_u = [[math.pow(math.e, uExponentTerm)]]
+            if debug:print("Phi_u is:")
+            if debug:print(Phi_u)
+            Gamma_u = [[drydenParamters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
+            if debug:print("Gamma_u is:")
+            if debug:print(Gamma_u)
+            H_u = [[drydenParamters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParamters.Lu))]]
+            if debug:print("H_u is:")
+            if debug:print(H_u)
+        else:
+            Phi_u = [[1]]
+            Gamma_u = [[0]]
+            H_u = [[1]]
 
-            if drydenParamters.Lv != 0:    
-                vExponentTerm = -1*(Va*dT)/drydenParamters.Lv
-                #Discrete parameritized time equivalent dryden wind model equations in V axis
-                eTermV = math.pow(math.e, vExponentTerm)
-                gammaterm2_mat =[
-                            [(1+vExponentTerm), -1*(math.pow((Va/drydenParamters.Lv),2))*dT],
-                            [(dT), (1-vExponentTerm)]
+        if drydenParamters.Lv != 0:    
+            vExponentTerm = -1*(Va*dT)/drydenParamters.Lv
+            #Discrete parameritized time equivalent dryden wind model equations in V axis
+            eTermV = math.pow(math.e, vExponentTerm)
+            gammaterm2_mat =[
+                        [(1+vExponentTerm), -1*(math.pow((Va/drydenParamters.Lv),2))*dT],
+                        [(dT), (1-vExponentTerm)]
+                    ]
+            Phi_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
+            if debug:print("Phi_v is:")
+            if debug:print(Phi_v)
+            phiterm2_mat =[
+                            [dT],
+                            [math.pow((drydenParamters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lv*dT))-1) - (drydenParamters.Lv/Va*dT)]
                         ]
-                Phi_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
-                if debug:print("Phi_v is:")
-                if debug:print(Phi_v)
-                phiterm2_mat =[
-                                [dT],
-                                [math.pow((drydenParamters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lv*dT))-1) - (drydenParamters.Lv/Va*dT)]
-                            ]
-                Gamma_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
-                if debug:print("Gamma_v is:")
-                if debug:print(Gamma_v)
-                H_v = MatrixMath.scalarMultiply((drydenParamters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParamters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lv))]])
-                if debug:print("H_v is:")
-                if debug:print(H_v)
-            else:
-                Phi_v = [
-                            [1,0],
-                            [0,1]
-                        ]
-                Gamma_v = [[0],[0]]
-                H_v = [[1, 1]]
+            Gamma_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
+            if debug:print("Gamma_v is:")
+            if debug:print(Gamma_v)
+            H_v = MatrixMath.scalarMultiply((drydenParamters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParamters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lv))]])
+            if debug:print("H_v is:")
+            if debug:print(H_v)
+        else:
+            Phi_v = [
+                        [1,0],
+                        [0,1]
+                    ]
+            Gamma_v = [[0],[0]]
+            H_v = [[1, 1]]
 
-            
-            #Discrete parameritized time equivalent dryden wind model equations in W axis
-            if drydenParamters.Lw != 0:
-                wExponentTerm = -1*(Va*dT)/drydenParamters.Lw
-                eTermW = math.pow(math.e, wExponentTerm)
-                gammawterm2_mat =[
-                            [1+wExponentTerm, -1*(math.pow((Va/drydenParamters.Lw),2))*dT],
-                            [dT, 1-wExponentTerm]
-                        ]
-                        #BRUH KEEP TRACK OF BETTER VARIABLE NAMES 
-                        #ERROR WAS HARD TO TRACK BECUASE IT WAS USING A WRONG SIMILARY NAMES VARIABLE
-                Phi_w = MatrixMath.scalarMultiply(eTermW, gammawterm2_mat)
-                if debug:print("Phi_w is:")
-                if debug:print(Phi_w)
-                phiwterm2_mat =[
-                                [dT],
-                                [math.pow((drydenParamters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lw*dT))-1) - (drydenParamters.Lw/Va*dT)]
-                            ]
-                Gamma_w = MatrixMath.scalarMultiply(eTermW, phiwterm2_mat)
-                if debug:print("Gamma_w is:")
-                if debug:print(Gamma_w)
-                H_w = MatrixMath.scalarMultiply((drydenParamters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParamters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lw))]])
-                if debug:print("H_w is:")
-                if debug:print(H_w)
-            else:
-                Phi_w = [
-                            [1,0],
-                            [0,1]
-                        ]
-                Gamma_w = [[0],[0]]
-                H_w = [[1, 1]]
-
-            
-            
-            
-            
         
-            self.Gamma_u = Gamma_u
-            self.Phi_u = Phi_u
-            self.H_u = H_u
+        #Discrete parameritized time equivalent dryden wind model equations in W axis
+        if drydenParamters.Lw != 0:
+            wExponentTerm = -1*(Va*dT)/drydenParamters.Lw
+            eTermW = math.pow(math.e, wExponentTerm)
+            gammawterm2_mat =[
+                        [1+wExponentTerm, -1*(math.pow((Va/drydenParamters.Lw),2))*dT],
+                        [dT, 1-wExponentTerm]
+                    ]
+                    #BRUH KEEP TRACK OF BETTER VARIABLE NAMES 
+                    #ERROR WAS HARD TO TRACK BECUASE IT WAS USING A WRONG SIMILARY NAMES VARIABLE
+            Phi_w = MatrixMath.scalarMultiply(eTermW, gammawterm2_mat)
+            if debug:print("Phi_w is:")
+            if debug:print(Phi_w)
+            phiwterm2_mat =[
+                            [dT],
+                            [math.pow((drydenParamters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lw*dT))-1) - (drydenParamters.Lw/Va*dT)]
+                        ]
+            Gamma_w = MatrixMath.scalarMultiply(eTermW, phiwterm2_mat)
+            if debug:print("Gamma_w is:")
+            if debug:print(Gamma_w)
+            H_w = MatrixMath.scalarMultiply((drydenParamters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParamters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lw))]])
+            if debug:print("H_w is:")
+            if debug:print(H_w)
+        else:
+            Phi_w = [
+                        [1,0],
+                        [0,1]
+                    ]
+            Gamma_w = [[0],[0]]
+            H_w = [[1, 1]]
+
+        
+        
+        
+        
+    
+        self.Gamma_u = Gamma_u
+        self.Phi_u = Phi_u
+        self.H_u = H_u
 
 
-            self.Gamma_v = Gamma_v
-            self.Phi_v = Phi_v
-            self.H_v = H_v
+        self.Gamma_v = Gamma_v
+        self.Phi_v = Phi_v
+        self.H_v = H_v
 
-            self.Gamma_w = Gamma_w
-            self.Phi_w = Phi_w
-            self.H_w = H_w
+        self.Gamma_w = Gamma_w
+        self.Phi_w = Phi_w
+        self.H_w = H_w
 
 
 
