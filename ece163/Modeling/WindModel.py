@@ -60,13 +60,23 @@ class WindModel():
         #print(uw)
 
         #STEP 2 -> x+ = Φx− + ΓuN : Update “state” using random input
-        Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), MatrixMath.scalarMultiply(uu,self.Gamma_u))
-        Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), MatrixMath.scalarMultiply(uv, self.Gamma_v))
-        Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), MatrixMath.scalarMultiply(uw,self.Gamma_w))
+        uterm2 = MatrixMath.scalarMultiply(uu,self.Gamma_u)
+        vterm2 = MatrixMath.scalarMultiply(uv, self.Gamma_v)
+        wterm2 = MatrixMath.scalarMultiply(uw,self.Gamma_w)
+        
+        Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), uterm2)
+        Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), vterm2)
+        Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), wterm2)
         if(self.count >= 100):
-            print (Xu_plus)
-            print (Xv_plus)
-            print (Xw_plus)
+            print("second term of forward euler equations for u,v,w respectively are: ")
+            print (uterm2, end ="")
+            print (vterm2, end ="")
+            print (wterm2, end ="")
+
+            print("first term of forward euler equations for u,v,w respectively are: ")
+            print (Xu_plus, end ="")
+            print (Xv_plus, end ="")
+            print (Xw_plus, end ="")
             self.count = 0
         else:
             self.count +=1
