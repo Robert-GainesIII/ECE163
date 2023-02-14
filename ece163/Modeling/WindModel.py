@@ -31,13 +31,14 @@ class WindModel():
         self.Gamma_w = [[0,0],[0,0]]
         self.Phi_w = [[0],[0]]
         self.H_w = [[0,0]]
-    
-
-        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
 
         self.Xu = [[0]]
         self.Xv = [[0],[0]]
         self.Xw = [[0],[0]]
+
+        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
+
+    
 
     def Update(self, uu = None, uv = None, uw = None):
 
@@ -67,7 +68,7 @@ class WindModel():
         Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), uterm2)
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), vterm2)
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), wterm2)
-        if(self.count >= 100):
+        if(self.count >= 500):
             print("\gamma terms of forward euler equations for u,v,w respectively are: \n")
             print (self.Gamma_u, end ="")
             print (self.Gamma_v, end ="")
