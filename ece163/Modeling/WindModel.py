@@ -120,7 +120,7 @@ class WindModel():
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParamters):
         if(Va <= 0):
-            if debug:print("ARITHMETIC ERROR RAISED")
+            
             raise ArithmeticError
         
     
@@ -131,14 +131,11 @@ class WindModel():
             
             uExponentTerm = -1*(Va*dT)/drydenParamters.Lu
             Phi_u = [[math.pow(math.e, uExponentTerm)]]
-            if debug:print("Phi_u is:")
-            if debug:print(Phi_u)
+            
             Gamma_u = [[drydenParamters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
-            if debug:print("Gamma_u is:")
-            if debug:print(Gamma_u)
+            
             H_u = [[drydenParamters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParamters.Lu))]]
-            if debug:print("H_u is:")
-            if debug:print(H_u)
+            
         else:
             Phi_u = [[1]]
             Gamma_u = [[0]]
@@ -153,18 +150,15 @@ class WindModel():
                         [(dT), (1-vExponentTerm)]
                     ]
             Phi_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
-            if debug:print("Phi_v is:")
-            if debug:print(Phi_v)
+            
             phiterm2_mat =[
                             [dT],
                             [math.pow((drydenParamters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lv*dT))-1) - (drydenParamters.Lv/Va*dT)]
                         ]
             Gamma_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
-            if debug:print("Gamma_v is:")
-            if debug:print(Gamma_v)
+            
             H_v = MatrixMath.scalarMultiply((drydenParamters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParamters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lv))]])
-            if debug:print("H_v is:")
-            if debug:print(H_v)
+            
         else:
             Phi_v = [
                         [1,0],
@@ -185,18 +179,15 @@ class WindModel():
                     #BRUH KEEP TRACK OF BETTER VARIABLE NAMES 
                     #ERROR WAS HARD TO TRACK BECUASE IT WAS USING A WRONG SIMILARY NAMES VARIABLE
             Phi_w = MatrixMath.scalarMultiply(eTermW, gammawterm2_mat)
-            if debug:print("Phi_w is:")
-            if debug:print(Phi_w)
+    
             phiwterm2_mat =[
                             [dT],
                             [math.pow((drydenParamters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lw*dT))-1) - (drydenParamters.Lw/Va*dT)]
                         ]
             Gamma_w = MatrixMath.scalarMultiply(eTermW, phiwterm2_mat)
-            if debug:print("Gamma_w is:")
-            if debug:print(Gamma_w)
+           
             H_w = MatrixMath.scalarMultiply((drydenParamters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParamters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lw))]])
-            if debug:print("H_w is:")
-            if debug:print(H_w)
+            
         else:
             Phi_w = [
                         [1,0],
