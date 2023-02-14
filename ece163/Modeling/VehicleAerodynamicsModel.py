@@ -324,7 +324,10 @@ class VehicleAerodynamicsModel:
         
         Ws = math.hypot(wind.Wn, wind.We, wind.Wd)
         Xw = math.atan2(wind.We, wind.Wn)
-        Yw = -1 * math.asin(wind.Wd/(math.hypot(wind.Wn, wind.We, wind.Wd)))
+        if math.isclose(Ws, 0):
+            Yw = 0
+        else:
+            Yw = -1 * math.asin(wind.Wd/(math.hypot(wind.Wn, wind.We, wind.Wd)))
         
         Azimuth_Elevation_RMat = [
         [(math.cos(Xw)*math.cos(Yw)), (math.sin(Xw)*math.cos(Yw)), (-math.sin(Yw))],
