@@ -316,8 +316,32 @@ class VehicleAerodynamicsModel:
 
     def CalculateAirspeed(self, state, wind):
 
-        va = 0
-        alpha = 0
-        beta = 0
+        Wind_Steady_Mat = [[wind.Wn], [wind.We], [wind.Wd]]
+        Wind_Gust_Mat = [[wind.Wu],[wind.Wv],[wind.Ww]]
+
+        #term1 = MatrixMath.multiply(Rotations.euler2DCM(state.yaw, state.pitch, state.roll), Wind_Steady_Mat)
+        #WindCombination_InBodyFrame = MatrixMath.add(term1, Wind_Gust_Mat)
+        
+        Ws = math.hypot(wind.Wn, wind.We, wind.Wd)
+        Xw = math.atan2(wind.We, wind.Wn)
+        Yw = -1 * math.asin(wind.Wd/(math.hypot(wind.Wn, wind.We, wind.Wd)))
+        
+        Azimuth_Elevation_RMat = [
+        [(math.cos(Xw)*math.cos(Yw)), (math.sin(Xw)*math.cos(Yw)), (-math.sin(Yw))],
+        [(-math.sin(Xw)), (math.cos(Xw)), 0],
+        [(math.cos(Xw)*math.sin(Yw)), (math.sin(Xw)*math.sin(Yw)), (math.cos(Yw))]
+        ]
+        
+        WindInBody = MatrixMath.multiply(Rotations.euler2DCM(state.yaw, state.pitch, state.roll),MatrixMath.add(Wind_Steady_Mat, MatrixMath.multiply(MatrixMath.transpose(Azimuth_Elevation_RMat),Wind_Gust_Mat)))
+        
+        #va = MatrixMath.subtract([[state.u], [state.v], [state.w]], WindInBody)
+        AirspeedVec = [
+            [state.u-WindInBody[0][0]],
+            [state.v-WindInBody[1][0]],
+            [state.w-WindInBody[2][0]]
+        ]
+        va = math.hypot(AirspeedVec[0][0], AirspeedVec[1][0], AirspeedVec[2][0])
+        alpha = math.atan2(AirspeedVec[2][0], AirspeedVec[0][0])
+        beta = math.asin(AirspeedVec[1][0]/va)
         return [va, alpha, beta]
 
