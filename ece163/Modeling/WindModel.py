@@ -68,7 +68,7 @@ class WindModel():
         Xu_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_u, self.Xu), uterm2)
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), vterm2)
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), wterm2)
-        if(self.count >= 500):
+        if(self.count >= 10):
             print("\gamma terms of forward euler equations for u,v,w respectively are: \n")
             print (self.Gamma_u, end ="")
             print (self.Gamma_v, end ="")
