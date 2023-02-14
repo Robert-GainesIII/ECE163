@@ -214,7 +214,7 @@ class WindModel():
         self.H_w = H_w
 
 
-
+        return 
         #returns none
 
     def getDrydenTransferFns(self):
