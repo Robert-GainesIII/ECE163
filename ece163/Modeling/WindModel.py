@@ -118,7 +118,7 @@ class WindModel():
     def reset(self):
         pass
 
-    def CreateDrydenTransferFns(self, dT, Va, drydenParameters):
+    def CreateDrydenTransferFns(self, dT, Va, drydenParamters):
         if(Va <= 0):
             if debug:print("ARITHMETIC ERROR RAISED")
             raise ArithmeticError
@@ -127,16 +127,16 @@ class WindModel():
 
        
             #Discrete parameritized time equivalent dryden wind model equations in U axis
-            if drydenParameters.Lu != 0:    
+            if drydenParamters.Lu != 0:    
                 
-                uExponentTerm = -1*(Va*dT)/drydenParameters.Lu
+                uExponentTerm = -1*(Va*dT)/drydenParamters.Lu
                 Phi_u = [[math.pow(math.e, uExponentTerm)]]
                 if debug:print("Phi_u is:")
                 if debug:print(Phi_u)
-                Gamma_u = [[drydenParameters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
+                Gamma_u = [[drydenParamters.Lu/Va * (1 - math.pow(math.e, uExponentTerm))]]
                 if debug:print("Gamma_u is:")
                 if debug:print(Gamma_u)
-                H_u = [[drydenParameters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParameters.Lu))]]
+                H_u = [[drydenParamters.sigmau * math.sqrt((2*Va)/(math.pi*drydenParamters.Lu))]]
                 if debug:print("H_u is:")
                 if debug:print(H_u)
             else:
@@ -144,12 +144,12 @@ class WindModel():
                 Gamma_u = [[0]]
                 H_u = [[1]]
 
-            if drydenParameters.Lv != 0:    
-                vExponentTerm = -1*(Va*dT)/drydenParameters.Lv
+            if drydenParamters.Lv != 0:    
+                vExponentTerm = -1*(Va*dT)/drydenParamters.Lv
                 #Discrete parameritized time equivalent dryden wind model equations in V axis
                 eTermV = math.pow(math.e, vExponentTerm)
                 gammaterm2_mat =[
-                            [(1+vExponentTerm), -1*(math.pow((Va/drydenParameters.Lv),2))*dT],
+                            [(1+vExponentTerm), -1*(math.pow((Va/drydenParamters.Lv),2))*dT],
                             [(dT), (1-vExponentTerm)]
                         ]
                 Phi_v = MatrixMath.scalarMultiply(eTermV, gammaterm2_mat)
@@ -157,12 +157,12 @@ class WindModel():
                 if debug:print(Phi_v)
                 phiterm2_mat =[
                                 [dT],
-                                [math.pow((drydenParameters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lv*dT))-1) - (drydenParameters.Lv/Va*dT)]
+                                [math.pow((drydenParamters.Lv/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lv*dT))-1) - (drydenParamters.Lv/Va*dT)]
                             ]
                 Gamma_v = MatrixMath.scalarMultiply(eTermV, phiterm2_mat)
                 if debug:print("Gamma_v is:")
                 if debug:print(Gamma_v)
-                H_v = MatrixMath.scalarMultiply((drydenParameters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParameters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lv))]])
+                H_v = MatrixMath.scalarMultiply((drydenParamters.sigmav*math.sqrt((3*Va)/(math.pi*drydenParamters.Lv))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lv))]])
                 if debug:print("H_v is:")
                 if debug:print(H_v)
             else:
@@ -175,11 +175,11 @@ class WindModel():
 
             
             #Discrete parameritized time equivalent dryden wind model equations in W axis
-            if drydenParameters.Lw != 0:
-                wExponentTerm = -1*(Va*dT)/drydenParameters.Lw
+            if drydenParamters.Lw != 0:
+                wExponentTerm = -1*(Va*dT)/drydenParamters.Lw
                 eTermW = math.pow(math.e, wExponentTerm)
                 gammawterm2_mat =[
-                            [1+wExponentTerm, -1*(math.pow((Va/drydenParameters.Lw),2))*dT],
+                            [1+wExponentTerm, -1*(math.pow((Va/drydenParamters.Lw),2))*dT],
                             [dT, 1-wExponentTerm]
                         ]
                         #BRUH KEEP TRACK OF BETTER VARIABLE NAMES 
@@ -189,12 +189,12 @@ class WindModel():
                 if debug:print(Phi_w)
                 phiwterm2_mat =[
                                 [dT],
-                                [math.pow((drydenParameters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParameters.Lw*dT))-1) - (drydenParameters.Lw/Va*dT)]
+                                [math.pow((drydenParamters.Lw/Va),2)*(math.pow(math.e,(Va/drydenParamters.Lw*dT))-1) - (drydenParamters.Lw/Va*dT)]
                             ]
                 Gamma_w = MatrixMath.scalarMultiply(eTermW, phiwterm2_mat)
                 if debug:print("Gamma_w is:")
                 if debug:print(Gamma_w)
-                H_w = MatrixMath.scalarMultiply((drydenParameters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParameters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParameters.Lw))]])
+                H_w = MatrixMath.scalarMultiply((drydenParamters.sigmaw*math.sqrt((3*Va)/(math.pi*drydenParamters.Lw))), [[1, (Va/(math.sqrt(3)*drydenParamters.Lw))]])
                 if debug:print("H_w is:")
                 if debug:print(H_w)
             else:
