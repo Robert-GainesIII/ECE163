@@ -68,12 +68,17 @@ class WindModel():
         Xv_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_v, self.Xv), vterm2)
         Xw_plus = MatrixMath.add(MatrixMath.multiply(self.Phi_w, self.Xw), wterm2)
         if(self.count >= 100):
-            print("second term of forward euler equations for u,v,w respectively are: ")
+            print("\gamma terms of forward euler equations for u,v,w respectively are: \n")
+            print (self.Gamma_u, end ="")
+            print (self.Gamma_v, end ="")
+            print (self.Gamma_w, end ="")
+
+            print("\nsecond term of forward euler equations for u,v,w respectively are: \n")
             print (uterm2, end ="")
             print (vterm2, end ="")
             print (wterm2, end ="")
 
-            print("first term of forward euler equations for u,v,w respectively are: ")
+            print("\nfirst term of forward euler equations for u,v,w respectively are: \n")
             print (Xu_plus, end ="")
             print (Xv_plus, end ="")
             print (Xw_plus, end ="")
