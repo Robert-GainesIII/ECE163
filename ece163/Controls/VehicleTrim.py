@@ -82,15 +82,16 @@ class VehicleTrim():
 		:param gammastar: trim climb angle [rad]
 		:return: True or False (True if control inputs in range, False if not)
 		"""
-
+		print("what")
 		self.VehicleTrimModel.getVehicleDynamicsModel().reset()
 		self.VehicleTrimModel.getWindModel().reset()
-
+		print("ugh")
 		if any([math.isclose(Kappastar, 0.0), math.fabs(Kappastar) < (1/VPC.RstarMax)]):
 			phistar = 0.0
 			pstar = 0.0
 			qstar = 0.0
 			rstar = 0.0
+			print("dumbshit")
 			cons = ({'type': 'eq',
 					 'fun': lambda x: numpy.array([
 						 x[3] ** 2 + x[4] ** 2 + x[5] ** 2 - Vastar ** 2,  # magnitude of velocity vector is Va
@@ -116,6 +117,7 @@ class VehicleTrim():
 			pstar = -Vastar * Kappastar * math.sin(Gammastar)
 			qstar = Vastar * Kappastar * math.sin(phistar) * math.cos(Gammastar)
 			rstar = Vastar * Kappastar * math.cos(phistar) * math.cos(Gammastar)
+			print("super dumb shit")
 			cons = ({'type': 'eq',
 					 'fun': lambda x: numpy.array([
 						 x[3] ** 2 + x[4] ** 2 + x[5] ** 2 - Vastar ** 2,  # magnitude of velocity vector is Va
