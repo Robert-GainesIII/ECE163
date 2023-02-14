@@ -342,6 +342,9 @@ class VehicleAerodynamicsModel:
         ]
         va = math.hypot(AirspeedVec[0][0], AirspeedVec[1][0], AirspeedVec[2][0])
         alpha = math.atan2(AirspeedVec[2][0], AirspeedVec[0][0])
-        beta = math.asin(AirspeedVec[1][0]/va)
+        if math.isclose(va, 0): 
+            beta = 0
+        else:
+            beta = math.asin(AirspeedVec[1][0]/va)
         return [va, alpha, beta]
 
