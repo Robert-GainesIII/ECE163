@@ -257,15 +257,15 @@ class WindModel():
             Hwsc = Sw * math.sqrt((3 * Va) / (math.pi * Lw))
             Hw = MatrixMath.scalarMultiply(Hwsc, [[1, (Va / (math.sqrt(3) * Lw))]])
 
-        self.pu = [[Pu]]
-        self.gu = [[Gu]]
-        self.hu = [[Hu]]
-        self.pv = Pv
-        self.gv = Gv
-        self.hv = Hv
-        self.pw = Pw
-        self.gw = Gw
-        self.hw = Hw
+        self.Phi_u = [[Pu]]
+        self.Gamma_u = [[Gu]]
+        self.H_u = [[Hu]]
+        self.Phi_v = Pv
+        self.Gamma_v = Gv
+        self.H_v = Hv
+        self.Phi_w = Pw
+        self.Gamma_w = Gw
+        self.H_w = Hw
         return
 
 
