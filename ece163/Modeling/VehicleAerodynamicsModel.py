@@ -150,7 +150,19 @@ class VehicleAerodynamicsModel:
 
 
     def reset(self):
-        pass
+        self.dynamicsModel.reset()
+        self.myWindModel.reset()
+        #print(self.dynamicsModel)
+        self.state = self.dynamicsModel.getVehicleState()
+        self.dot = self.dynamicsModel.getVehicleDerivative()
+        self.dT = self.dynamicsModel.dT
+        self.dynamicsModel.pe = VPC.InitialEastPosition
+        self.dynamicsModel.pn = VPC.InitialNorthPosition
+        self.dynamicsModel.pd = VPC.InitialDownPosition
+        self.dynamicsModel.u = VPC.InitialSpeed
+
+        self.initialHeight =  VPC.InitialDownPosition
+        self.initialSpeed = VPC.initialSpeed
     
     def getVehicleState(self):
         return self.dynamicsModel.state

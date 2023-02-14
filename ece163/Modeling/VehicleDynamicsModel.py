@@ -148,6 +148,7 @@ class VehicleDynamicsModel:
 
         newState = States.vehicleState()
         self.state = newState
+        self.dot = newState
     
     def setVehicleDot(self, dot):
 

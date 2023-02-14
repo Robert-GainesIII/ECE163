@@ -116,7 +116,33 @@ class WindModel():
     
 
     def reset(self):
-        pass
+
+        self.count = 0
+        self.dT = VPC.dT
+        self.Va = VPC.InitialSpeed
+        self.drydenParameters = VPC.DrydenNoWind
+
+        self.myWindState = States.windState()
+
+        self.Gamma_u = [[0]]
+        self.Phi_u = [[0]]
+        self.H_u = [[0]]
+
+
+        self.Gamma_v = [[0,0],[0,0]]
+        self.Phi_v = [[0],[0]]
+        self.H_v = [[0,0]]
+
+        self.Gamma_w = [[0,0],[0,0]]
+        self.Phi_w = [[0],[0]]
+        self.H_w = [[0,0]]
+
+
+        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
+
+        self.Xu = [[0]]
+        self.Xv = [[0],[0]]
+        self.Xw = [[0],[0]]
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParamters):
         if Va <= 0:
