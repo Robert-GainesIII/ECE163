@@ -140,6 +140,10 @@ class VehicleDynamicsModel:
 
         return self.dot
 
+    def setVehicleDerivative(self, d):
+
+        self.dot = d
+
     def getVehicleState(self):
 
         return self.state
