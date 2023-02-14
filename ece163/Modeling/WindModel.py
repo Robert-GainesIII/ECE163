@@ -119,6 +119,7 @@ class WindModel():
         pass
 
     def CreateDrydenTransferFns(self, dT, Va, drydenParamters):
+        """
         if Va <= 0:
             
             raise ArithmeticError
@@ -216,6 +217,57 @@ class WindModel():
 
         return 
         #returns none
+        """
+        if Va <= 0:
+            raise ArithmeticError
+        Lu = drydenParamters.Lu
+        Lv = drydenParamters.Lv
+        Lw = drydenParamters.Lw
+        Su = drydenParamters.sigmau
+        Sv = drydenParamters.sigmav
+        Sw = drydenParamters.sigmaw
+        if drydenParamters == VPC.DrydenNoWind:
+            Pu = 1
+            Gu = 0
+            Hu = 1
+            Pv = [[1, 0], [0, 1]]
+            Gv = [[0], [0]]
+            Hv = [[1, 1]]
+            Pw = [[1, 0], [0, 1]]
+            Gw = [[0], [0]]
+            Hw = [[1, 1]]
+        else:
+            Pu = math.exp((-Va / Lu) * dT)
+            Gu = ((Lu / Va) * (1 - math.exp((-Va / Lu) * dT)))
+            Hu = (Su * math.sqrt((2 * Va) / (math.pi * Lu)))
+            Pvmat = [[(1 - ((Va / Lv) * dT)), (-((Va / Lv) ** 2) * dT)],
+                     [dT, (1 + ((Va / Lv) * dT))]]
+            expv = math.exp((-Va / Lv) * dT)
+            Pv = MatrixMath.scalarMultiply(expv, Pvmat)
+            Gvmat = [[dT], [(((Lv / Va) ** 2) * ((math.exp((Va / Lv) * dT)) - 1)) - ((Lv / Va) * dT)]]
+            Gv = MatrixMath.scalarMultiply(expv, Gvmat)
+            Hvsc = Sv * math.sqrt((3 * Va) / (math.pi * Lv))
+            Hv = MatrixMath.scalarMultiply(Hvsc, [[1, (Va / (math.sqrt(3) * Lv))]])
+            Pwmat = [[(1 - ((Va / Lw) * dT)), (-((Va / Lw) ** 2) * dT)],
+                     [dT, (1 + ((Va / Lw) * dT))]]
+            expw = math.exp((-Va / Lw) * dT)
+            Pw = MatrixMath.scalarMultiply(expw, Pwmat)
+            Gwmat = [[dT], [(((Lw / Va) ** 2) * ((math.exp((Va / Lw) * dT)) - 1)) - ((Lw / Va) * dT)]]
+            Gw = MatrixMath.scalarMultiply(expw, Gwmat)
+            Hwsc = Sw * math.sqrt((3 * Va) / (math.pi * Lw))
+            Hw = MatrixMath.scalarMultiply(Hwsc, [[1, (Va / (math.sqrt(3) * Lw))]])
+
+        self.pu = [[Pu]]
+        self.gu = [[Gu]]
+        self.hu = [[Hu]]
+        self.pv = Pv
+        self.gv = Gv
+        self.hv = Hv
+        self.pw = Pw
+        self.gw = Gw
+        self.hw = Hw
+        return
+
 
     def getDrydenTransferFns(self):
         return self.Phi_u , self.Gamma_u , self.H_u , self.Phi_v , self.Gamma_v , self.H_v , self.Phi_w , self.Gamma_w , self.H_w
