@@ -34,7 +34,7 @@ class WindModel():
 
 
         self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
-        
+
         self.Xu = [[0]]
         self.Xv = [[0],[0]]
         self.Xw = [[0],[0]]
@@ -97,20 +97,20 @@ class WindModel():
         X = [[Xu_plus], [Xv_plus], [Xw_plus]]
         self.myWindState.Wu = MatrixMath.multiply(self.H_u, Xu_plus)[0][0]
         #print(self.myWindState.Wu)
-    
+        self.Xu = Xu_plus
 
         self.myWindState.Wv = MatrixMath.multiply(self.H_v, Xv_plus)[0][0]
         #print(self.myWindState.Wu)
-    
+        self.Xv = Xv_plus
 
         self.myWindState.Ww = MatrixMath.multiply(self.H_w, Xw_plus)[0][0]
         #print(self.myWindState.Wu)
-
+        self.Xw = Xw_plus
     
         #STEP 4 -> x- ↤ x+ : Update previous state\
-        self.Xu = Xu_plus
-        self.Xv = Xv_plus
-        self.Xw = Xw_plus
+        
+        
+        
 
         #STEP 5 At next time step, Goto step (2)
 
