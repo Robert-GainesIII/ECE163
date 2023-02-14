@@ -233,5 +233,5 @@ class WindModel():
         self.myWindState.Wn = Wn
         self.myWindState.We = We
         self.myWindState.Wd = Wd
-        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
+        self.CreateDrydenTransferFns(self.dT, self.Va, drydenParamters)
         #returns none
