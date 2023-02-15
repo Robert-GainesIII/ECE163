@@ -24,7 +24,7 @@ def CreateTransferFunction(trimState, trimInputs):
     mytf.a_theta1 = 0
     mytf.a_theta2 = 0
     mytf.a_theta3 = 0
-    mytf.a_V1 = VPC.g0 * math.cos(trimState.phi - trimState.alpha)
+    mytf.a_V1 = VPC.g0 * math.cos(trimState.pitch - trimState.yaw)
     mytf.a_V2 = 0
     mytf.a_V3 = 0
 
