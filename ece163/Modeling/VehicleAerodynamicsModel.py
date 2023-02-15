@@ -178,7 +178,7 @@ class VehicleAerodynamicsModel:
     def Update(self, controls):
 
         DIYAISCRAZY = self.dynamicsModel.getVehicleState()
-        f = self.updateForces(DIYAISCRAZY, controls, self.myWindModel)
+        f = self.updateForces(DIYAISCRAZY, controls, self.myWindModel.getWind())
         self.dynamicsModel.Update(f)
         '''
         self.myWindModel.Update()
@@ -305,7 +305,7 @@ class VehicleAerodynamicsModel:
 
     def updateForces(self, state, controls, wind=None):
         if wind is not None:
-            wind.Update(self.myWindModel.myWindState.Wu,self.myWindModel.myWindState.Wv,self.myWindModel.myWindState.Ww)
+            wind.Update(wind.Wu,wind.Wv, wind.Ww)
             airspeed = self.CalculateAirspeed(state, wind)
             state.Va = airspeed[0]
             state.alpha = airspeed[1]
