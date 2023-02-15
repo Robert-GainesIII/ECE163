@@ -162,7 +162,7 @@ class VehicleAerodynamicsModel:
         self.dynamicsModel.u = VPC.InitialSpeed
 
         self.initialHeight =  VPC.InitialDownPosition
-        self.initialSpeed = VPC.initialSpeed
+        self.initialSpeed = VPC.InitialSpeed
     
     def getVehicleState(self):
         return self.dynamicsModel.state
