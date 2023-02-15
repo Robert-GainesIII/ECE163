@@ -304,7 +304,8 @@ class VehicleAerodynamicsModel:
         return (Fprop, Mprop)
 
     def updateForces(self, state, controls, wind=None):
-        if wind is None:
+        if wind is not None:
+            wind.Update(self.myWindModel.myWindState.Wu,self.myWindModel.myWindState.Wv,self.myWindModel.myWindState.Ww)
             airspeed = self.CalculateAirspeed(state, wind)
             state.Va = airspeed[0]
             state.alpha = airspeed[1]
