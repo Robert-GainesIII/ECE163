@@ -19,7 +19,7 @@ def dThrust_dThrottle(Va, Throttle, epsilon =0.01):
     
     VAeroModel = VehicleAerodynamicsModel.VehicleAerodynamicsModel()
     #partial derivative {N/PWM}
-    dt_dDeltaT = 0
+    dt_dDeltaT = 0.0
     fxplus =  VAeroModel.CalculatePropForces(Va, Throttle + epsilon)
     fx = VAeroModel.CalculatePropForces(Va, Throttle)
 
@@ -31,7 +31,7 @@ def dThrust_dThrottle(Va, Throttle, epsilon =0.01):
 def dThrust_dVa(Va, Throttle, epsilon=0.5):
     #partial derivative {N-s/m}
     VAeroModel = VehicleAerodynamicsModel.VehicleAerodynamicsModel()
-    dt_dVa = 0
+    dt_dVa = 0.0
     fxplus = VAeroModel.CalculatePropForces(Va + epsilon, Throttle)
     fx = VAeroModel.CalculatePropForces(Va, Throttle)
     dt_dVa = (fxplus[0] - fx[0])/epsilon

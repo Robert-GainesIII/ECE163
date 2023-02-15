@@ -178,8 +178,13 @@ class VehicleAerodynamicsModel:
     def Update(self, controls):
 
         DIYAISCRAZY = self.dynamicsModel.getVehicleState()
-        f = self.updateForces(DIYAISCRAZY, controls)
         self.dynamicsModel.Update(f)
+        f = self.updateForces(DIYAISCRAZY, controls)
+        self.myWindModel.Update()
+        airspeed = self.CalculateAirspeed(DIYAISCRAZY, self.myWindModel.getWind())
+        self.dynamicsModel.Va = airspeed[0]
+        self.dynamicsModel.alpha = airspeed[1]
+        self.dynamicsModel.beta = airspeed[2]
 
     #:param alpha, Angle of Attack [rad]
     # return: 
@@ -297,14 +302,19 @@ class VehicleAerodynamicsModel:
         return (Fprop, Mprop)
 
     def updateForces(self, state, controls, wind=None):
-        forcesnMoments = Inputs.forcesMoments()
-        state.Va = math.hypot(state.u, state.v, state.w)
-        state.alpha = math.atan2(state.w,state.u)
-        if(math.isclose(state.Va, 0)):
-            state.beta = 0
+        if wind is None:
+            airspeed = self.CalculateAirspeed(state, wind)
+            state.Va = airspeed[0]
+            state.alpha = airspeed[1]
+            state.beta = airspeed[2]
         else:
-            state.beta = math.asin(state.v/math.hypot(state.u, state.v, state.w))
-
+            state.Va = math.hypot(state.u, state.v, state.w)
+            state.alpha = math.atan2(state.w,state.u)
+            if(math.isclose(state.Va, 0)):
+                state.beta = 0
+            else:
+                state.beta = math.asin(state.v/math.hypot(state.u, state.v, state.w))
+        forcesnMoments = Inputs.forcesMoments()
         aF = self.aeroForces(state)
         cF = self.controlForces(state, controls)
         gF = self.gravityForces(state)
