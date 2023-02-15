@@ -178,14 +178,15 @@ class VehicleAerodynamicsModel:
     def Update(self, controls):
 
         DIYAISCRAZY = self.dynamicsModel.getVehicleState()
-        f = self.updateForces(DIYAISCRAZY, controls)
+        f = self.updateForces(DIYAISCRAZY, controls, self.myWindModel)
         self.dynamicsModel.Update(f)
-        
+        '''
         self.myWindModel.Update()
-        airspeed = self.CalculateAirspeed(DIYAISCRAZY, self.myWindModel.getWind())
+        airspeed = self.CalculateAirspeed(DIYAISCRAZY, self.myWindModel)
         self.dynamicsModel.state.Va = airspeed[0]
         self.dynamicsModel.state.alpha = airspeed[1]
         self.dynamicsModel.state.beta = airspeed[2]
+        '''
 
     #:param alpha, Angle of Attack [rad]
     # return: 
