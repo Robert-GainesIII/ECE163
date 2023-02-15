@@ -23,7 +23,7 @@ def dThrust_dThrottle(Va, Throttle, epsilon =0.01):
     fxplus =  VAeroModel.CalculatePropForces(Va, Throttle + epsilon)
     fx = VAeroModel.CalculatePropForces(Va, Throttle)
 
-    dt_dDeltaT = (fxplus - fx)/epsilon
+    dt_dDeltaT = (fxplus[0] - fx[0])/epsilon
 
     return dt_dDeltaT
 
@@ -34,5 +34,5 @@ def dThrust_dVa(Va, Throttle, epsilon=0.5):
     dt_dVa = 0
     fxplus = VAeroModel.CalculatePropForces(Va + epsilon, Throttle)
     fx = VAeroModel.CalculatePropForces(Va, Throttle)
-    dt_dVa = (fxplus - fx)/epsilon
+    dt_dVa = (fxplus[0] - fx[0])/epsilon
     return dt_dVa
