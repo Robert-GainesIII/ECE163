@@ -178,7 +178,6 @@ class VehicleAerodynamicsModel:
     def Update(self, controls):
 
         DIYAISCRAZY = self.dynamicsModel.getVehicleState()
-        self.myWindModel.Update()
         f = self.updateForces(DIYAISCRAZY, controls, self.myWindModel.getWind())
         self.dynamicsModel.Update(f)
         '''
