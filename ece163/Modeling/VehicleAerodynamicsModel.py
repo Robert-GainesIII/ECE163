@@ -289,7 +289,7 @@ class VehicleAerodynamicsModel:
         b = (VPC.rho * math.pow(VPC.D_prop,4) * Va * VPC.C_Q1)/(2*math.pi) + (Kt*Kt)/VPC.R_motor
         c = (VPC.rho * math.pow(VPC.D_prop,3) * math.pow(Va, 2) * VPC.C_Q2) - (Kt*((VPC.V_max*Throttle)/VPC.R_motor)) + Kt*VPC.i0
         try:
-            omega = (-b + math.sqrt(b ** 2 - 4 * a * c)) / (2 * a)
+            omega = (-b + math.sqrt((b ** 2) - (4 * a * c))) / (2 * a)
         except:
    # print("Crashed Propeller Model doing square root (imaginary), Va = {}, dT = {}, b = {}, c = {}".format(Va, DeltaT, b, c))
             omega = 100.0
