@@ -183,9 +183,9 @@ class VehicleAerodynamicsModel:
         
         self.myWindModel.Update()
         airspeed = self.CalculateAirspeed(DIYAISCRAZY, self.myWindModel.getWind())
-        self.dynamicsModel.Va = airspeed[0]
-        self.dynamicsModel.alpha = airspeed[1]
-        self.dynamicsModel.beta = airspeed[2]
+        self.dynamicsModel.state.Va = airspeed[0]
+        self.dynamicsModel.state.alpha = airspeed[1]
+        self.dynamicsModel.state.beta = airspeed[2]
 
     #:param alpha, Angle of Attack [rad]
     # return: 
