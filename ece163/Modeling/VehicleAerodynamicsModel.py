@@ -371,5 +371,5 @@ class VehicleAerodynamicsModel:
             beta = 0.0
         else:
             beta = math.asin(AirspeedVec[1][0]/va)
-        return [va, alpha, beta]
+        return va, alpha, beta
 
