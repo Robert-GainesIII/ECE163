@@ -17,16 +17,16 @@ def CreateTransferFunction(trimState, trimInputs):
     mytf.gamma_trim = 0
     mytf.theta_trim = 0
     mytf.phi_trim = 0 
-    mytf.a_phi1 = -((1/2 * VPC.rho * (trimState.Va ** 2) * VPC.S * VPC.b * VPC.Cpp * (VPC.b/2*trimState.Va)))
-    mytf.a_phi2 = ((1/2 * VPC.rho * (trimState.Va ** 2) * VPC.S * VPC.b * VPC.CpdeltaA))
+    mytf.a_phi1 = -((1.0/2.0 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.Cpp * (VPC.b/2.0*trimState.Va)))
+    mytf.a_phi2 = ((1.0/2.0 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.CpdeltaA))
     mytf.a_beta1 = -((VPC.rho * trimState.Va * VPC.S)/2*VPC.mass)*VPC.CYbeta
     mytf.a_beta2 = ((VPC.rho * trimState.Va * VPC.S)/2*VPC.mass)*VPC.CYdeltaR
 
-    mytf.a_theta1 = -((VPC.rho * (trimState.Va **2) * VPC.c * VPC.S)/(2* VPC.Jyy))* VPC.CMq * (VPC.c/(2*trimState.Va))
-    mytf.a_theta2 = -((VPC.rho * (trimState.Va **2) * VPC.c * VPC.S)/(2* VPC.Jyy))* VPC.CMalpha
-    mytf.a_theta3 = ((VPC.rho * (trimState.Va **2) * VPC.c * VPC.S)/(2* VPC.Jyy))* VPC.CMdeltaE
-    mytf.a_V1 = (((VPC.rho*trimState.Va* VPC.S)/VPC.mass)*(-VPC.CD0 + (VPC.CDalpha*trimState.alpha) - (VPC.CDdeltaE*trimInputs.Elevator))) + (1/VPC.mass * dThrust_dVa(trimState.Va,trimInputs.Throttle, 0.01))
-    mytf.a_V2 = 1/VPC.mass * dThrust_dThrottle(trimState.Va, trimInputs.Elevator)
+    mytf.a_theta1 = -((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMq * (VPC.c/(2.0*trimState.Va))
+    mytf.a_theta2 = -((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMalpha
+    mytf.a_theta3 = ((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMdeltaE
+    mytf.a_V1 = (((VPC.rho*trimState.Va* VPC.S)/VPC.mass)*(-VPC.CD0 + (VPC.CDalpha*trimState.alpha) - (VPC.CDdeltaE*trimInputs.Elevator))) + (1.0/VPC.mass * dThrust_dVa(trimState.Va,trimInputs.Throttle, 0.01))
+    mytf.a_V2 = 1.0/VPC.mass * dThrust_dThrottle(trimState.Va, trimInputs.Elevator)
     mytf.a_V3 = VPC.g0 * math.cos(trimState.pitch - trimState.alpha)
 
     return mytf

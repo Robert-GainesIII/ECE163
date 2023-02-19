@@ -23,19 +23,19 @@ def cl_attached(alpha):
 
 def cd_attached(alpha):
     #print("calculating cd attached")
-    x = VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2))/(math.pi * VPC.e* VPC.AR)
+    x = VPC.CDp + (math.pow((VPC.CL0 + VPC.CLalpha * alpha),2.0))/(math.pi * VPC.e* VPC.AR)
     #print("cd_attached= " + str(x))
     return x
 
 def cl_seperated(alpha):
     #print("calculating cl seperated ")
-    x = 2 *math.sin(alpha) * math.cos(alpha)
+    x = 2.0 *math.sin(alpha) * math.cos(alpha)
     #print("cl_seperated= " + str(x))
     return x
 
 def cd_seperated(alpha):
     #print("calculating cd seperated ")
-    x = 2 * math.pow(math.sin(alpha), 2)
+    x = 2.0 * math.pow(math.sin(alpha), 2.0)
     #print("cd_seperated =" + str(x))
     return x
 
@@ -43,7 +43,7 @@ def Cl_fromA(alpha):
                                 #not sure what we should pass for M, do i need to calculate this?
   
     sigmasss = sigma(alpha, VPC.alpha0, VPC.M)
-    x = (1 - sigmasss) * cl_attached(alpha) + sigmasss*cl_seperated(alpha)
+    x = (1.0 - sigmasss) * cl_attached(alpha) + sigmasss*cl_seperated(alpha)
     #print (x)
     return  x
 
@@ -53,15 +53,15 @@ def Cd_fromA(alpha):
     #print(sigmasss)
     a = cd_attached(alpha)
     s = cd_seperated(alpha)
-    x = ( 1 - sigmasss )*  a + sigmasss * s
+    x = ( 1.0 - sigmasss )*  a + sigmasss * s
     #print(x)    
     return x
 
 #blending function
 
 def sigma(a, a0, M):
-    num = (1 + np.exp(-M*(a-a0)) + np.exp(M*(a+a0)))
-    den = (1 + np.exp(-M*(a-a0)))*(1 + np.exp(M*(a+a0)))
+    num = (1.0 + np.exp(-M*(a-a0)) + np.exp(M*(a+a0)))
+    den = (1.0 + np.exp(-M*(a-a0)))*(1.0 + np.exp(M*(a+a0)))
     return num/den
 
 #EQUATION 4.6
@@ -72,7 +72,7 @@ def calcLiftForce(state):
     c_2Va = 0.5 * VPC.c * state.q / state.Va
      
 
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
+    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
     fLiftTerm2 = Cl_fromA(state.alpha)
     fLiftTerm3 = (VPC.CLq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
@@ -81,7 +81,7 @@ def calcDragForce(state):
   
     c_2Va = 0.5 * VPC.c * state.q / state.Va
     
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
+    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
     fLiftTerm2 = Cd_fromA(state.alpha)
     fLiftTerm3 = (VPC.CDq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
@@ -90,7 +90,7 @@ def calcMoment(state):
    
     c_2Va = 0.5 * VPC.c * state.q / state.Va
 
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.c
+    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.c
     fLiftTerm2 = VPC.CM0
     fLiftTerm3 = VPC.CMalpha * state.alpha
     fLiftTerm4 = (VPC.CMq* c_2Va)
@@ -100,7 +100,7 @@ def calcMoment(state):
 def calcFy(state):
     
     b_2Va = 0.5 * VPC.b / state.Va
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S
+    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
     fLiftTerm2 = VPC.CY0
     fLiftTerm3 = VPC.CYbeta * state.beta
     fLiftTerm4 = (VPC.CYp* b_2Va* state.p)
@@ -111,7 +111,7 @@ def calcFy(state):
 def calcMomentL(state):
     
     b_2Va = 0.5 * VPC.b / state.Va
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
+    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cl0
     fLiftTerm3 = VPC.Clbeta * state.beta
     fLiftTerm4 = (VPC.Clp* b_2Va * state.p)
@@ -123,7 +123,7 @@ def calcMomentN(state):
     
     b_2Va = 0.5 * VPC.b / state.Va
 
-    fLiftTerm1 = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b
+    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cn0
     fLiftTerm3 = VPC.Cnbeta * state.beta
     fLiftTerm4 = (VPC.Cnp* b_2Va * state.p)
@@ -208,13 +208,13 @@ class VehicleAerodynamicsModel:
     def aeroForces(self, state):
         #print("start aeroForces()")
         forcesnMoments = Inputs.forcesMoments()
-        if(math.isclose(state.Va, 0)):
-            Fl = 0
-            Fd = 0
-            l = 0
-            m = 0
-            n = 0
-            Fy = 0
+        if(math.isclose(state.Va, 0.0)):
+            Fl = 0.0
+            Fd = 0.0
+            l = 0.0
+            m = 0.0
+            n = 0.0
+            Fy = 0.0
         else:
         
            # #print("calculated beta now for actaul function")
@@ -233,7 +233,7 @@ class VehicleAerodynamicsModel:
             forcesnMoments.My = m
             forcesnMoments.Mz = n
 
-            m_1 = [[-1*Fd],[-1*Fl]]
+            m_1 = [[-1.0*Fd],[-1.0*Fl]]
             m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
             m_3 = MatrixMath.multiply(m_2, m_1)
             
@@ -245,12 +245,12 @@ class VehicleAerodynamicsModel:
         forcesnMoments = Inputs.forcesMoments()
         Fprop = self.CalculatePropForces(state.Va, controls.Throttle)
         
-        Fl =  1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CLdeltaE * controls.Elevator)
-        Fd =  1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CDdeltaE * controls.Elevator)
-        l = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b * (VPC.CldeltaA * controls.Aileron + VPC.CldeltaR * controls.Rudder)
-        m = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S  * VPC.c * (VPC.CMdeltaE * controls.Elevator)
-        n = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * VPC.b * (VPC.CndeltaA * controls.Aileron + VPC.CndeltaR * controls.Rudder)
-        Fy = 1/2* VPC.rho * math.pow(state.Va, 2) * VPC.S * (VPC.CYdeltaA * controls.Aileron + VPC.CYdeltaR * controls.Rudder)
+        Fl =  1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CLdeltaE * controls.Elevator)
+        Fd =  1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CDdeltaE * controls.Elevator)
+        l = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b * (VPC.CldeltaA * controls.Aileron + VPC.CldeltaR * controls.Rudder)
+        m = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S  * VPC.c * (VPC.CMdeltaE * controls.Elevator)
+        n = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b * (VPC.CndeltaA * controls.Aileron + VPC.CndeltaR * controls.Rudder)
+        Fy = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CYdeltaA * controls.Aileron + VPC.CYdeltaR * controls.Rudder)
 
         #print("end aeroForces")
         forcesnMoments.Fx = Fd
@@ -260,7 +260,7 @@ class VehicleAerodynamicsModel:
         forcesnMoments.My = m
         forcesnMoments.Mz = n
 
-        m_1 = [[-1*Fd],[-1*Fl]]
+        m_1 = [[-1.0*Fd],[-1.0*Fl]]
         m_2 = [[math.cos(state.alpha), -1*math.sin(state.alpha)],[math.sin(state.alpha), math.cos(state.alpha)]]
         m_3 = MatrixMath.multiply(m_2, m_1)
         
@@ -284,22 +284,22 @@ class VehicleAerodynamicsModel:
         return forcesnMoments
 
     def CalculatePropForces(self, Va, Throttle):
-        Kt = 60/(2*math.pi*VPC.KV)
-        a = (VPC.rho * math.pow(VPC.D_prop,5) * VPC.C_Q0)/(4*math.pow(math.pi,2))
-        b = (VPC.rho * math.pow(VPC.D_prop,4) * Va * VPC.C_Q1)/(2*math.pi) + (Kt*Kt)/VPC.R_motor
-        c = (VPC.rho * math.pow(VPC.D_prop,3) * math.pow(Va, 2) * VPC.C_Q2) - (Kt*((VPC.V_max*Throttle)/VPC.R_motor)) + Kt*VPC.i0
+        Kt = 60.0/(2.0*math.pi*VPC.KV)
+        a = (VPC.rho * math.pow(VPC.D_prop,5.0) * VPC.C_Q0)/(4.0*math.pow(math.pi,2.0))
+        b = (VPC.rho * math.pow(VPC.D_prop,4.0) * Va * VPC.C_Q1)/(2.0*math.pi) + (Kt*Kt)/VPC.R_motor
+        c = (VPC.rho * math.pow(VPC.D_prop,3.0) * math.pow(Va, 2.0) * VPC.C_Q2) - (Kt*((VPC.V_max*Throttle)/VPC.R_motor)) + Kt*VPC.i0
         try:
-            omega = (-b + math.sqrt((b ** 2) - (4 * a * c))) / (2 * a)
+            omega = (-b + math.sqrt((b ** 2.0) - (4.0 * a * c))) / (2.0 * a)
         except:
    # print("Crashed Propeller Model doing square root (imaginary), Va = {}, dT = {}, b = {}, c = {}".format(Va, DeltaT, b, c))
             omega = 100.0
         #omega = (-1*b + math.sqrt(math.pow(b,2) - (4*a*c)))/(2*a)
-        J =  (2* math.pi * Va)/(omega*VPC.D_prop)
-        Ct = VPC.C_T0 + VPC.C_T1 * J + VPC.C_T2 * math.pow(J,2)
-        Cq = VPC.C_Q0 + VPC.C_Q1 * J + VPC.C_Q2 * math.pow(J,2)
+        J =  (2.0* math.pi * Va)/(omega*VPC.D_prop)
+        Ct = VPC.C_T0 + VPC.C_T1 * J + VPC.C_T2 * math.pow(J,2.0)
+        Cq = VPC.C_Q0 + VPC.C_Q1 * J + VPC.C_Q2 * math.pow(J,2.0)
         
-        Fprop = (VPC.rho * math.pow(omega, 2) * math.pow(VPC.D_prop, 4) * Ct)/(4*math.pow(math.pi,2))
-        Mprop = (-1 * VPC.rho * math.pow(omega, 2) * math.pow(VPC.D_prop, 5) * Cq)/(4*math.pow(math.pi,2))
+        Fprop = (VPC.rho * math.pow(omega, 2.0) * math.pow(VPC.D_prop, 4.0) * Ct)/(4.0*math.pow(math.pi,2.0))
+        Mprop = (-1.0 * VPC.rho * math.pow(omega, 2.0) * math.pow(VPC.D_prop, 5.0) * Cq)/(4.0*math.pow(math.pi,2.0))
         
         return (Fprop, Mprop)
 
@@ -313,8 +313,8 @@ class VehicleAerodynamicsModel:
         else:
             state.Va = math.hypot(state.u, state.v, state.w)
             state.alpha = math.atan2(state.w,state.u)
-            if(math.isclose(state.Va, 0)):
-                state.beta = 0
+            if(math.isclose(state.Va, 0.0)):
+                state.beta = 0.0
             else:
                 state.beta = math.asin(state.v/math.hypot(state.u, state.v, state.w))
         forcesnMoments = Inputs.forcesMoments()
@@ -354,14 +354,14 @@ class VehicleAerodynamicsModel:
         
         Ws = math.hypot(wind.Wn, wind.We, wind.Wd)
         Xw = math.atan2(wind.We, wind.Wn)
-        if math.isclose(Ws, 0):
-            Yw = 0
+        if math.isclose(Ws, 0.0):
+            Yw = 0.0
         else:
-            Yw = -1 * math.asin(wind.Wd/(math.hypot(wind.Wn, wind.We, wind.Wd)))
+            Yw = -1.0 * math.asin(wind.Wd/(math.hypot(wind.Wn, wind.We, wind.Wd)))
         
         Azimuth_Elevation_RMat = [
         [(math.cos(Xw)*math.cos(Yw)), (math.sin(Xw)*math.cos(Yw)), (-math.sin(Yw))],
-        [(-math.sin(Xw)), (math.cos(Xw)), 0],
+        [(-math.sin(Xw)), (math.cos(Xw)), 0.0],
         [(math.cos(Xw)*math.sin(Yw)), (math.sin(Xw)*math.sin(Yw)), (math.cos(Yw))]
         ]
         
@@ -375,8 +375,8 @@ class VehicleAerodynamicsModel:
         ]
         va = math.hypot(AirspeedVec[0][0], AirspeedVec[1][0], AirspeedVec[2][0])
         alpha = math.atan2(AirspeedVec[2][0], AirspeedVec[0][0])
-        if math.isclose(va, 0): 
-            beta = 0
+        if math.isclose(va, 0.0): 
+            beta = 0.0
         else:
             beta = math.asin(AirspeedVec[1][0]/va)
         return [va, alpha, beta]
