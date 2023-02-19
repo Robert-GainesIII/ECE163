@@ -135,10 +135,10 @@ class WindModel():
         self.H_w = [[0,0]]
 
         """
-        self.Xu = [[0]]
-        self.Xv = [[0],[0]]
-        self.Xw = [[0],[0]]
-        self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
+        self.Xu = [[0.0]]
+        self.Xv = [[0.0],[0.0]]
+        self.Xw = [[0.0],[0.0]]
+        #self.CreateDrydenTransferFns(self.dT, self.Va, self.drydenParameters)
 
        
 

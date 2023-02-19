@@ -136,33 +136,25 @@ class VehicleAerodynamicsModel:
         #create class instance of vehicle dynamics
         self.dynamicsModel = VehicleDynamicsModel.VehicleDynamicsModel()
         self.myWindModel = WindModel.WindModel()
-        #print(self.dynamicsModel)
-        self.state = self.dynamicsModel.getVehicleState()
-        self.dot = self.dynamicsModel.getVehicleDerivative()
-        self.dT = self.dynamicsModel.dT
-        self.dynamicsModel.pe = VPC.InitialEastPosition
-        self.dynamicsModel.pn = VPC.InitialNorthPosition
-        self.dynamicsModel.pd = VPC.InitialDownPosition
-        self.dynamicsModel.u = VPC.InitialSpeed
+        self.dynamicsModel.state.pe = VPC.InitialEastPosition
+        self.dynamicsModel.state.pn = VPC.InitialNorthPosition
+        self.dynamicsModel.state.pd = VPC.InitialDownPosition
+        self.dynamicsModel.state.u = VPC.InitialSpeed
 
         self.initialHeight = initialHeight
         self.initialSpeed = initialSpeed
 
 
     def reset(self):
-        self.dynamicsModel.reset()
-        self.myWindModel.reset()
+        #self.dynamicsModel.reset()
+        #self.myWindModel.reset()
         #print(self.dynamicsModel)
-        self.state = self.dynamicsModel.getVehicleState()
-        self.dot = self.dynamicsModel.getVehicleDerivative()
-        self.dT = self.dynamicsModel.dT
-        self.dynamicsModel.pe = VPC.InitialEastPosition
-        self.dynamicsModel.pn = VPC.InitialNorthPosition
-        self.dynamicsModel.pd = VPC.InitialDownPosition
-        self.dynamicsModel.u = VPC.InitialSpeed
-
-        self.initialHeight =  VPC.InitialDownPosition
-        self.initialSpeed = VPC.InitialSpeed
+        state = States.vehicleState()
+        self.state = VehicleDynamicsModel.VehicleDynamicsModel()
+        self.dynamicsModel.state = state
+        self.dynamicsModel.pd = self.initialHeight
+        self.dynamicsModel.u  = self.initialSpeed
+        self.dynamicsModel.dot = state
     
     def getVehicleState(self):
         return self.dynamicsModel.state

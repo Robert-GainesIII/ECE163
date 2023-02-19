@@ -150,9 +150,8 @@ class VehicleDynamicsModel:
     
     def reset(self):
 
-        newState = States.vehicleState()
-        self.state = newState
-        self.dot = newState
+        self.setVehicleState(States.vehicleState())
+        self.setVehicleDerivative(States.vehicleState())
     
     def setVehicleDot(self, dot):
 
