@@ -42,19 +42,19 @@ class VehicleDynamicsModel:
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
     def Rexp(self, dT, state, dot):
-        p = state.p + (dot.p * dT/2)
-        q = state.q + (dot.q * dT/2)
-        r = state.r + (dot.r * dT/2)
+        p = state.p + (dot.p * dT/2.0)
+        q = state.q + (dot.q * dT/2.0)
+        r = state.r + (dot.r * dT/2.0)
 
 
         rexp = 0
         NORM = math.hypot(p, q, r)
         sx = MatrixMath.skew(p,q,r)
-        IDENTITY =[[1,0,0],[0,1,0],[0,0,1]]
+        IDENTITY =[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]]
         if NORM < 0.2:
             #different taylor series approximation equations
-            sinTermApprox = dT - ((math.pow(dT,3)*math.pow(NORM,2))/6) + ((math.pow(dT,5)*math.pow(NORM,4))/120)
-            cosTermApprox = (dT*dT)/2 - ((math.pow(dT,4)*math.pow(NORM,2))/24) + ((math.pow(dT,6)*math.pow(NORM,4))/720)
+            sinTermApprox = dT - ((math.pow(dT,3.0)*math.pow(NORM,2.0))/6.0) + ((math.pow(dT,5.0)*math.pow(NORM,4.0))/120.0)
+            cosTermApprox = (dT*dT)/2.0 - ((math.pow(dT,4.0)*math.pow(NORM,2.0))/24.0) + ((math.pow(dT,6.0)*math.pow(NORM,4.0))/720.0)
             rexp = MatrixMath.add(MatrixMath.subtract(IDENTITY,MatrixMath.scalarMultiply(sinTermApprox,sx)), MatrixMath.scalarMultiply(cosTermApprox, MatrixMath.multiply(sx,sx)))
         else:
             #stuff from hw1.py
@@ -62,7 +62,7 @@ class VehicleDynamicsModel:
             angularMag = NORM
             trigTerm = angularMag * dT
             term1 = MatrixMath.subtract(IDENTITY, MatrixMath.scalarMultiply(math.sin(trigTerm)/angularMag, sx))
-            rexp = MatrixMath.add(term1, MatrixMath.scalarMultiply((1-math.cos(trigTerm))/math.pow(angularMag,2),MatrixMath.multiply(sx,sx)))
+            rexp = MatrixMath.add(term1, MatrixMath.scalarMultiply((1.0-math.cos(trigTerm))/math.pow(angularMag,2.0),MatrixMath.multiply(sx,sx)))
 
         return rexp
 
@@ -99,9 +99,9 @@ class VehicleDynamicsModel:
 
         #derivative of euler angles
         MATRIX_FOR_EULER_DERIVATIVES = [
-                    [1, math.sin(state.roll)*math.tan(state.pitch), math.cos(state.roll)*math.tan(state.pitch)],
-                    [0, math.cos(state.roll), -1*math.sin(state.roll)],
-                    [0, math.sin(state.roll)/math.cos(state.pitch), math.cos(state.roll)/math.cos(state.pitch)]
+                    [1.0, math.sin(state.roll)*math.tan(state.pitch), math.cos(state.roll)*math.tan(state.pitch)],
+                    [0.0, math.cos(state.roll), -1.0*math.sin(state.roll)],
+                    [0.0, math.sin(state.roll)/math.cos(state.pitch), math.cos(state.roll)/math.cos(state.pitch)]
         ]
         EulerDerivative = MatrixMath.multiply(MATRIX_FOR_EULER_DERIVATIVES, ANGULAR_RATES)
         dState.yaw = [2][0]
@@ -110,8 +110,8 @@ class VehicleDynamicsModel:
 
 
         #Deriative of velocity
-        NEGSKEW = MatrixMath.scalarMultiply(-1, SKEW)
-        VelocityDerivative = MatrixMath.add(MatrixMath.multiply(NEGSKEW,VELOCITY), MatrixMath.scalarMultiply(1/VPC.mass, FORCES))
+        NEGSKEW = MatrixMath.scalarMultiply(-1.0, SKEW)
+        VelocityDerivative = MatrixMath.add(MatrixMath.multiply(NEGSKEW,VELOCITY), MatrixMath.scalarMultiply(1.0/VPC.mass, FORCES))
         dState.u = VelocityDerivative[0][0]
         dState.v = VelocityDerivative[1][0]
         dState.w = VelocityDerivative[2][0]
@@ -119,19 +119,19 @@ class VehicleDynamicsModel:
         
         #Derivative of angular rates
         PQR_DOT_TERM1 = [
-            [VPC.Jzz/VPC.Jdet, 0, VPC.Jxz/VPC.Jdet],
-            [0, 1/VPC.Jyy, 0],
-            [VPC.Jxz/VPC.Jdet, 0, VPC.Jxx/VPC.Jdet]
+            [VPC.Jzz/VPC.Jdet, 0.0, VPC.Jxz/VPC.Jdet],
+            [0.0, 1.0/VPC.Jyy, 0.0],
+            [VPC.Jxz/VPC.Jdet, 0.0, VPC.Jxx/VPC.Jdet]
         ]
         #jinverse multplied by -skew*j*pqr + moments
-        pqrDerivative = MatrixMath.multiply(VPC.JinvBody, MatrixMath.add(MatrixMath.multiply(MatrixMath.multiply(MatrixMath.scalarMultiply(-1,SKEW),VPC.Jbody),ANGULAR_RATES), MOMENTS))
+        pqrDerivative = MatrixMath.multiply(VPC.JinvBody, MatrixMath.add(MatrixMath.multiply(MatrixMath.multiply(MatrixMath.scalarMultiply(-1.0,SKEW),VPC.Jbody),ANGULAR_RATES), MOMENTS))
         dState.p = pqrDerivative[0][0]
         dState.q = pqrDerivative[1][0]
         dState.r = pqrDerivative[2][0]
 
 
         #derivitve of Rotation Matrix
-        dState.R = MatrixMath.scalarMultiply(-1, MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),state.R))
+        dState.R = MatrixMath.scalarMultiply(-1.0, MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),state.R))
 
 
         return dState
