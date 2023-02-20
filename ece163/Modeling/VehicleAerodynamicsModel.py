@@ -237,12 +237,12 @@ class VehicleAerodynamicsModel:
         forcesnMoments = Inputs.forcesMoments()
         Fprop = self.CalculatePropForces(state.Va, controls.Throttle)
         
-        Fl =  1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CLdeltaE * controls.Elevator)
-        Fd =  1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CDdeltaE * controls.Elevator)
-        l = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b * (VPC.CldeltaA * controls.Aileron + VPC.CldeltaR * controls.Rudder)
-        m = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S  * VPC.c * (VPC.CMdeltaE * controls.Elevator)
-        n = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b * (VPC.CndeltaA * controls.Aileron + VPC.CndeltaR * controls.Rudder)
-        Fy = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CYdeltaA * controls.Aileron + VPC.CYdeltaR * controls.Rudder)
+        Fl =  (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CLdeltaE * controls.Elevator)
+        Fd =  (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CDdeltaE * controls.Elevator)
+        l = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b * (VPC.CldeltaA * controls.Aileron + VPC.CldeltaR * controls.Rudder)
+        m = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S  * VPC.c * (VPC.CMdeltaE * controls.Elevator)
+        n = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b * (VPC.CndeltaA * controls.Aileron + VPC.CndeltaR * controls.Rudder)
+        Fy = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * (VPC.CYdeltaA * controls.Aileron + VPC.CYdeltaR * controls.Rudder)
 
         #print("end aeroForces")
         forcesnMoments.Fx = Fd
