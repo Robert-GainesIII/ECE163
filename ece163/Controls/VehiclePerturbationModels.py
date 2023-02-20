@@ -14,7 +14,7 @@ def CreateTransferFunction(trimState, trimInputs):
     mytf.Va_trim = math.hypot(trimState.u, trimState.v, trimState.w)
     mytf.alpha_trim = trimState.alpha
     mytf.theta_trim = trimState.pitch
-    mytf.chi_trim = trimState.chi
+    #mytf.chi_trim = trimState.chi
     if math.isclose(trimState.Va, 0.0):
         mytf.beta_trim = 0.0
     else:
