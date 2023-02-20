@@ -69,28 +69,28 @@ def calcLiftForce(state):
    
   
     
-    c_2Va = 0.5 * VPC.c * state.q / state.Va
+    c_2Va = (0.5 * VPC.c * state.q )/ state.Va
      
 
-    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
+    fLiftTerm1 = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
     fLiftTerm2 = Cl_fromA(state.alpha)
     fLiftTerm3 = (VPC.CLq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.7
 def calcDragForce(state):
   
-    c_2Va = 0.5 * VPC.c * state.q / state.Va
+    c_2Va = (0.5 * VPC.c * state.q )/ state.Va
     
-    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
+    fLiftTerm1 = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
     fLiftTerm2 = Cd_fromA(state.alpha)
     fLiftTerm3 = (VPC.CDq * c_2Va)
     return fLiftTerm1 * (fLiftTerm2 + fLiftTerm3)
 #EQUATION 4.5
 def calcMoment(state):
    
-    c_2Va = 0.5 * VPC.c * state.q / state.Va
+    c_2Va = (0.5 * VPC.c * state.q) / state.Va
 
-    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.c
+    fLiftTerm1 = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.c
     fLiftTerm2 = VPC.CM0
     fLiftTerm3 = VPC.CMalpha * state.alpha
     fLiftTerm4 = (VPC.CMq* c_2Va)
@@ -99,8 +99,8 @@ def calcMoment(state):
 #EQUATION 4.14
 def calcFy(state):
     
-    b_2Va = 0.5 * VPC.b / state.Va
-    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
+    b_2Va = (0.5 * VPC.b) / state.Va
+    fLiftTerm1 = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S
     fLiftTerm2 = VPC.CY0
     fLiftTerm3 = VPC.CYbeta * state.beta
     fLiftTerm4 = (VPC.CYp* b_2Va* state.p)
@@ -110,8 +110,8 @@ def calcFy(state):
 #EQUATION 4.15
 def calcMomentL(state):
     
-    b_2Va = 0.5 * VPC.b / state.Va
-    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b
+    b_2Va = (0.5 * VPC.b)/ state.Va
+    fLiftTerm1 = (1.0/2.0)* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cl0
     fLiftTerm3 = VPC.Clbeta * state.beta
     fLiftTerm4 = (VPC.Clp* b_2Va * state.p)
@@ -121,9 +121,9 @@ def calcMomentL(state):
 #EQUATION 4.16
 def calcMomentN(state):
     
-    b_2Va = 0.5 * VPC.b / state.Va
+    b_2Va = (0.5 * VPC.b) / state.Va
 
-    fLiftTerm1 = 1.0/2.0* VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b
+    fLiftTerm1 = (1.0/2.0) * VPC.rho * math.pow(state.Va, 2.0) * VPC.S * VPC.b
     fLiftTerm2 = VPC.Cn0
     fLiftTerm3 = VPC.Cnbeta * state.beta
     fLiftTerm4 = (VPC.Cnp* b_2Va * state.p)
