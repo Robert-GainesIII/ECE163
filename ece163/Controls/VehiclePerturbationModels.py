@@ -11,16 +11,21 @@ from ece163.Controls import VehicleTrim
 def CreateTransferFunction(trimState, trimInputs):
 
     mytf = Linearized.transferFunctions()
-    mytf.Va_trim = 0
-    mytf.alpha_trim = 0
-    mytf.beta_trim = 0
-    mytf.gamma_trim = 0
-    mytf.theta_trim = 0
-    mytf.phi_trim = 0 
+    mytf.Va_trim = math.hypot(trimState.u, trimState.v, trimState.w)
+    mytf.alpha_trim = trimState.alpha
+    mytf.theta_trim = trimState.pitch
+    mytf.chi_trim = trimState.chi
+    if math.isclose(trimState.Va, 0.0):
+        mytf.beta_trim = 0.0
+    else:
+        mytf.beta_trim = trimState.beta
+    mytf.gamma_trim = mytf.theta_trim- mytf.alpha_trim
+    
+    mytf.phi_trim = trimState.roll
     mytf.a_phi1 = -((1.0/2.0 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.Cpp * (VPC.b/2.0*trimState.Va)))
     mytf.a_phi2 = ((1.0/2.0 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.CpdeltaA))
-    mytf.a_beta1 = -((VPC.rho * trimState.Va * VPC.S)/2*VPC.mass)*VPC.CYbeta
-    mytf.a_beta2 = ((VPC.rho * trimState.Va * VPC.S)/2*VPC.mass)*VPC.CYdeltaR
+    mytf.a_beta1 = -((VPC.rho * trimState.Va * VPC.S)/2.0*VPC.mass)*VPC.CYbeta
+    mytf.a_beta2 = ((VPC.rho * trimState.Va * VPC.S)/2.0*VPC.mass)*VPC.CYdeltaR
 
     mytf.a_theta1 = -((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMq * (VPC.c/(2.0*trimState.Va))
     mytf.a_theta2 = -((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMalpha
