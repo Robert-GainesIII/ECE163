@@ -23,9 +23,9 @@ def CreateTransferFunction(trimState, trimInputs):
     
     mytf.phi_trim = trimState.roll
     mytf.a_phi1 = -0.5 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.Cpp * (VPC.b/(2.0*trimState.Va))
-    mytf.a_phi2 = -0.5 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.CpdeltaA
-    mytf.a_beta1 = -((VPC.rho * trimState.Va * VPC.S)/2.0*VPC.mass)*VPC.CYbeta
-    mytf.a_beta2 = ((VPC.rho * trimState.Va * VPC.S)/2.0*VPC.mass)*VPC.CYdeltaR
+    mytf.a_phi2 = 0.5 * VPC.rho * (trimState.Va ** 2.0) * VPC.S * VPC.b * VPC.CpdeltaA
+    mytf.a_beta1 = ((-VPC.rho * trimState.Va * VPC.S)/(2.0*VPC.mass))*VPC.CYbeta
+    mytf.a_beta2 = ((VPC.rho * trimState.Va * VPC.S)/(2.0*VPC.mass))*VPC.CYdeltaR
 
     mytf.a_theta1 = -((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMq * (VPC.c/(2.0*trimState.Va))
     mytf.a_theta2 = -((VPC.rho * (trimState.Va **2.0) * VPC.c * VPC.S)/(2.0* VPC.Jyy))* VPC.CMalpha
