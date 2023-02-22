@@ -53,7 +53,7 @@ class VehicleDynamicsModel:
         r = state.r + dot.r * dT/2.0
 
 
-        rexp = 0
+        
         NORM = math.hypot(p, q, r)
         sx = MatrixMath.skew(p,q,r)
         IDENTITY =[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]]
