@@ -13,24 +13,30 @@ class VehicleDynamicsModel:
         return 
 
     def ForwardEuler(self, dT, state, dot):
-        newState = States.vehicleState()
-        newState.pn = state.pn + dot.pn*dT
-        newState.pe = state.pe + dot.pe*dT
-        newState.pd = state.pd + dot.pd*dT
+        new_state = States.vehicleState()
+        n_1 = state.pn + dot.pn*dT
+        e_1 = state.pe + dot.pe*dT
+        d_1 = state.pd + dot.pd*dT
 
-        newState.p = state.p + dot.p*dT
-        newState.q = state.q + dot.q*dT
-        newState.r = state.r + dot.r*dT
+        u_1 = state.u + dot.u * dT
+        v_1 = state.v + dot.v * dT
+        w_1 = state.w + dot.w * dT
 
-        newState.u = state.u + dot.u*dT
-        newState.v = state.v + dot.v*dT
-        newState.w = state.w + dot.w*dT
+        p_1 = state.p + dot.p*dT
+        q_1 = state.q + dot.q*dT
+        r_1 = state.r + dot.r*dT
 
-        for i in range(3):
-            for j in range(3):
-                newState.R[i][j] = state.R[i][j] + dT * dot.R[i][j]
 
-        return newState
+        new_state.pn=n_1
+        new_state.pe=e_1
+        new_state.pd=d_1
+        new_state.u=u_1
+        new_state.v=v_1
+        new_state.w=w_1
+        new_state.p=p_1
+        new_state.q=q_1
+        new_state.r=r_1
+        return new_state
     
     def IntegrateState(self, dT, state, dot):
         #calculate forward integration for pqr,PnPePd, uvw
@@ -88,60 +94,65 @@ class VehicleDynamicsModel:
         #an updated state where IntegrateStatethe derivatives replace what they dervied from i.e pqr => PdotQdotRdot
         #forces and moments contains self.fx-z and self.Mx-z
 
-        dState = States.vehicleState()
-        POS = [[state.pn],[state.pe],[state.pd]]
-        VELOCITY = [[state.u],[state.v],[state.w]]
-        EULERS = [[state.roll], [state.pitch], [state.yaw] ]
-        ANGULAR_RATES = [[state.p],[state.q],[state.r]]
-        SKEW = MatrixMath.skew(state.p,state.q,state.r)
-        
-        FORCES = [[forcesnmoments.Fx],[forcesnmoments.Fy],[forcesnmoments.Fz]]
-        MOMENTS = [[forcesnmoments.Mx],[forcesnmoments.My],[forcesnmoments.Mz]]
-        
-        #derivative of positon
-        PosistionDerivative = MatrixMath.multiply(MatrixMath.transpose(state.R), VELOCITY)
-        dState.pn = PosistionDerivative[0][0]
-        dState.pe = PosistionDerivative[1][0]
-        dState.pd = PosistionDerivative[2][0]
+        newState = States.vehicleState()
+        p_0 = state.p
+        q_0 = state.q
+        r_0 = state.r
+        pitch_0 = state.pitch
+        roll_0 = state.roll
+        skew_matrix = MatrixMath.skew(p_0, q_0, r_0)
+        neg_skew = MatrixMath.scalarMultiply(-1.0, skew_matrix)
+        R_ddt = MatrixMath.multiply(neg_skew, state.R) # Attitude cheatsheet (19)
+        #----------------------------------# Attitude cheatsheet (26)
+        mmatrix = [[1.0, math.sin(roll_0)*math.tan(pitch_0), math.cos(roll_0)*math.tan(pitch_0)],
+                   [0.0, math.cos(roll_0), -1.0*math.sin(roll_0)],
+                   [0.0, (math.sin(roll_0)/math.cos(pitch_0)),( math.cos(roll_0)/math.cos(pitch_0))]]
+        ypr_ddt = MatrixMath.multiply(mmatrix, [[state.p], [state.q], [state.r]])
+        #-----------------------------------Lecture Equations of motion 1.3
+        m_force = MatrixMath.scalarMultiply(1.0/VPC.mass, [[forcesnmoments.Fx], [forcesnmoments.Fy], [forcesnmoments.Fz]])
+        scew_uvw = MatrixMath.multiply(neg_skew, [[state.u], [state.v], [state.w]])
+        uvw_ddt = MatrixMath.add(m_force, scew_uvw)
+        #-------------------------------------Lecture Equations of motion 1.3
+        R_trans = MatrixMath.transpose(state.R)
+        pned_ddt = MatrixMath.multiply(R_trans, [[state.u], [state.v], [state.w]])
+        #-------------------------------------Lecture Equations of motion 1.3
+        J_w = MatrixMath.multiply(VPC.Jbody, [[state.p], [state.q], [state.r]])
+        J_skew = MatrixMath.multiply(neg_skew, J_w)
+        temp = MatrixMath.add(J_skew, [[forcesnmoments.Mx], [forcesnmoments.My], [forcesnmoments.Mz]])
+        pqr_ddt = MatrixMath.multiply(VPC.JinvBody, temp)
+        #---------------------------------------
+        '''
+        roll_0 = ypr_ddt[2][0]
+        pitch_0 = ypr_ddt[1][0]
 
-        #derivative of euler angles
-        MATRIX_FOR_EULER_DERIVATIVES = [
-                    [1.0, math.sin(state.roll)*math.tan(state.pitch), math.cos(state.roll)*math.tan(state.pitch)],
-                    [0.0, math.cos(state.roll), -1.0*math.sin(state.roll)],
-                    [0.0, math.sin(state.roll)/math.cos(state.pitch), math.cos(state.roll)/math.cos(state.pitch)]
-        ]
-        EulerDerivative = MatrixMath.multiply(MATRIX_FOR_EULER_DERIVATIVES, ANGULAR_RATES)
-        dState.yaw = [2][0]
-        dState.pitch = [1][0]
-        dState.roll = [0][0]
+        R_matrix = [[1.0, math.sin(roll_0) * math.tan(pitch_0), math.cos(roll_0) * math.tan(pitch_0)],
+                   [0.0, math.cos(roll_0), -1.0 * math.sin(roll_0)],
+                   [0.0, (math.sin(roll_0) / math.cos(pitch_0)), (math.cos(roll_0) / math.cos(pitch_0))]]
+        print("Rotational_matrix, rolll:", roll_0, "pitch:", pitch_0)
+        mm.matrixPrint(R_ddt)
 
-
-        #Deriative of velocity
-        NEGSKEW = MatrixMath.scalarMultiply(-1.0, SKEW)
-        VelocityDerivative = MatrixMath.add(MatrixMath.multiply(NEGSKEW,VELOCITY), MatrixMath.scalarMultiply(1.0/VPC.mass, FORCES))
-        dState.u = VelocityDerivative[0][0]
-        dState.v = VelocityDerivative[1][0]
-        dState.w = VelocityDerivative[2][0]
-
-        
-        #Derivative of angular rates
-        PQR_DOT_TERM1 = [
-            [VPC.Jzz/VPC.Jdet, 0.0, VPC.Jxz/VPC.Jdet],
-            [0.0, 1.0/VPC.Jyy, 0.0],
-            [VPC.Jxz/VPC.Jdet, 0.0, VPC.Jxx/VPC.Jdet]
-        ]
-        #jinverse multplied by -skew*j*pqr + moments
-        pqrDerivative = MatrixMath.multiply(VPC.JinvBody, MatrixMath.add(MatrixMath.multiply(MatrixMath.multiply(MatrixMath.scalarMultiply(-1.0,SKEW),VPC.Jbody),ANGULAR_RATES), MOMENTS))
-        dState.p = pqrDerivative[0][0]
-        dState.q = pqrDerivative[1][0]
-        dState.r = pqrDerivative[2][0]
-
-
-        #derivitve of Rotation Matrix
-        dState.R = MatrixMath.scalarMultiply(-1.0, MatrixMath.multiply(MatrixMath.skew(state.p,state.q,state.r),state.R))
-
-
-        return dState
+        #R_matrix = Rotations.euler2DCM(ypr_ddt[0][0], ypr_ddt[1][0], ypr_ddt[2][0])
+        print("euler to dcm matrix")
+        mm.matrixPrint(R_matrix)
+        '''
+        #---------------------------------------
+        chi_ddt = math.atan2(pned_ddt[1][0], pned_ddt[2][0])
+        newState.pn=pned_ddt[0][0]
+        newState.pe = pned_ddt[1][0]
+        newState.pd=pned_ddt[2][0]
+        newState.u=uvw_ddt[0][0]
+        newState.v=uvw_ddt[1][0]
+        newState.w = uvw_ddt[2][0]
+        newState.roll = ypr_ddt[0][0]
+        newState.pitch=ypr_ddt[1][0]
+        newState.yaw = ypr_ddt[2][0]
+        newState.p = pqr_ddt[0][0]
+        newState.q=pqr_ddt[1][0]
+        newState.r=pqr_ddt[2][0]
+        #newState.dcm=R_ddt
+        newState.R = R_ddt
+        newState.chi = chi_ddt
+        return newState
 
     def getVehicleDerivative(self):
 
