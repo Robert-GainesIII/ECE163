@@ -29,7 +29,7 @@ class VehicleDynamicsModel:
         for i in range(3):
             for j in range(3):
                 newState.R[i][j] = state.R[i][j] + dT * dot.R[i][j]
-                
+
         return newState
     
     def IntegrateState(self, dT, state, dot):
@@ -48,9 +48,9 @@ class VehicleDynamicsModel:
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
     def Rexp(self, dT, state, dot):
-        p = state.p + ((dot.p * dT)/2.0)
-        q = state.q + ((dot.q * dT)/2.0)
-        r = state.r + ((dot.r * dT)/2.0)
+        p = state.p + dot.p * dT/2.0
+        q = state.q + dot.q * dT/2.0
+        r = state.r + dot.r * dT/2.0
 
 
         rexp = 0
