@@ -71,10 +71,10 @@ class VehicleDynamicsModel:
 
         #print("start of update")
         
-        state = self.getVehicleState()
-        derivative = self.derivative(state,forcesnmoments)
-        integrated = self.IntegrateState(self.dT, state, derivative)
-        self.setVehicleState(integrated)
+    
+        self.dot = self.derivative(self.state,forcesnmoments)
+        self.state = self.IntegrateState(self.dT, self.state, self.dot)
+    
         return
         #print("end of update.")
 
@@ -142,9 +142,9 @@ class VehicleDynamicsModel:
 
         return self.dot
 
-    def setVehicleDerivative(self, d):
+    def setVehicleDerivative(self, dot):
 
-        self.dot = d
+        self.dot = dot
         return 
 
     def getVehicleState(self):
@@ -153,8 +153,9 @@ class VehicleDynamicsModel:
     
     def reset(self):
 
-        self.setVehicleState(States.vehicleState())
-        self.setVehicleDerivative(States.vehicleState())
+        state = States.vehicleState()
+        self.setVehicleState(state)
+        self.setVehicleDerivative(state)
         return
     
     def setVehicleDot(self, dot):
