@@ -25,6 +25,11 @@ class VehicleDynamicsModel:
         newState.u = state.u + dot.u*dT
         newState.v = state.v + dot.v*dT
         newState.w = state.w + dot.w*dT
+
+        for i in range(3):
+            for j in range(3):
+                newState.R[i][j] = state.R[i][j] + dT * dot.R[i][j]
+                
         return newState
     
     def IntegrateState(self, dT, state, dot):
