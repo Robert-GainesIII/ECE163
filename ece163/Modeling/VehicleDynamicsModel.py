@@ -10,6 +10,7 @@ class VehicleDynamicsModel:
         self.state = States.vehicleState()
         self.dot = States.vehicleState()
         self.dT = dT
+        return 
 
     def ForwardEuler(self, dT, state, dot):
         newState = States.vehicleState()
@@ -74,6 +75,7 @@ class VehicleDynamicsModel:
         derivative = self.derivative(state,forcesnmoments)
         integrated = self.IntegrateState(self.dT, state, derivative)
         self.setVehicleState(integrated)
+        return
         #print("end of update.")
 
     def derivative(self,state, forcesnmoments):
@@ -143,6 +145,7 @@ class VehicleDynamicsModel:
     def setVehicleDerivative(self, d):
 
         self.dot = d
+        return 
 
     def getVehicleState(self):
 
@@ -152,12 +155,15 @@ class VehicleDynamicsModel:
 
         self.setVehicleState(States.vehicleState())
         self.setVehicleDerivative(States.vehicleState())
+        return
     
     def setVehicleDot(self, dot):
 
         self.dot = dot
+        return
 
     def setVehicleState(self, state):
 
         self.state = state
+        return
         
