@@ -52,24 +52,24 @@ class VehicleDynamicsModel:
         p_0 = state.p + (dot.p*(dT/2.0))
         q_0 = state.q + (dot.q*(dT/2.0))
         r_0 = state.r + (dot.r*(dT/2.0))
-        skew_matrix = mm.skew(p_0, q_0, r_0)
-        skew_matrix_2 = mm.multiply(skew_matrix, skew_matrix)
+        skew_matrix = MatrixMath.skew(p_0, q_0, r_0)
+        skew_matrix_2 = MatrixMath.multiply(skew_matrix, skew_matrix)
         identity = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
         omega = math.hypot(p_0, q_0, r_0)
         if omega < 0.2:
             sin_part = (dT) - (((dT**3.0)*(omega**2.0))/6.0) + (((dT**5.0)*(omega**4.0))/120.0)
             cos_part = ((dT**2.0)/2.0) - (((dT**4)*(omega**2.0))/24.0) + (((dT**6)*(omega**4.0))/720.0)
-            sin_matrix = mm.scalarMultiply(sin_part, skew_matrix)
-            cos_matrix = mm.scalarMultiply(cos_part, skew_matrix_2)
-            temp = mm.subtract(identity, sin_matrix)
-            rexp = mm.add(temp, cos_matrix)
+            sin_matrix = MatrixMath.scalarMultiply(sin_part, skew_matrix)
+            cos_matrix = MatrixMath.scalarMultiply(cos_part, skew_matrix_2)
+            temp = MatrixMath.subtract(identity, sin_matrix)
+            rexp = MatrixMath.add(temp, cos_matrix)
         else:
             sin_part = math.sin(omega*dT)/omega
             cos_part = (1.0 - math.cos(omega*dT))/(omega**2.0)
-            sin_matrix = mm.scalarMultiply(sin_part, skew_matrix)
-            cos_matrix = mm.scalarMultiply(cos_part, skew_matrix_2)
-            temp = mm.subtract(identity, sin_matrix)
-            rexp = mm.add(temp, cos_matrix)
+            sin_matrix = MatrixMath.scalarMultiply(sin_part, skew_matrix)
+            cos_matrix = MatrixMath.scalarMultiply(cos_part, skew_matrix_2)
+            temp = MatrixMath.subtract(identity, sin_matrix)
+            rexp = MatrixMath.add(temp, cos_matrix)
         return rexp
 
     def Update(self,forcesnmoments):
