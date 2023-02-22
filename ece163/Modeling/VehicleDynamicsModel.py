@@ -29,17 +29,17 @@ class VehicleDynamicsModel:
     
     def IntegrateState(self, dT, state, dot):
         #calculate forward integration for pqr,PnPePd, uvw
-        Rexp = self.Rexp(dT,state, dot)
-        Rnext = MatrixMath.multiply(Rexp, state.R)
-
         fE = self.ForwardEuler(dT,state,dot)
+        Rexp = self.Rexp(dT,state, dot)
+        fE.R = MatrixMath.multiply(Rexp, state.R)
 
-        newState = States.vehicleState(pn=fE.pn, pe=fE.pe, pd=fE.pd, u=fE.u, v=fE.v, w=fE.w, p=fE.p, q=fE.q, r=fE.r, dcm=Rnext)
-        newState.alpha = state.alpha
-        newState.beta = state.beta
-        newState.Va = state.Va
-        newState.chi = math.atan2 ( dot.pe , dot.pn )
-        return newState
+        
+        fE.yaw, fE.pitch, fE.roll = Rotations.dcm2Euler(fE.R)
+        fE.alpha = state.alpha
+        fE.beta = state.beta
+        fE.Va = state.Va
+        fE.chi = math.atan2 ( dot.pe , dot.pn )
+        return fE
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
     def Rexp(self, dT, state, dot):
