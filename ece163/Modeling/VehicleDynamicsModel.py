@@ -106,9 +106,9 @@ class VehicleDynamicsModel:
                     [0.0, math.sin(state.roll)/math.cos(state.pitch), math.cos(state.roll)/math.cos(state.pitch)]
         ]
         EulerDerivative = MatrixMath.multiply(MATRIX_FOR_EULER_DERIVATIVES, ANGULAR_RATES)
-        dState.yaw = [0][0]
+        dState.yaw = [2][0]
         dState.pitch = [1][0]
-        dState.roll = [2][0]
+        dState.roll = [0][0]
 
 
         #Deriative of velocity
