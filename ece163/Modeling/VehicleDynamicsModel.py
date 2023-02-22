@@ -48,28 +48,28 @@ class VehicleDynamicsModel:
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
     def Rexp(self, dT, state, dot):
-        p = state.p + dot.p * dT/2.0
-        q = state.q + dot.q * dT/2.0
-        r = state.r + dot.r * dT/2.0
-
-
-        
-        NORM = math.hypot(p, q, r)
-        sx = MatrixMath.skew(p,q,r)
-        IDENTITY =[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]]
-        if NORM < 0.2:
-            #different taylor series approximation equations
-            sinTermApprox = dT - ((math.pow(dT,3.0)*math.pow(NORM,2.0))/6.0) + ((math.pow(dT,5.0)*math.pow(NORM,4.0))/120.0)
-            cosTermApprox = (dT*dT)/2.0 - ((math.pow(dT,4.0)*math.pow(NORM,2.0))/24.0) + ((math.pow(dT,6.0)*math.pow(NORM,4.0))/720.0)
-            rexp = MatrixMath.add(MatrixMath.subtract(IDENTITY,MatrixMath.scalarMultiply(sinTermApprox,sx)), MatrixMath.scalarMultiply(cosTermApprox, MatrixMath.multiply(sx,sx)))
+    
+        p_0 = state.p + (dot.p*(dT/2.0))
+        q_0 = state.q + (dot.q*(dT/2.0))
+        r_0 = state.r + (dot.r*(dT/2.0))
+        skew_matrix = mm.skew(p_0, q_0, r_0)
+        skew_matrix_2 = mm.multiply(skew_matrix, skew_matrix)
+        identity = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+        omega = math.hypot(p_0, q_0, r_0)
+        if omega < 0.2:
+            sin_part = (dT) - (((dT**3.0)*(omega**2.0))/6.0) + (((dT**5.0)*(omega**4.0))/120.0)
+            cos_part = ((dT**2.0)/2.0) - (((dT**4)*(omega**2.0))/24.0) + (((dT**6)*(omega**4.0))/720.0)
+            sin_matrix = mm.scalarMultiply(sin_part, skew_matrix)
+            cos_matrix = mm.scalarMultiply(cos_part, skew_matrix_2)
+            temp = mm.subtract(identity, sin_matrix)
+            rexp = mm.add(temp, cos_matrix)
         else:
-            #stuff from hw1.py
-            
-            angularMag = NORM
-            trigTerm = angularMag * dT
-            term1 = MatrixMath.subtract(IDENTITY, MatrixMath.scalarMultiply(math.sin(trigTerm)/angularMag, sx))
-            rexp = MatrixMath.add(term1, MatrixMath.scalarMultiply((1.0-math.cos(trigTerm))/math.pow(angularMag,2.0),MatrixMath.multiply(sx,sx)))
-
+            sin_part = math.sin(omega*dT)/omega
+            cos_part = (1.0 - math.cos(omega*dT))/(omega**2.0)
+            sin_matrix = mm.scalarMultiply(sin_part, skew_matrix)
+            cos_matrix = mm.scalarMultiply(cos_part, skew_matrix_2)
+            temp = mm.subtract(identity, sin_matrix)
+            rexp = mm.add(temp, cos_matrix)
         return rexp
 
     def Update(self,forcesnmoments):
