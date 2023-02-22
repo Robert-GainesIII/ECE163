@@ -43,9 +43,9 @@ class VehicleDynamicsModel:
 
     #used by integrate state to forward propogate the DCM rotation Matrix 
     def Rexp(self, dT, state, dot):
-        p = state.p + (dot.p * dT/2.0)
-        q = state.q + (dot.q * dT/2.0)
-        r = state.r + (dot.r * dT/2.0)
+        p = state.p + ((dot.p * dT)/2.0)
+        q = state.q + ((dot.q * dT)/2.0)
+        r = state.r + ((dot.r * dT)/2.0)
 
 
         rexp = 0
