@@ -31,17 +31,28 @@ class PDControl():
 
 class PIControl():
 
-    def __init__(self):
-
+    def __init__(self, dT =VPC.dT,  kp = 0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
+        self.dT = dT
+        self.kp = kp
+        self.ki = ki
+        self.trim = trim
+        self.lowLimit = lowLimit
+        self.highLimit = highLimit
         return
 
-    def setPIGains(self):
-
+    def setPIGains(self, dT =VPC.dT , kp = 0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
+        self.dT = dT
+        self.kp = kp
+        self.ki = ki
+        self.trim = trim
+        self.lowLimit = lowLimit
+        self.highLimit = highLimit
         return
 
-    def Update(self):
+    def Update(self, command = 0.0, current=0.0):
+        u = 0.0
 
-        return
+        return u
 
     def resetIntegrator(self):
 
@@ -49,17 +60,30 @@ class PIControl():
 
 class PIDControl():
 
-    def __init__(self):
-
+    def __init__(self, dT =VPC.dT,  kp = 0.0, kd=0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
+        self.dT = dT
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.trim = trim
+        self.lowLimit = lowLimit
+        self.highLimit = highLimit
         return
 
-    def setPIDGains(self):
-
+    def setPIDGains(self, dT =VPC.dT,  kp = 0.0, kd=0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
+        self.dT = dT
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.trim = trim
+        self.lowLimit = lowLimit
+        self.highLimit = highLimit
         return
 
-    def Update(self):
+    def Update(self, command=0.0, current=0.0, derivative=0.0):
+        u = 0.0
 
-        return
+        return u
 
     def resetIntegrator(self):
 
@@ -67,50 +91,125 @@ class PIDControl():
 
 class VehicleClosedLoopControl():
 
-    def __init__(self):
-
+    def __init__(self, dT = VPC.dT, rudderControlSource='SLIDESLIP'):
+        self.dT = dT
+        self.rudderControlSource = rudderControlSource #EITHER SLIDESLIP OR YAW
+        self.VAM = VehicleAerodynamicsModule.VehicleAerodynamicsModel()
+        self.GAINS = Controls.controlGains()
+        self.TRIM_CONTROL_INPUT_CONTAINER = Inputs.controlInputs()
+        self.VAM_INPUT_FROM_OUTPUT_CONTAINER= Inputs.controlInputs()
+        self.altitudeState = Controls.AltitudeStates(Controls.AltitudeStates.HOLDING)
+        self.rollFromCourse = PIControl()
+        self.rudderFromSideslip = PIControl()
+        self.throttleFromAirspeed = PIControl()
+        self.pitchFromAltitude = PIControl()
+        self.pitchFromAirspeed = PIControl()
+        self.elevatorFromPitch = PDControl()
+        self.aileronFromRoll = PIDControl()
         return
     
     def reset(self):
-
+        
+        self.rollFromCourse.resetIntegrator()
+        self.rudderFromSideslip.resetIntegrator()
+        self.throttleFromAirspeed.resetIntegrator()
+        self.pitchFromAltitude.resetIntegrator()
+        self.pitchFromAirspeed.resetIntegrator()
+        self.aileronFromRoll.resetIntegrator()
+        self.VAM.reset()
         return
     
     def getControlGains(self):
+     
+        return self.controlGains
 
-        return
-
-    def setControlGains(self):
-
+    def setControlGains(self, controlGains = Controls.controlGains()):
+        self.controlGains = controlGains
+        self.rollFromCourse.setPIGains()
+        self.rudderFromSideslip.setPIGains()
+        self.throttleFromAirspeed.setPIGains()
+        self.pitchFromAltitude.setPIGains()
+        self.pitchFromAirspeed.setPIGains()
+        self.elevatorFromPitch.setPDGains()
+        self.aileronFromRoll.setPIDGains()
         return
 
     def getVehicleState(self):
 
-        return
+        return self.VAM.getVehicleState()
 
-    def setVehicleState(self):
-
+    def setVehicleState(self, state):
+        self.state = state
         return 
 
     def getTrimInputs(self):
 
-        return
+        return self.trimInputs
 
-    def setTrimInputs(self):
+    def setTrimInputs(self, trimInputs=Inputs.controlInputs(Throttle=0.5, Aileron=0.0, Elevator=0.0, Rudder=0.0)):
 
+        self.trimInputs = trimInputs
         return 
     
     def getVehicleAerodynamicsModel(self):
-
-        return
+        
+        return self.VAM
     
     def getVehicleControlSurfaces(self):
-
-        return 
+        
+        return Inputs.controlInputs(Throttle=self.throttleFromAirspeed , Aileron=self.aileronFromRoll, Elevator=self.elevatorFromPitch, Rudder=self.rudderFromSideslip )
     
-    def UpdateControlCommands(self):
+    def UpdateControlCommands(self, referenceCommands, state):
+        #state = self.getVehicleState()
+        inputs = Inputs.controlInputs()
+        if state.chi > math.pi:
+            state.chi += math.pi*2.0
+        elif state.chi < math.pi:
+            state.chi -= math.pi*2.0
 
-        return
+        lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
+        upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
+        alt = -state.pd 
+        if self.altitudeState == Controls.AltitudeStates.HOLDING:
+            referenceCommands.commandedPitch = self.pitchFromAltitude.Update(referenceCommands.commandedAltidude, alt)
+            inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            #TRANSISTION FROM HOLDING TO DESCENDING
+            if alt > upper_thresh:
+                self.altitudeState = Controls.AltitudeStates.DESCENDING
+                self.pitchFromAirspeed.resetIntegrator()
+            
+            #TRANSISTION FROM HOLDING TO CLIMBING
+            if alt < lower_thresh: 
+                self.altitudeState = Controls.AltitudeStates.CLIMBING
+                self.pitchFromAirspeed.resetIntegrator()
+            
+        elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
+            referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            inputs.Throttle = VPC.maxControls.Throttle
+            #TRANSISTION FROM DESCENDING TO HOLDING 
+            if alt > lower_thresh and alt < upper_thresh:
+                self.altitudeState = Controls.AltitudeStates.HOLDING
+                self.pitchFromAltitude.resetIntegrator()
 
-    def Update(self):
+        elif self.altitudeState == Controls.AltitudeStates.CLIMBING:
+            inputs.Throttle = VPC.maxControls.Throttle
+            referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            #TRANSISTION FROM CLIMBING TO HOLDING
+            if alt > lower_thresh and alt < upper_thresh:
+                self.altitudeState = Controls.AltitudeStates.HOLDING
+                self.pitchFromAltitude.resetIntegrator()
 
+        else:
+            print("this print statement can only mean basd things")
+
+        
+        #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
+        inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
+        
+        return inputs 
+
+    def Update(self, referenceCommands = Controls.referenceCommands):
+        
+        inputs = self.UpdateControlCommands(referenceCommands,self.getVehicleState())
+        self.VAM.Update(inputs)
         return
