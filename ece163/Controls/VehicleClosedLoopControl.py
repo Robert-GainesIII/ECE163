@@ -30,18 +30,18 @@ class PDControl():
         error = command - current
         #if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
         #    self.accumulator += 0.5 * self.dT * (command-current + self.err)
-        self.err = error
+        
 
-        self.differentiator = ((2*math.tau - VPC.dT)/(2*math.tau + VPC.dT)) * \
-                                self.differentiator + (2/(2*math.tau + VPC.dT)) 
+        derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + 2 / (2 *math.tau + VPC.dT)
+        u = (self.kp * error) + (self.kd + derivative) + self.trim
 
-        inp = (self.kp + error)
-        u = inp
         if u < self.lowLimit:
             u = self.lowLimit
         if u > self.highLimit:
             u = self.highLimit 
         
+        self.err = error
+
         return u
 
 
@@ -73,7 +73,8 @@ class PIControl():
         return u
 
     def resetIntegrator(self):
-
+        self.accumulator = 0.0
+        self.err = 0.0
         return
 
 class PIDControl():
@@ -110,25 +111,26 @@ class PIDControl():
 
         self.accumulator += 0.5 * self.dT * ((command-current)+ self.err)
 
-        self.differentiator = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
-                            self.differentiator + (2/(2*math.tau + self.dT)) * \
+        derivative = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
+                            derivative + (2/(2*math.tau + self.dT)) * \
                                 (error - self.err)
         self.err = error
-        inp = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.accumulator)
-        u = inp
+        u_u= (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.accumulator) + self.trim
+        u = u_u
         if u < self.lowLimit:
             u = self.lowLimit
         if u > self.highLimit:
             u = self.highLimit
 
         if self.ki != 0:
-            u_unsaturated = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.differentiator)
-            self.accumulator += (self.dT / self.ki) * (u - u_unsaturated)
+    
+            self.accumulator += (self.dT / self.ki) * (u - u_u)
         
         return u
 
     def resetIntegrator(self):
-
+        self.accumulator = 0.0
+        self.err = 0.0
         return
 
 class VehicleClosedLoopControl():
