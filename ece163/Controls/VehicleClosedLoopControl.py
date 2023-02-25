@@ -211,7 +211,7 @@ class VehicleClosedLoopControl():
 
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
         upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
-        alt = state.pd 
+        alt = -state.pd 
 
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
@@ -231,7 +231,7 @@ class VehicleClosedLoopControl():
         #STATE = DESCENDING   
         elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
             referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
-            inputs.Throttle = VPC.maxControls.Throttle
+            inputs.Throttle = VPC.minControls.Throttle
             #TRANSISTION FROM DESCENDING TO HOLDING 
             if alt > lower_thresh and alt < upper_thresh:
                 self.altitudeState = Controls.AltitudeStates.HOLDING
