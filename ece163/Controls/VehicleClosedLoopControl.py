@@ -100,7 +100,7 @@ class PIDControl():
         if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
             self.accumulator += 0.5 * self.dT * (command-current + self.err)
 
-        self.differentiator = ((2*math.tau -self.dt)/(2*math.tau + self.dT)) * \
+        self.differentiator = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
                                 self.differentiator + (2/(2*math.tau + self.dT)) * \
                                 (error - self.err)
         inp = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.accumulator)
