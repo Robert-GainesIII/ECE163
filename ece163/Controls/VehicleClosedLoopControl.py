@@ -31,7 +31,7 @@ class PDControl():
         #if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
         #    self.accumulator += 0.5 * self.dT * (command-current + self.err)
         
-        derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + (2 / (2 *math.tau + VPC.dT))
+        #derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + (2 / (2 *math.tau + VPC.dT))
         u = (self.kp * error) - (self.kd * derivative * error) + self.trim
 
         if u < self.lowLimit:
@@ -129,7 +129,7 @@ class PIDControl():
 
         self.accumulator += (0.5 * self.dT) * (error + self.err)
 
-        derivative = (2*math.tau -self.dT)/(2*math.tau + self.dT) * derivative + (2/(2*math.tau + self.dT)) *  (error - self.err)
+        #derivative = (2*math.tau -self.dT)/(2*math.tau + self.dT) * derivative + (2/(2*math.tau + self.dT)) *  (error - self.err)
         
         u_u= (self.kp * error) + (self.ki * self.accumulator) - (self.kd * derivative) + self.trim
         u = u_u
