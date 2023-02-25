@@ -166,14 +166,14 @@ class VehicleClosedLoopControl():
         return self.controlGains
 
     def setControlGains(self, controlGains = Controls.controlGains()):
-        self.controlGains = controlGains
-        self.rollFromCourse.setPIGains(self.dT, self.controlGains.kp_course, self.controlGains.ki_course, 0.0, VPC.minControls.Aileron, VPC.maxControls.Aileron)
-        self.rudderFromSideslip.setPIGains(self.dT, self.controlGains.kp_sideslip, self.controlGains.ki_sideslip, self.trimInputs.Rudder, VPC.minControls.Rudder, VPC.maxControls.Rudder)
-        self.throttleFromAirspeed.setPIGains(self.dT, self.controlGains.kp_SpeedfromThrottle, self.controlGains.ki_SpeedfromThrottle, self.trimInputs.Throttle, VPC.minControls.Throttle, VPC.maxControls.Throttle)
-        self.pitchFromAltitude.setPIGains(self.dT, self.controlGains.kp_altitude, self.controlGains.ki_altitude, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
-        self.pitchFromAirspeed.setPIGains(self.dT, self.controlGains.kp_SpeedfromElevator, self.controlGains.ki_SpeedfromElevator, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
-        self.elevatorFromPitch.setPDGains(self.controlGains.kp_pitch, self.controlGains.kd_pitch, self.trimInputs.Elevator, VPC.minControls.Elevator, VPC.maxControls.Elevator)
-        self.aileronFromRoll.setPIDGains(self.dT, self.controlGains.kp_roll, self.controlGains.kd_roll, self.controlGains.ki_roll, self.trimInputs.Aileron, VPC.minControls.Aileron, VPC.maxControls.Aileron)
+        self.GAINS = controlGains
+        self.rollFromCourse.setPIGains(self.dT, self.GAINS.kp_course, self.GAINS.ki_course, 0.0, VPC.minControls.Aileron, VPC.maxControls.Aileron)
+        self.rudderFromSideslip.setPIGains(self.dT, self.GAINS.kp_sideslip, self.GAINS.ki_sideslip, self.trimInputs.Rudder, VPC.minControls.Rudder, VPC.maxControls.Rudder)
+        self.throttleFromAirspeed.setPIGains(self.dT, self.GAINS.kp_SpeedfromThrottle, self.GAINS.ki_SpeedfromThrottle, self.trimInputs.Throttle, VPC.minControls.Throttle, VPC.maxControls.Throttle)
+        self.pitchFromAltitude.setPIGains(self.dT, self.GAINS.kp_altitude, self.GAINS.ki_altitude, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.pitchFromAirspeed.setPIGains(self.dT, self.GAINS.kp_SpeedfromElevator, self.GAINS.ki_SpeedfromElevator, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.elevatorFromPitch.setPDGains(self.GAINS.kp_pitch, self.GAINS.kd_pitch, self.trimInputs.Elevator, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.aileronFromRoll.setPIDGains(self.dT, self.GAINS.kp_roll, self.GAINS.kd_roll, self.GAINS.ki_roll, self.trimInputs.Aileron, VPC.minControls.Aileron, VPC.maxControls.Aileron)
         return
 
     def getVehicleState(self):
