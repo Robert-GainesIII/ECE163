@@ -37,6 +37,10 @@ class PDControl():
 
         inp = (self.kp + error)
         u = inp
+        if u < self.lowLimit:
+            u = self.lowLimit
+        if u > self.highLimit:
+            u = self.highLimit 
         
         return u
 
@@ -116,6 +120,11 @@ class PIDControl():
         self.err = error
         inp = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.accumulator)
         u = inp
+        if u < self.lowLimit:
+            u = self.lowLimit
+        if u > self.highLimit:
+            u = self.highLimit
+
         if not math.isclose(self.ki,0.0):
             u_unsaturated = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.differentiator)
             self.accumulator += (self.dT / self.ki) * (u - u_unsaturated)
