@@ -230,6 +230,8 @@ class VehicleClosedLoopControl():
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
         upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
         alt = -state.pd 
+        
+    
 
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
@@ -267,12 +269,12 @@ class VehicleClosedLoopControl():
         else:
             print("this print statement can only mean basd things")
 
-        
-        #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
         inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
         referenceCommands.commandedRoll = self.rollFromCourse.Update(referenceCommands.commandedCourse, state.chi)
         inputs.Aileron = self.aileronFromRoll.Update(referenceCommands.commandedRoll, state.roll, state.p)
         inputs.Rudder = self.rudderFromSideslip.Update(0.0, state.beta)
+        #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
+        
         return inputs 
 
     def Update(self, referenceCommands = Controls.referenceCommands):
