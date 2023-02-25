@@ -35,7 +35,7 @@ class PDControl():
         self.differentiator = ((2*math.tau - VPC.dT)/(2*math.tau + VPC.dT)) * \
                                 self.differentiator + (2/(2*math.tau + VPC.dT)) 
 
-        inp = (self.kp + error) + (self.kd + self.accumulator)
+        inp = (self.kp + error)
         u = inp
         
         return u
