@@ -85,9 +85,6 @@ class PIControl():
             u = self.highLimit
             self.accumulator -= 0.5 * self.dT * (error + self.err)
 
-        if self.ki != 0:
-    
-            self.accumulator += (self.dT / self.ki) * (u - u_u)
 
         self.err = error
         
