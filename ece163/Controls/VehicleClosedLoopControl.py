@@ -232,11 +232,10 @@ class VehicleClosedLoopControl():
         alt = -state.pd 
         
     
-
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
         if self.altitudeState == Controls.AltitudeStates.HOLDING:
-            referenceCommands.commandedPitch = self.pitchFromAltitude.Update(referenceCommands.commandedAltitude, alt)
+            x  = self.pitchFromAltitude.Update(referenceCommands.commandedAltitude, alt)
             inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
             #TRANSISTION FROM HOLDING TO DESCENDING
             if alt > upper_thresh:
@@ -250,7 +249,7 @@ class VehicleClosedLoopControl():
 
         #STATE = DESCENDING   
         elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
-            referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            x= self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
             inputs.Throttle = VPC.minControls.Throttle
             #TRANSISTION FROM DESCENDING TO HOLDING 
             if alt > lower_thresh and alt < upper_thresh:
@@ -260,7 +259,7 @@ class VehicleClosedLoopControl():
         #STATE = CLIMBING
         elif self.altitudeState == Controls.AltitudeStates.CLIMBING:
             inputs.Throttle = VPC.maxControls.Throttle
-            referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            x = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
             #TRANSISTION FROM CLIMBING TO HOLDING
             if alt > lower_thresh and alt < upper_thresh:
                 self.altitudeState = Controls.AltitudeStates.HOLDING
@@ -271,6 +270,7 @@ class VehicleClosedLoopControl():
 
         inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
         referenceCommands.commandedRoll = self.rollFromCourse.Update(referenceCommands.commandedCourse, state.chi)
+        referenceCommands.commandedPitch = x
         inputs.Aileron = self.aileronFromRoll.Update(referenceCommands.commandedRoll, state.roll, state.p)
         inputs.Rudder = self.rudderFromSideslip.Update(0.0, state.beta)
         #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
