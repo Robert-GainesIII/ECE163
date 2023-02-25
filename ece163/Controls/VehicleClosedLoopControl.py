@@ -13,6 +13,8 @@ class PDControl():
         self.trim = trim
         self.lowLimit = lowLimit
         self.highLimit = highLimit
+        self.differentiator = 0.0
+        self.err = 0.0
         return
 
     def setPDGains(self, kp = 0.0, kd= 0.0, trim= 0.0, lowLimit = 0.0, highLimit = 0.0):
