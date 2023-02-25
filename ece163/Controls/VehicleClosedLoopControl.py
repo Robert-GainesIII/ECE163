@@ -31,9 +31,8 @@ class PDControl():
         #if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
         #    self.accumulator += 0.5 * self.dT * (command-current + self.err)
         
-
         derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + (2 / (2 *math.tau + VPC.dT))
-        u = (self.kp * error) - (self.kd + derivative) + self.trim
+        u = (self.kp * error) - (self.kd * derivative) + self.trim
 
         if u < self.lowLimit:
             u = self.lowLimit
