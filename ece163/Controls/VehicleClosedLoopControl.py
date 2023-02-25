@@ -109,22 +109,24 @@ class PIDControl():
 
 
 
-        self.accumulator += 0.5 * self.dT * ((command-current)+ self.err)
+        self.accumulator += 0.5 * self.dT * (error + self.err)
 
         derivative = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
                             derivative + (2/(2*math.tau + self.dT)) * \
                                 (error - self.err)
-        self.err = error
-        u_u= (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.accumulator) + self.trim
+        
+        u_u= (self.kp * error) + (self.ki * self.accumulator) - (self.kd * self.accumulator) + self.trim
         u = u_u
         if u < self.lowLimit:
-            u = self.lowLimit
+            self.accumulator -= 0.5 * self.dT * (error + self.err)
         if u > self.highLimit:
-            u = self.highLimit
+            self.accumulator -= 0.5 * self.dT * (error + self.err)
 
         if self.ki != 0:
     
             self.accumulator += (self.dT / self.ki) * (u - u_u)
+
+        self.err = error
         
         return u
 
