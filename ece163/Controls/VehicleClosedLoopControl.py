@@ -32,7 +32,7 @@ class PDControl():
         #    self.accumulator += 0.5 * self.dT * (command-current + self.err)
         
         derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + (2 / (2 *math.tau + VPC.dT))
-        u = (self.kp * error) - (self.kd * derivative) + self.trim
+        u = (self.kp * error) - (self.kd * derivative * error) + self.trim 
 
         if u < self.lowLimit:
             u = self.lowLimit
