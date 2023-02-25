@@ -81,7 +81,7 @@ class PIDControl():
         self.lowLimit = lowLimit
         self.highLimit = highLimit
         self.accumulator = 0.0
-        self.differentiator
+        self.differentiator = 0.0
         self.err = 0.0
         self.flag = 0
         return
