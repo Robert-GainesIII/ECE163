@@ -230,12 +230,16 @@ class VehicleClosedLoopControl():
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
         upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
         alt = -state.pd 
+
+        airThrottle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+        airPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+        altPitch = self.pitchFromAltitude.Update(referenceCommands.commandedAltitude, alt)
         
     
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
         if self.altitudeState == Controls.AltitudeStates.HOLDING:
-            x  = self.pitchFromAltitude.Update(referenceCommands.commandedAltitude, alt)
+            x  = altPitch
             inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
             #TRANSISTION FROM HOLDING TO DESCENDING
             if alt > upper_thresh:
@@ -249,7 +253,7 @@ class VehicleClosedLoopControl():
 
         #STATE = DESCENDING   
         elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
-            x= self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            x= airPitch
             inputs.Throttle = VPC.minControls.Throttle
             #TRANSISTION FROM DESCENDING TO HOLDING 
             if alt > lower_thresh and alt < upper_thresh:
@@ -259,7 +263,7 @@ class VehicleClosedLoopControl():
         #STATE = CLIMBING
         elif self.altitudeState == Controls.AltitudeStates.CLIMBING:
             inputs.Throttle = VPC.maxControls.Throttle
-            x = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+            x = airPitch
             #TRANSISTION FROM CLIMBING TO HOLDING
             if alt > lower_thresh and alt < upper_thresh:
                 self.altitudeState = Controls.AltitudeStates.HOLDING
@@ -267,10 +271,10 @@ class VehicleClosedLoopControl():
 
         else:
             print("this print statement can only mean basd things")
-
-        inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
-        referenceCommands.commandedRoll = self.rollFromCourse.Update(referenceCommands.commandedCourse, state.chi)
         referenceCommands.commandedPitch = x
+        referenceCommands.commandedRoll = self.rollFromCourse.Update(referenceCommands.commandedCourse, state.chi)
+        inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
+        
         inputs.Aileron = self.aileronFromRoll.Update(referenceCommands.commandedRoll, state.roll, state.p)
         inputs.Rudder = self.rudderFromSideslip.Update(0.0, state.beta)
         #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
