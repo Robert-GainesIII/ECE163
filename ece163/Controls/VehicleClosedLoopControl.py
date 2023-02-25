@@ -188,8 +188,8 @@ class VehicleClosedLoopControl():
         self.rollFromCourse.setPIGains(self.dT, self.GAINS.kp_course, self.GAINS.ki_course, 0.0, -math.radians(VPC.bankAngleLimit), math.radians(VPC.bankAngleLimit))
         self.rudderFromSideslip.setPIGains(self.dT, self.GAINS.kp_sideslip, self.GAINS.ki_sideslip, self.trimInputs.Rudder, VPC.minControls.Rudder, VPC.maxControls.Rudder)
         self.throttleFromAirspeed.setPIGains(self.dT, self.GAINS.kp_SpeedfromThrottle, self.GAINS.ki_SpeedfromThrottle, self.trimInputs.Throttle, VPC.minControls.Throttle, VPC.maxControls.Throttle)
-        self.pitchFromAltitude.setPIGains(self.dT, self.GAINS.kp_altitude, self.GAINS.ki_altitude, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
-        self.pitchFromAirspeed.setPIGains(self.dT, self.GAINS.kp_SpeedfromElevator, self.GAINS.ki_SpeedfromElevator, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.pitchFromAltitude.setPIGains(self.dT, self.GAINS.kp_altitude, self.GAINS.ki_altitude, 0.0, -math.radians(VPC.pitchAngleLimit), math.radians(VPC.pitchAngleLimit))
+        self.pitchFromAirspeed.setPIGains(self.dT, self.GAINS.kp_SpeedfromElevator, self.GAINS.ki_SpeedfromElevator, 0.0, -math.radians(VPC.pitchAngleLimit),math.radians(VPC.pitchAngleLimit))
         self.elevatorFromPitch.setPDGains(self.GAINS.kp_pitch, self.GAINS.kd_pitch, self.trimInputs.Elevator, VPC.minControls.Elevator, VPC.maxControls.Elevator)
         self.aileronFromRoll.setPIDGains(self.dT, self.GAINS.kp_roll, self.GAINS.kd_roll, self.GAINS.ki_roll, self.trimInputs.Aileron, VPC.minControls.Aileron, VPC.maxControls.Aileron)
         return
