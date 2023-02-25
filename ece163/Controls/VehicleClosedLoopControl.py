@@ -185,7 +185,7 @@ class VehicleClosedLoopControl():
 
     def setControlGains(self, controlGains = Controls.controlGains()):
         self.GAINS = controlGains
-        self.rollFromCourse.setPIGains(self.dT, self.GAINS.kp_course, self.GAINS.ki_course, 0.0, VPC.minControls.Aileron, VPC.maxControls.Aileron)
+        self.rollFromCourse.setPIGains(self.dT, self.GAINS.kp_course, self.GAINS.ki_course, 0.0, -math.radians(VPC.bankAngleLimit), math.radians(VPC.bankAngleLimit))
         self.rudderFromSideslip.setPIGains(self.dT, self.GAINS.kp_sideslip, self.GAINS.ki_sideslip, self.trimInputs.Rudder, VPC.minControls.Rudder, VPC.maxControls.Rudder)
         self.throttleFromAirspeed.setPIGains(self.dT, self.GAINS.kp_SpeedfromThrottle, self.GAINS.ki_SpeedfromThrottle, self.trimInputs.Throttle, VPC.minControls.Throttle, VPC.maxControls.Throttle)
         self.pitchFromAltitude.setPIGains(self.dT, self.GAINS.kp_altitude, self.GAINS.ki_altitude, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
