@@ -82,6 +82,7 @@ class PIDControl():
         self.highLimit = highLimit
         self.accumulator = 0.0
         self.err = 0.0
+        self.flag = 0
         return
 
     def setPIDGains(self, dT =VPC.dT,  kp = 0.0, kd=0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
@@ -97,12 +98,19 @@ class PIDControl():
     def Update(self, command=0.0, current=0.0, derivative=0.0):
         u = 0.0
         error = command - current
+        if self.flag == 1:
+            self.accumulator = 0
+            self.differentiator = 0
+            self.err = 0
+
+            
         if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
             self.accumulator += 0.5 * self.dT * (command-current + self.err)
 
         self.differentiator = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
                                 self.differentiator + (2/(2*math.tau + self.dT)) * \
                                 (error - self.err)
+        self.err = error
         inp = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.accumulator)
         u = inp
         if not math.isclose(self.ki,0.0):
