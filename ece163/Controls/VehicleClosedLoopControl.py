@@ -26,8 +26,8 @@ class PDControl():
     def Update(self, command = 0.0, current=0.0, derivative=0.0):
         u = 0.0
         error = command - current
-        if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
-            self.accumulator += 0.5 * self.dT * (command-current + self.err)
+        #if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
+        #    self.accumulator += 0.5 * self.dT * (command-current + self.err)
         self.err = error
 
         self.differentiator = ((2*math.tau - VPC.dT)/(2*math.tau + VPC.dT)) * \
