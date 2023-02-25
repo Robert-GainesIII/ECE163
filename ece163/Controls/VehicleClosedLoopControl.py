@@ -211,7 +211,7 @@ class VehicleClosedLoopControl():
 
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
         upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
-        alt = -state.pd 
+        alt = state.pd 
 
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
