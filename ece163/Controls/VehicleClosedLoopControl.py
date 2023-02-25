@@ -38,6 +38,8 @@ class PIControl():
         self.trim = trim
         self.lowLimit = lowLimit
         self.highLimit = highLimit
+        self.accumulator = 0.0
+        self.err = 0.0
         return
 
     def setPIGains(self, dT =VPC.dT , kp = 0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
@@ -68,6 +70,8 @@ class PIDControl():
         self.trim = trim
         self.lowLimit = lowLimit
         self.highLimit = highLimit
+        self.accumulator = 0.0
+        self.err = 0.0
         return
 
     def setPIDGains(self, dT =VPC.dT,  kp = 0.0, kd=0.0, ki = 0.0, trim = 0.0, lowLimit = 0.0, highLimit = 0.0):
@@ -82,7 +86,11 @@ class PIDControl():
 
     def Update(self, command=0.0, current=0.0, derivative=0.0):
         u = 0.0
+        if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
+            self.accumulator += 0.5 * self.dT * (command-current + self.err)
 
+
+        
         return u
 
     def resetIntegrator(self):
@@ -125,13 +133,13 @@ class VehicleClosedLoopControl():
 
     def setControlGains(self, controlGains = Controls.controlGains()):
         self.controlGains = controlGains
-        self.rollFromCourse.setPIGains()
-        self.rudderFromSideslip.setPIGains()
-        self.throttleFromAirspeed.setPIGains()
-        self.pitchFromAltitude.setPIGains()
-        self.pitchFromAirspeed.setPIGains()
-        self.elevatorFromPitch.setPDGains()
-        self.aileronFromRoll.setPIDGains()
+        self.rollFromCourse.setPIGains(self.dT, self.controlGains.kp_course, self.controlGains.ki_course, 0.0, VPC.minControls.Aileron, VPC.maxControls.Aileron)
+        self.rudderFromSideslip.setPIGains(self.dT, self.controlGains.kp_sideslip, self.controlGains.ki_sideslip, self.trimInputs.Rudder, VPC.minControls.Rudder, VPC.maxControls.Rudder)
+        self.throttleFromAirspeed.setPIGains(self.dT, self.controlGains.kp_SpeedfromThrottle, self.controlGains.ki_SpeedfromThrottle, self.trimInputs.Throttle, VPC.minControls.Throttle, VPC.maxControls.Throttle)
+        self.pitchFromAltitude.setPIGains(self.dT, self.controlGains.kp_altitude, self.controlGains.ki_altitude, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.pitchFromAirspeed.setPIGains(self.dT, self.controlGains.kp_SpeedfromElevator, self.controlGains.ki_SpeedfromElevator, 0.0, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.elevatorFromPitch.setPDGains(self.controlGains.kp_pitch, self.controlGains.kd_pitch, self.trimInputs.Elevator, VPC.minControls.Elevator, VPC.maxControls.Elevator)
+        self.aileronFromRoll.setPIDGains(self.dT, self.controlGains.kp_roll, self.controlGains.kd_roll, self.controlGains.ki_roll, self.trimInputs.Aileron, VPC.minControls.Aileron, VPC.maxControls.Aileron)
         return
 
     def getVehicleState(self):
@@ -170,6 +178,9 @@ class VehicleClosedLoopControl():
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
         upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
         alt = -state.pd 
+
+        #BEGINNING OF STATE MACHINE
+        #STATE = HOLDING
         if self.altitudeState == Controls.AltitudeStates.HOLDING:
             referenceCommands.commandedPitch = self.pitchFromAltitude.Update(referenceCommands.commandedAltitude, alt)
             inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
@@ -182,7 +193,8 @@ class VehicleClosedLoopControl():
             if alt < lower_thresh: 
                 self.altitudeState = Controls.AltitudeStates.CLIMBING
                 self.pitchFromAirspeed.resetIntegrator()
-            
+
+        #STATE = DESCENDING   
         elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
             referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
             inputs.Throttle = VPC.maxControls.Throttle
@@ -191,6 +203,7 @@ class VehicleClosedLoopControl():
                 self.altitudeState = Controls.AltitudeStates.HOLDING
                 self.pitchFromAltitude.resetIntegrator()
 
+        #STATE = CLIMBING
         elif self.altitudeState == Controls.AltitudeStates.CLIMBING:
             inputs.Throttle = VPC.maxControls.Throttle
             referenceCommands.commandedPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
@@ -205,7 +218,9 @@ class VehicleClosedLoopControl():
         
         #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
         inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
-
+        referenceCommands.commandedRoll = self.rollFromCourse.Update(referenceCommands.commandedCourse, state.chi)
+        inputs.Aileron = self.aileronFromRoll.Update(referenceCommands.commandedRoll, state.roll, state.p)
+        inputs.Rudder = self.rudderFromSideslip.Update(0.0, state.beta)
         return inputs 
 
     def Update(self, referenceCommands = Controls.referenceCommands):
