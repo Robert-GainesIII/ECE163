@@ -32,7 +32,7 @@ class PDControl():
         #    self.accumulator += 0.5 * self.dT * (command-current + self.err)
         
 
-        derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + 2 / (2 *math.tau + VPC.dT)
+        derivative = ((2* math.tau - VPC.dT) / (2 * math.tau + VPC.dT)) * derivative + (2 / (2 *math.tau + VPC.dT))
         u = (self.kp * error) - (self.kd + derivative) + self.trim
 
         if u < self.lowLimit:
@@ -69,7 +69,29 @@ class PIControl():
 
     def Update(self, command = 0.0, current=0.0):
         u = 0.0
+        error = command - current
 
+
+
+        self.accumulator += (0.5 * self.dT) * (error + self.err)
+
+        derivative = (2*math.tau -self.dT)/(2*math.tau + self.dT) * derivative + (2/(2*math.tau + self.dT)) *  (error - self.err)
+        
+        u_u= (self.kp * error) + (self.ki * self.accumulator)  + self.trim
+        u = u_u
+        if u < self.lowLimit:
+            u = self.lowLimit
+            self.accumulator -= 0.5 * self.dT * (error + self.err)
+        if u > self.highLimit:
+            u = self.highLimit
+            self.accumulator -= 0.5 * self.dT * (error + self.err)
+
+        if self.ki != 0:
+    
+            self.accumulator += (self.dT / self.ki) * (u - u_u)
+
+        self.err = error
+        
         return u
 
     def resetIntegrator(self):
