@@ -105,14 +105,10 @@ class PIDControl():
     def Update(self, command=0.0, current=0.0, derivative=0.0):
         u = 0.0
         error = command - current
-        if self.flag == 1:
-            self.accumulator = 0
-            self.differentiator = 0
-            self.err = 0
 
 
-        if(self.accumulator < self.highLimit and self.accumulator > self.lowLimit):
-            self.accumulator += 0.5 * self.dT * (command-current + self.err)
+
+        self.accumulator += 0.5 * self.dT * (command-current + self.err)
 
         self.differentiator = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
                             self.differentiator + (2/(2*math.tau + self.dT)) * \
@@ -125,7 +121,7 @@ class PIDControl():
         if u > self.highLimit:
             u = self.highLimit
 
-        if not math.isclose(self.ki,0.0):
+        if self.ki != 0:
             u_unsaturated = (self.kp + error) + (self.ki + self.accumulator) + (self.kd + self.differentiator)
             self.accumulator += (self.dT / self.ki) * (u - u_unsaturated)
         
