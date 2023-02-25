@@ -116,9 +116,11 @@ class PIDControl():
         u_u= (self.kp * error) + (self.ki * self.accumulator) - (self.kd * self.accumulator) + self.trim
         u = u_u
         if u < self.lowLimit:
-            self.accumulator += 0.5 * self.dT * (error - self.err)
+            u = self.lowLimit
+            self.accumulator -= 0.5 * self.dT * (error + self.err)
         if u > self.highLimit:
-            self.accumulator += 0.5 * self.dT * (error - self.err)
+            u = self.highLimit
+            self.accumulator -= 0.5 * self.dT * (error + self.err)
 
         if self.ki != 0:
     
