@@ -108,7 +108,7 @@ class PIDControl():
 
 
 
-        self.accumulator += 0.5 * self.dT * (command-current + self.err)
+        self.accumulator += 0.5 * self.dT * ((command-current)+ self.err)
 
         self.differentiator = ((2*math.tau -self.dT)/(2*math.tau + self.dT)) * \
                             self.differentiator + (2/(2*math.tau + self.dT)) * \
