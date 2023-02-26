@@ -19,6 +19,8 @@ def computeGains(tuningParameters, linearizedModel):
 def computeTuningParameters(controlGains, linearizedModel):
 
     tuningParams = Controls.controlTuning()
+    """
+    
     tuningParams.Wn_roll  = 0
     tuningParams.Zeta_roll  = 0
     tuningParams.Wn_course  = 0	# Wn_roll should be 5-10x larger
@@ -34,7 +36,8 @@ def computeTuningParameters(controlGains, linearizedModel):
     tuningParams.Zeta_SpeedfromThrottle  = 0
     tuningParams.Wn_SpeedfromElevator  = 0
     tuningParams.Zeta_SpeedfromElevator  = 0
-    return tuningParams
     
+    """
+    return tuningParams
 
 
