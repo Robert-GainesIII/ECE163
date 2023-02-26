@@ -147,10 +147,9 @@ class VehicleAerodynamicsModel:
 
     def reset(self):
         #self.dynamicsModel.reset()
-        #self.myWindModel.reset()
+        self.myWindModel.reset()
         #print(self.dynamicsModel)
         state = States.vehicleState()
-        self.state = VehicleDynamicsModel.VehicleDynamicsModel()
         self.dynamicsModel.state = state
         self.dynamicsModel.pd = self.initialHeight
         self.dynamicsModel.u  = self.initialSpeed
