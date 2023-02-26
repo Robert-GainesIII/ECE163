@@ -20,8 +20,8 @@ def computeGains(tuningParameters, linearizedModel):
     controlGains.kp_sideslip = ((2 * tuningParameters.Zeta_sideslip * tuningParameters.Wn_sideslip)-linearizedModel.a_beta1)/linearizedModel.a_beta2
 
     controlGains.ki_sideslip = 1/linearizedModel.a_beta2 * ((linearizedModel.a_beta1 + linearizedModel.a_beta2 * controlGains.kp_sideslip)/(2*tuningParameters.Zeta_sideslip))
-    controlGains.kp_course = (2 * tuningParameters.Zeta_course * tuningParameters.Wn_course )/ VPC.g0 #add ground speed!
-    controlGains.ki_course = (tuningParameters.Wn_course **2 )/VPC.g0 # add ground speed!
+    controlGains.kp_course = (2 * tuningParameters.Zeta_course * tuningParameters.Wn_course * linearizedModel.Va_trim)/ VPC.g0 #add ground speed!
+    controlGains.ki_course = (tuningParameters.Wn_course **2 * linearizedModel.Va_trim)/VPC.g0 # add ground speed!
     # Longitudinal Gains
     controlGains.kp_pitch = 0
     controlGains.kd_pitch = 0
