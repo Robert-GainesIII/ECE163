@@ -23,10 +23,11 @@ def computeGains(tuningParameters, linearizedModel):
     controlGains.kp_course = (2 * tuningParameters.Zeta_course * tuningParameters.Wn_course * linearizedModel.Va_trim)/ VPC.g0 #add ground speed!
     controlGains.ki_course = (tuningParameters.Wn_course **2 * linearizedModel.Va_trim)/VPC.g0 # add ground speed!
     # Longitudinal Gains
-    controlGains.kp_pitch = 0
-    controlGains.kd_pitch = 0
-    controlGains.kp_altitude = 0
-    controlGains.ki_altitude = 0
+    controlGains.kp_pitch = (tuningParameters.Wn_pitch **2 - linearizedModel.a_phi2)/linearizedModel.a_phi3
+    controlGains.kd_pitch = (2* tuningParameters.Zeta_pitch * tuningParameters.Wn_pitch - linearizedModel.a_phi1)/linearizedModel.a_phi3
+    kDC = (controlGains.kp_pitch * linearizedModel.a_phi3)/(linearizedModel.a_phi2 + controlGains.kp_pitch * linearizedModel.a_phi3)
+    controlGains.kp_altitude = (2* tuningParameters.Zeta_altitude * tuningParameters.Wn_altitude)/(kDC * linearizedModel.Va_trim)
+    controlGains.ki_altitude = tuningParameters.Wn_pitch **2 / (kDC * linearizedModel.Va_trim)
     controlGains.kp_SpeedfromThrottle = 0
     controlGains.ki_SpeedfromThrottle = 0
     controlGains.kp_SpeedfromElevator = 0
