@@ -156,7 +156,7 @@ class VehicleClosedLoopControl():
         self.rudderControlSource = rudderControlSource #EITHER SLIDESLIP OR YAW
         self.VAM = VehicleAerodynamicsModule.VehicleAerodynamicsModel()
         self.GAINS = Controls.controlGains()
-        self.TRIM_CONTROL_INPUT_CONTAINER = Inputs.controlInputs()
+        self.trimInputs= Inputs.controlInputs()
         self.VAM_INPUT_FROM_OUTPUT_CONTAINER= Inputs.controlInputs()
         self.altitudeState = Controls.AltitudeStates(Controls.AltitudeStates.HOLDING)
         self.rollFromCourse = PIControl()
