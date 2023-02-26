@@ -27,7 +27,7 @@ def computeGains(tuningParameters, linearizedModel):
     controlGains.kd_pitch = (2* tuningParameters.Zeta_pitch * tuningParameters.Wn_pitch - linearizedModel.a_theta1)/linearizedModel.a_theta3
     kDC = (controlGains.kp_pitch * linearizedModel.a_theta3)/(linearizedModel.a_theta2 + controlGains.kp_pitch * linearizedModel.a_theta3)
     controlGains.kp_altitude = (2* tuningParameters.Zeta_altitude * tuningParameters.Wn_altitude)/(kDC * linearizedModel.Va_trim)
-    controlGains.ki_altitude = tuningParameters.Wn_pitch **2 / (kDC * linearizedModel.Va_trim)
+    controlGains.ki_altitude = tuningParameters.Wn_altitude **2 / (kDC * linearizedModel.Va_trim)
     controlGains.kp_SpeedfromThrottle = (2* tuningParameters.Zeta_SpeedfromThrottle * tuningParameters.Wn_SpeedfromThrottle - linearizedModel.a_V1)/linearizedModel.a_V2
     controlGains.ki_SpeedfromThrottle = tuningParameters.Wn_SpeedfromThrottle ** 2 / linearizedModel.a_V2
     controlGains.kp_SpeedfromElevator = (linearizedModel.a_V1 - 2*tuningParameters.Zeta_SpeedfromElevator * tuningParameters.Wn_SpeedfromElevator)/(kDC*VPC.g0)
