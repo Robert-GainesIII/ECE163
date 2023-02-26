@@ -93,7 +93,7 @@ class VehicleDynamicsModel:
         #compute the derivative of the given state with the provided forces n moments then return 
         #an updated state where IntegrateStatethe derivatives replace what they dervied from i.e pqr => PdotQdotRdot
         #forces and moments contains self.fx-z and self.Mx-z
-        
+        """
         newState = States.vehicleState()
         p_0 = state.p
         q_0 = state.q
@@ -154,7 +154,60 @@ class VehicleDynamicsModel:
         newState.chi = chi_ddt
         return newState
         
+        """
+        dot = States.vehicleState()
 
+        p = state.p
+        q = state.q
+        r = state.r
+
+        yaw = state.yaw
+        pitch = state.pitch
+        roll = state.roll
+
+        u = state.u
+        v = state.v
+        w = state.w
+
+        skew_m = mm.skew(p, q, r)
+        skew_negate = mm.scalarMultiply(-1.0, skew_m)
+        skew_final = mm.multiply(skew_negate, [[u], [v], [w]])
+        state.R = Rotations.euler2DCM(yaw, pitch, roll)
+        forces_mass = mm.scalarMultiply(1.0 / VPC.mass, [[forcesMoments.Fx], [forcesMoments.Fy], [forcesMoments.Fz]])
+        final_uvw = mm.add(forces_mass, skew_final)
+
+        ypr_matrix = [[1.0, math.sin(roll) * math.tan(pitch), math.cos(roll) * math.tan(pitch)],
+                      [0.0, math.cos(roll), -math.sin(roll)],
+                      [0.0, (math.sin(roll)) / (math.cos(pitch)), (math.cos(roll)) / (math.cos(pitch))]]
+        deriv_ypr = mm.multiply(ypr_matrix, [[p], [q], [r]])
+
+        j_omega = mm.multiply(VPC.Jbody, [[p], [q], [r]])
+        skew_jw = mm.multiply(skew_negate, j_omega)
+        dpqr_matrix = mm.add(skew_jw, [[forcesMoments.Mx], [forcesMoments.My], [forcesMoments.Mz]])
+        final_dpqr = mm.multiply(VPC.JinvBody, dpqr_matrix)
+
+        R_deriv = mm.multiply(skew_negate, state.R)
+
+        ned_deriv = mm.multiply(mm.transpose(state.R), [[u], [v], [w]])
+
+        chi = math.atan2(ned_deriv[1][0], ned_deriv[2][0])
+
+        dot.pn = ned_deriv[0][0]
+        dot.pe = ned_deriv[1][0]
+        dot.pd = ned_deriv[2][0]
+        dot.u = final_uvw[0][0]
+        dot.v = final_uvw[1][0]
+        dot.w = final_uvw[2][0]
+        dot.yaw = deriv_ypr[2][0]
+        dot.pitch = deriv_ypr[1][0]
+        dot.roll = deriv_ypr[0][0]
+        dot.p = final_dpqr[0][0]
+        dot.q = final_dpqr[1][0]
+        dot.r = final_dpqr[2][0]
+        dot.dcm = R_deriv
+        dot.chi = chi
+
+        return dot
         # Function to compute the time-derivative of the state given body frame forces and moments
         # All formulas are from lecture/book
         
