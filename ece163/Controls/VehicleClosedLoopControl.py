@@ -229,7 +229,7 @@ class VehicleClosedLoopControl():
 
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
         upper_thresh = referenceCommands.commandedAltitude + VPC.altitudeHoldZone
-        alt = -state.pd 
+        alt = state.pd 
 
         airThrottle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
         airPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
