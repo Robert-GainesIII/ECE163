@@ -89,11 +89,11 @@ class VehicleDynamicsModel:
         return
         #print("end of update.")
 
-    def derivative(self,state, forcesnmoments):
+    def derivative(self,state, forcesMoments):
         #compute the derivative of the given state with the provided forces n moments then return 
         #an updated state where IntegrateStatethe derivatives replace what they dervied from i.e pqr => PdotQdotRdot
         #forces and moments contains self.fx-z and self.Mx-z
-
+        """
         newState = States.vehicleState()
         p_0 = state.p
         q_0 = state.q
@@ -153,6 +153,48 @@ class VehicleDynamicsModel:
         newState.R = R_ddt
         newState.chi = chi_ddt
         return newState
+        """
+
+        # Function to compute the time-derivative of the state given body frame forces and moments
+        # All formulas are from lecture/book
+        new_state = States.vehicleState()
+        sro = math.sin(state.roll)
+        cro = math.cos(state.roll)
+        cpi = math.cos(state.pitch)
+        tpi = math.tan(state.pitch)
+        tdcm = MatrixMath.transpose(state.R)
+        uvwmat = [[state.u], [state.v], [state.w]]
+        dp = MatrixMath.multiply(tdcm, uvwmat)
+        new_state.pn = dp[0][0]
+        new_state.pe = dp[1][0]
+        new_state.pd = dp[2][0]
+        rm = [[1.0, sro * tpi, cro * tpi],
+              [0.0, cro, -1.0 * sro], [0.0, sro / cpi, cro / cpi]]
+        pqrmat = [[state.p], [state.q], [state.r]]
+        dypr = MatrixMath.multiply(rm, pqrmat)
+        new_state.roll = dypr[0][0]
+        new_state.pitch = dypr[1][0]
+        new_state.yaw = dypr[2][0]
+        skewmat = MatrixMath.skew(state.p, state.q, state.r)
+        scskew = MatrixMath.scalarMultiply(-1.0, skewmat)
+        new_state.R = MatrixMath.multiply(scskew, state.R)
+        scuvw = MatrixMath.multiply(scskew, uvwmat)
+        fmat = [[forcesMoments.Fx], [forcesMoments.Fy], [forcesMoments.Fz]]
+        mforce = MatrixMath.scalarDivide(VPC.mass, fmat)
+        duvw = MatrixMath.add(scuvw, mforce)
+        new_state.u = duvw[0][0]
+        new_state.v = duvw[1][0]
+        new_state.w = duvw[2][0]
+        jw = MatrixMath.multiply(skewmat, VPC.Jbody)
+        jskew = MatrixMath.multiply(jw, pqrmat)
+        mmat = [[forcesMoments.Mx], [forcesMoments.My], [forcesMoments.Mz]]
+        mdpqr = MatrixMath.subtract(mmat, jskew)
+        dpqr = MatrixMath.multiply(VPC.JinvBody, mdpqr)
+        new_state.p = dpqr[0][0]
+        new_state.q = dpqr[1][0]
+        new_state.r = dpqr[2][0]
+        new_state.chi = math.atan2(new_state.pe, new_state.pn)
+        return new_state
 
     def getVehicleDerivative(self):
 
