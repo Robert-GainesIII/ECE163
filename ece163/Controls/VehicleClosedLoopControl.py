@@ -239,33 +239,38 @@ class VehicleClosedLoopControl():
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
         if self.altitudeState == Controls.AltitudeStates.HOLDING:
-            x  = altPitch
-            inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
+           
             #TRANSISTION FROM HOLDING TO DESCENDING
             if alt > upper_thresh:
+                x = airPitch
+                inputs.Throttle = VPC.minControls.Throttle
                 self.altitudeState = Controls.AltitudeStates.DESCENDING
                 self.pitchFromAirspeed.resetIntegrator()
             
             #TRANSISTION FROM HOLDING TO CLIMBING
             if alt < lower_thresh: 
+                x = airPitch
+                inputs.Throttle = VPC.minControls.Throttle
                 self.altitudeState = Controls.AltitudeStates.CLIMBING
                 self.pitchFromAirspeed.resetIntegrator()
 
         #STATE = DESCENDING   
         elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
-            x= airPitch
-            inputs.Throttle = VPC.minControls.Throttle
+            
             #TRANSISTION FROM DESCENDING TO HOLDING 
             if alt > lower_thresh and alt < upper_thresh:
+                x = altPitch
+                inputs.Throttle = self.throttleFromAirspeed(referenceCommands.commandedAirspeed,state.Va)
                 self.altitudeState = Controls.AltitudeStates.HOLDING
                 self.pitchFromAltitude.resetIntegrator()
 
         #STATE = CLIMBING
         elif self.altitudeState == Controls.AltitudeStates.CLIMBING:
-            inputs.Throttle = VPC.maxControls.Throttle
-            x = airPitch
+           
             #TRANSISTION FROM CLIMBING TO HOLDING
             if alt > lower_thresh and alt < upper_thresh:
+                x = airPitch
+                inputs.Throttle = self.throttleFromAirspeed(referenceCommands.commandedAirspeed,state.Va)
                 self.altitudeState = Controls.AltitudeStates.HOLDING
                 self.pitchFromAltitude.resetIntegrator()
 
