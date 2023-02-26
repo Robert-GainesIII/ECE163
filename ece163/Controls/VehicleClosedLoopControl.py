@@ -269,7 +269,7 @@ class VehicleClosedLoopControl():
            
             #TRANSISTION FROM CLIMBING TO HOLDING
             if alt > lower_thresh and alt < upper_thresh:
-                x = airPitch
+                x = altPitch
                 inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands.commandedAirspeed,state.Va)
                 self.altitudeState = Controls.AltitudeStates.HOLDING
                 self.pitchFromAltitude.resetIntegrator()
