@@ -89,7 +89,7 @@ class VehicleDynamicsModel:
         return
         #print("end of update.")
 
-    def derivative(self,state, forcesnmoments):
+    def derivative(self,state, forcesMoments):
         #compute the derivative of the given state with the provided forces n moments then return 
         #an updated state where IntegrateStatethe derivatives replace what they dervied from i.e pqr => PdotQdotRdot
         #forces and moments contains self.fx-z and self.Mx-z
@@ -169,26 +169,26 @@ class VehicleDynamicsModel:
         v = state.v
         w = state.w
 
-        skew_m = mm.skew(p, q, r)
-        skew_negate = mm.scalarMultiply(-1.0, skew_m)
-        skew_final = mm.multiply(skew_negate, [[u], [v], [w]])
+        skew_m = MatrixMath.skew(p, q, r)
+        skew_negate = MatrixMath.scalarMultiply(-1.0, skew_m)
+        skew_final = MatrixMath.multiply(skew_negate, [[u], [v], [w]])
         state.R = Rotations.euler2DCM(yaw, pitch, roll)
-        forces_mass = mm.scalarMultiply(1.0 / VPC.mass, [[forcesMoments.Fx], [forcesMoments.Fy], [forcesMoments.Fz]])
-        final_uvw = mm.add(forces_mass, skew_final)
+        forces_mass = MatrixMath.scalarMultiply(1.0 / VPC.mass, [[forcesMoments.Fx], [forcesMoments.Fy], [forcesMoments.Fz]])
+        final_uvw = MatrixMath.add(forces_mass, skew_final)
 
         ypr_matrix = [[1.0, math.sin(roll) * math.tan(pitch), math.cos(roll) * math.tan(pitch)],
                       [0.0, math.cos(roll), -math.sin(roll)],
                       [0.0, (math.sin(roll)) / (math.cos(pitch)), (math.cos(roll)) / (math.cos(pitch))]]
-        deriv_ypr = mm.multiply(ypr_matrix, [[p], [q], [r]])
+        deriv_ypr = MatrixMath.multiply(ypr_matrix, [[p], [q], [r]])
 
-        j_omega = mm.multiply(VPC.Jbody, [[p], [q], [r]])
-        skew_jw = mm.multiply(skew_negate, j_omega)
-        dpqr_matrix = mm.add(skew_jw, [[forcesMoments.Mx], [forcesMoments.My], [forcesMoments.Mz]])
-        final_dpqr = mm.multiply(VPC.JinvBody, dpqr_matrix)
+        j_omega = MatrixMath.multiply(VPC.Jbody, [[p], [q], [r]])
+        skew_jw = MatrixMath.multiply(skew_negate, j_omega)
+        dpqr_matrix = MatrixMath.add(skew_jw, [[forcesMoments.Mx], [forcesMoments.My], [forcesMoments.Mz]])
+        final_dpqr = MatrixMath.multiply(VPC.JinvBody, dpqr_matrix)
 
-        R_deriv = mm.multiply(skew_negate, state.R)
+        R_deriv = MatrixMath.multiply(skew_negate, state.R)
 
-        ned_deriv = mm.multiply(mm.transpose(state.R), [[u], [v], [w]])
+        ned_deriv = MatrixMath.multiply(MatrixMath.transpose(state.R), [[u], [v], [w]])
 
         chi = math.atan2(ned_deriv[1][0], ned_deriv[2][0])
 
