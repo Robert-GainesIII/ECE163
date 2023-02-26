@@ -16,7 +16,7 @@ def computeGains(tuningParameters, linearizedModel):
     # Lateral Gains
     controlGains.kp_roll = tuningParameters.Wn_roll ** 2 / linearizedModel.a_phi2
     controlGains.kd_roll = ((2* tuningParameters.Zeta_roll * tuningParameters.Wn_roll) - linearizedModel.a_phi1)/linearizedModel.a_phi2
-    controlGains.ki_roll = 1
+    controlGains.ki_roll = 1.0
     controlGains.kp_sideslip = 0
     controlGains.ki_sideslip = 0
     controlGains.kp_course = 0
