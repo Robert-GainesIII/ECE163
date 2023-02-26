@@ -86,7 +86,7 @@ def computeTuningParameters(controlGains, linearizedModel):
     controlGains.ki_SpeedfromElevator = -(tuningParameters.Wn_SpeedfromElevator ** 2)/(kDC * VPC.g0)
     """
     tuningParams.Wn_SpeedfromElevator  = math.sqrt(-controlGains.ki_SpeedfromElevator * kDC * VPC.g0)
-    tuningParams.Zeta_SpeedfromElevator  = (controlGains.kp_SpeedfromElevator * kDC*VPC.g0 - linearizedModel.a_V1)/(2*tuningParams.Wn_SpeedfromElevator)
+    tuningParams.Zeta_SpeedfromElevator  = -(controlGains.kp_SpeedfromElevator * kDC*VPC.g0 - linearizedModel.a_V1)/(2*tuningParams.Wn_SpeedfromElevator)
     
     
     return tuningParams
