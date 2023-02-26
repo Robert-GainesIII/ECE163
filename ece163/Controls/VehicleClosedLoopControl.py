@@ -239,7 +239,7 @@ class VehicleClosedLoopControl():
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
         if self.altitudeState == Controls.AltitudeStates.HOLDING:
-            inputs.Throttle = self.throttleFromAirspeed(referenceCommands, state.Va)
+            inputs.Throttle = self.throttleFromAirspeed.Update(referenceCommands, state.Va)
             #TRANSISTION FROM HOLDING TO DESCENDING
             if alt > upper_thresh:
                 x = airPitch
