@@ -19,7 +19,7 @@ def computeGains(tuningParameters, linearizedModel):
     controlGains.ki_roll = 0.001
     controlGains.kp_sideslip = ((2 * tuningParameters.Zeta_sideslip * tuningParameters.Wn_sideslip)-linearizedModel.a_beta1)/linearizedModel.a_beta2
 
-    controlGains.ki_sideslip = 1/linearizedModel.a_beta2 * ((linearizedModel.a_beta1 + linearizedModel.a_beta2 * controlGains.kp_sideslip)/(2*tuningParameters.Zeta_sideslip))
+    controlGains.ki_sideslip = tuningParameters.Wn_sideslip **2 /controlGains.kp_sideslip
     controlGains.kp_course = (2 * tuningParameters.Zeta_course * tuningParameters.Wn_course * linearizedModel.Va_trim)/ VPC.g0 #add ground speed!
     controlGains.ki_course = (tuningParameters.Wn_course **2 * linearizedModel.Va_trim)/VPC.g0 # add ground speed!
     # Longitudinal Gains
@@ -28,8 +28,8 @@ def computeGains(tuningParameters, linearizedModel):
     kDC = (controlGains.kp_pitch * linearizedModel.a_theta3)/(linearizedModel.a_theta2 + controlGains.kp_pitch * linearizedModel.a_theta3)
     controlGains.kp_altitude = (2* tuningParameters.Zeta_altitude * tuningParameters.Wn_altitude)/(kDC * linearizedModel.Va_trim)
     controlGains.ki_altitude = tuningParameters.Wn_pitch **2 / (kDC * linearizedModel.Va_trim)
-    controlGains.kp_SpeedfromThrottle = tuningParameters.Wn_SpeedfromThrottle ** 2 / linearizedModel.a_V2
-    controlGains.ki_SpeedfromThrottle = (2* tuningParameters.Zeta_SpeedfromThrottle * tuningParameters.Wn_SpeedfromThrottle - linearizedModel.a_V1)/linearizedModel.a_V2
+    controlGains.kp_SpeedfromThrottle = (2* tuningParameters.Zeta_SpeedfromThrottle * tuningParameters.Wn_SpeedfromThrottle - linearizedModel.a_V1)/linearizedModel.a_V2
+    controlGains.ki_SpeedfromThrottle = tuningParameters.Wn_SpeedfromThrottle ** 2 / linearizedModel.a_V2
     controlGains.kp_SpeedfromElevator = (linearizedModel.a_V1 - 2*tuningParameters.Zeta_SpeedfromElevator * tuningParameters.Wn_SpeedfromElevator)/(kDC*VPC.g0)
     controlGains.ki_SpeedfromElevator = -(tuningParameters.Wn_SpeedfromElevator ** 2)/(kDC * VPC.g0)
     return controlGains
