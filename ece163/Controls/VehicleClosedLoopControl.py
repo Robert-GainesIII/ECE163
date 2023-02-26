@@ -199,7 +199,7 @@ class VehicleClosedLoopControl():
         return self.VAM.getVehicleState()
 
     def setVehicleState(self, state):
-        self.state = state
+        self.VAM.setVehicleState(state)
         return 
 
     def getTrimInputs(self):
