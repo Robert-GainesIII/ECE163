@@ -287,7 +287,7 @@ class VehicleClosedLoopControl():
         inputs.Aileron = self.aileronFromRoll.Update(referenceCommands.commandedRoll, state.roll, state.p)
         inputs.Rudder = self.rudderFromSideslip.Update(0.0, state.beta)
         #NOW TO UPDATE COMMANDS THAT DONT DEPEND ON THE STATE
-        
+        self.VamInputs = inputs
         return inputs 
 
     def Update(self, referenceCommands = Controls.referenceCommands):
