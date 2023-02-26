@@ -235,7 +235,7 @@ class VehicleClosedLoopControl():
         airPitch = self.pitchFromAirspeed.Update(referenceCommands.commandedAirspeed, state.Va)
         altPitch = self.pitchFromAltitude.Update(referenceCommands.commandedAltitude, alt)
         
-    
+        x = referenceCommands.commandedPitch
         #BEGINNING OF STATE MACHINE
         #STATE = HOLDING
         if self.altitudeState == Controls.AltitudeStates.HOLDING:
@@ -276,6 +276,7 @@ class VehicleClosedLoopControl():
 
         else:
             print("this print statement can only mean basd things")
+
         referenceCommands.commandedPitch = x
         referenceCommands.commandedRoll = self.rollFromCourse.Update(referenceCommands.commandedCourse, state.chi)
         inputs.Elevator = self.elevatorFromPitch.Update(referenceCommands.commandedPitch, state.pitch, state.q)
