@@ -183,7 +183,7 @@ class VehicleClosedLoopControl():
      
         return self.GAINS
 
-    def setControlGains(self, controlGains = Controls.controlGains()):
+    def setControlGains(self, controlGains = Controls.controlGains):
         self.GAINS = controlGains
         self.rollFromCourse.setPIGains(self.dT, self.GAINS.kp_course, self.GAINS.ki_course, 0.0, -math.radians(VPC.bankAngleLimit), math.radians(VPC.bankAngleLimit))
         self.rudderFromSideslip.setPIGains(self.dT, self.GAINS.kp_sideslip, self.GAINS.ki_sideslip, self.trimInputs.Rudder, VPC.minControls.Rudder, VPC.maxControls.Rudder)
