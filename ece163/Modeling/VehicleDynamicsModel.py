@@ -89,7 +89,7 @@ class VehicleDynamicsModel:
         return
         #print("end of update.")
 
-    def derivative(self,state, forcesMoments):
+    def derivative(self,state, forcesnmoments):
         #compute the derivative of the given state with the provided forces n moments then return 
         #an updated state where IntegrateStatethe derivatives replace what they dervied from i.e pqr => PdotQdotRdot
         #forces and moments contains self.fx-z and self.Mx-z
