@@ -258,6 +258,7 @@ class VehicleClosedLoopControl():
         #STATE = DESCENDING   
         elif self.altitudeState == Controls.AltitudeStates.DESCENDING:
             x = airPitch
+            inputs.Throttle = VPC.minControls.Throttle
             #TRANSISTION FROM DESCENDING TO HOLDING 
             if alt > lower_thresh and alt < upper_thresh:
                 x = altPitch
@@ -268,6 +269,7 @@ class VehicleClosedLoopControl():
         #STATE = CLIMBING
         elif self.altitudeState == Controls.AltitudeStates.CLIMBING:
             x = airPitch
+            inputs.Throttle = VPC.minControls.Throttle
             #TRANSISTION FROM CLIMBING TO HOLDING
             if alt > lower_thresh and alt < upper_thresh:
                 x = altPitch
