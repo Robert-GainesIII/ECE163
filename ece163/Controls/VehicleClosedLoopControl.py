@@ -157,7 +157,7 @@ class VehicleClosedLoopControl():
         self.VAM = VehicleAerodynamicsModule.VehicleAerodynamicsModel()
         self.GAINS = Controls.controlGains()
         self.trimInputs= Inputs.controlInputs()
-        self.VAM_INPUT_FROM_OUTPUT_CONTAINER= Inputs.controlInputs()
+        self.VamInputs= Inputs.controlInputs()
         self.altitudeState = Controls.AltitudeStates(Controls.AltitudeStates.HOLDING)
         self.rollFromCourse = PIControl()
         self.rudderFromSideslip = PIControl()
@@ -217,7 +217,7 @@ class VehicleClosedLoopControl():
     
     def getVehicleControlSurfaces(self):
         
-        return Inputs.controlInputs(Throttle=self.throttleFromAirspeed , Aileron=self.aileronFromRoll, Elevator=self.elevatorFromPitch, Rudder=self.rudderFromSideslip )
+        return self.VamInputs
     
     def UpdateControlCommands(self, referenceCommands, state):
         #state = self.getVehicleState()
