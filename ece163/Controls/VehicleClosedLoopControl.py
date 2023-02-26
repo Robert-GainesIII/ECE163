@@ -291,7 +291,7 @@ class VehicleClosedLoopControl():
         return inputs 
 
     def Update(self, referenceCommands = Controls.referenceCommands):
-        
-        inputs = self.UpdateControlCommands(referenceCommands,self.getVehicleState())
+        state = self.getVehicleState()
+        inputs = self.UpdateControlCommands(referenceCommands,state)
         self.VAM.Update(inputs)
         return
