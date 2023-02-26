@@ -72,7 +72,7 @@ class PIControl():
 
 
 
-        self.accumulator += (0.5 * self.dT) * (error + self.err)
+        self.accumulator += 0.5 * self.dT * (error + self.err)
 
         #derivative = (2*math.tau -self.dT)/(2*math.tau + self.dT) * derivative + (2/(2*math.tau + self.dT)) *  (error - self.err)
         
@@ -127,7 +127,7 @@ class PIDControl():
 
 
 
-        self.accumulator += (0.5 * self.dT) * (error + self.err)
+        self.accumulator += 0.5 * self.dT * (error + self.err)
 
         #derivative = (2*math.tau -self.dT)/(2*math.tau + self.dT) * derivative + (2/(2*math.tau + self.dT)) *  (error - self.err)
         
