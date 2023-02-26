@@ -14,22 +14,22 @@ from ece163.Utilities import Rotations
 def computeGains(tuningParameters, linearizedModel):
     controlGains = Controls.controlGains()
     # Lateral Gains
-    linearizedModel.kp_roll = tuningParameters.Wn_roll ** 2 / linearizedModel.a_phi2
-    linearizedModel.kd_roll = ((2* tuningParameters.Zeta_roll * tuningParameters.Wn_roll) - linearizedModel.a_phi1)/linearizedModel.a_phi2
-    linearizedModel.ki_roll = 0
-    linearizedModel.kp_sideslip = 0
-    linearizedModel.ki_sideslip = 0
-    linearizedModel.kp_course = 0
-    linearizedModel.ki_course = 0
+    controlGains.kp_roll = tuningParameters.Wn_roll ** 2 / linearizedModel.a_phi2
+    controlGains.kd_roll = ((2* tuningParameters.Zeta_roll * tuningParameters.Wn_roll) - linearizedModel.a_phi1)/linearizedModel.a_phi2
+    controlGains.ki_roll = 0
+    controlGains.kp_sideslip = 0
+    controlGains.ki_sideslip = 0
+    controlGains.kp_course = 0
+    controlGains.ki_course = 0
     # Longitudinal Gains
-    linearizedModel.kp_pitch = 0
-    linearizedModel.kd_pitch = 0
-    linearizedModel.kp_altitude = 0
-    linearizedModel.ki_altitude = 0
-    linearizedModel.kp_SpeedfromThrottle = 0
-    linearizedModel.ki_SpeedfromThrottle = 0
-    linearizedModel.kp_SpeedfromElevator = 0
-    linearizedModel.ki_SpeedfromElevator = 0
+    controlGains.kp_pitch = 0
+    controlGains.kd_pitch = 0
+    controlGains.kp_altitude = 0
+    controlGains.ki_altitude = 0
+    controlGains.kp_SpeedfromThrottle = 0
+    controlGains.ki_SpeedfromThrottle = 0
+    controlGains.kp_SpeedfromElevator = 0
+    controlGains.ki_SpeedfromElevator = 0
     return controlGains
 
 def computeTuningParameters(controlGains, linearizedModel):
