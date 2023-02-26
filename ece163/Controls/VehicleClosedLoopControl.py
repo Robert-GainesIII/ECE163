@@ -222,9 +222,9 @@ class VehicleClosedLoopControl():
     def UpdateControlCommands(self, referenceCommands, state):
         #state = self.getVehicleState()
         inputs = Inputs.controlInputs()
-        if state.chi > math.pi:
+        if (referenceCommands - state.chi) > math.pi:
             state.chi += math.pi*2.0
-        elif state.chi < -math.pi:
+        elif (referenceCommands - state.chi) < -math.pi:
             state.chi -= math.pi*2.0
 
         lower_thresh = referenceCommands.commandedAltitude - VPC.altitudeHoldZone
