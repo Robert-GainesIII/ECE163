@@ -138,10 +138,9 @@ class SensorsModel():
 
 
     def updateGPSTrue(self, state, dot):
-        returnVector = [0,0,0,0,0]
-
-
-        return returnVector
+        GPS = [state.pn,state.pe,state.pd,math.hypot(state.u, state.v.state.w),math.atan2(dot.pe, dot.pn)]
+        
+        return GPS
 
     def updateAccelsTrue(self, state, dot):
         forces = [0,0,0]
