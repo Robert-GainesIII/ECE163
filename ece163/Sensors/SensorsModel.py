@@ -165,7 +165,7 @@ class SensorsModel():
         trueOutputs.baro = baroT[0]
         trueOutputs.gps_alt = baroT[0]
 
-        gpsT = self.updateGPSTrue(state)
+        gpsT = self.updateGPSTrue(state, dot)
         
         trueOutputs.gps_n = gpsT[0]
         trueOutputs.gps_e = gpsT[1]
