@@ -55,7 +55,7 @@ class displayGainsTest(QtWidgets.QDialog):
 		self.gainResponse = QtWidgets.QLabel("sls")
 		self.gainResponse.setPixmap(QtGui.QPixmap(imagePath))
 		self.gainResponse.setScaledContents(True)
-		self.gainResponse.setSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Ignored)
+		self.gainResponse.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
 		self.setMinimumSize(1280, 960)
 
 		self.usedLayout.addWidget(self.gainResponse)
