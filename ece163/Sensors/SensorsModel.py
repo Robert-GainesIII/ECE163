@@ -121,35 +121,60 @@ class SensorsModel():
     
 
 
-    def updateGPSTrue(self):
-        pass
+    def updateGPSTrue(self, state, dot):
+        returnVector = [0,0,0,0,0]
 
-    def updateAccelsTrue(self):
-        pass
+        return returnVector
 
-    def updateMagsTrue(self):
-        pass
+    def updateAccelsTrue(self, state, dot):
+        forces = [0,0,0]
 
-    def updateGyrosTrue(self):
-        pass
+        return forces
 
-    def updatePressureSensorsTrue(self):
-        pass
+    def updateMagsTrue(self,state):
+        forces = [0,0,0]
 
-    def updateSensorsTrue(self):
-        pass
+        return forces
 
-    def updateSensorsNoisy(self):
-        pass
+    def updateGyrosTrue(self,state):
+        forces = [0,0,0]
+
+        return forces
+
+    def updatePressureSensorsTrue(self, state):
+        baro = 0 
+
+
+        return baro
+
+    def updateSensorsTrue(self,prevTrueSensors, state, dot):
+        #no noise or biases
+        trueOutputs = Sensors.vehicleSensors()
+
+        
+        return trueOutputs
+
+    def updateSensorsNoisy(self,trueSensors=Sensors.vehicleSensors(gyro_x=0.0, gyro_y=0.0, gyro_z=0.0, accel_x=0.0, accel_y=0.0, accel_z=0.0, mag_x=0.0, mag_y=0.0, mag_z=0.0, baro=0.0, pitot=0.0, gps_n=0.0, gps_e=0.0, gps_alt=0.0, gps_sog=0.0, gps_cog=0.0),
+                                noisySensors=Sensors.vehicleSensors(gyro_x=0.0, gyro_y=0.0, gyro_z=0.0, accel_x=0.0,accel_y=0.0, accel_z=0.0, mag_x=0.0, mag_y=0.0, mag_z=0.0, baro=0.0, pitot=0.0,gps_n=0.0, gps_e=0.0, gps_alt=0.0, gps_sog=0.0, gps_cog=0.0),
+                                sensorBiases=Sensors.vehicleSensors(gyro_x=0.0, gyro_y=0.0, gyro_z=0.0, accel_x=0.0,accel_y=0.0, accel_z=0.0, mag_x=0.0, mag_y=0.0, mag_z=0.0, baro=0.0, pitot=0.0,gps_n=0.0, gps_e=0.0, gps_alt=0.0, gps_sog=0.0, gps_cog=0.0),
+                                sensorSigmas=Sensors.vehicleSensors(gyro_x=0.0, gyro_y=0.0, gyro_z=0.0, accel_x=0.0,accel_y=0.0, accel_z=0.0, mag_x=0.0, mag_y=0.0, mag_z=0.0, baro=0.0, pitot=0.0,gps_n=0.0, gps_e=0.0, gps_alt=0.0, gps_sog=0.0, gps_cog=0.0)):
+        noisyData = Sensors.vehicleSensors()
+
+        return noisyData
 
     def update(self):
-        pass
+        
+        return 
 
     def getSensorsTrue(self):
-        pass
+        
+        return self.sensorsTrue
 
     def getSensorsNoisy(self):
-        pass
+        
+        return self.sensorsNoisy
 
     def reset(self):
-        pass
+        
+
+        return
