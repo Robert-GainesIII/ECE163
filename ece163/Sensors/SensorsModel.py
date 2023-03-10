@@ -167,7 +167,7 @@ class SensorsModel():
         return forces
 
     def updatePressureSensorsTrue(self, state):
-        hbaro = VPC.rho * VPC.g0  * state.pn
+        hbaro = VSC.Pground + VPC.rho * VPC.g0  * state.pd
         pitot = VPC.rho * (state.Va**2/2)
 
         return [hbaro, pitot]
