@@ -73,17 +73,17 @@ class GaussMarkovXYZ():
         new_Vz = 0
         if(vXnoise == None):
             vXnoise= random.gauss(0, 1)
-        new_Vx = ((math.exp(-self.dT/self.tau))*self.vX)+vXnoise
+        new_Vx = ((math.exp(-self.dT/self.tauX))*self.vX)+vXnoise
         self.vX = new_Vx
 
         if(vYnoise == None):
             vYnoise= random.gauss(0, 1)
-        new_Vy = ((math.exp(-self.dT/self.tau))*self.vY)+vYnoise
+        new_Vy = ((math.exp(-self.dT/self.tauY))*self.vY)+vYnoise
         self.vY = new_Vy
 
         if(vZnoise == None):
             vZnoise= random.gauss(0, 1)
-        new_Vz = ((math.exp(-self.dT/self.tau))*self.vZ)+vZnoise
+        new_Vz = ((math.exp(-self.dT/self.tauZ))*self.vZ)+vZnoise
         self.vZ = new_Vz
 
 
