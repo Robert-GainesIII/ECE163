@@ -145,7 +145,7 @@ class SensorsModel():
     def updateAccelsTrue(self, state, dot):
         forces = [0,0,0]
         velocity_derivatives = [[dot.u],[dot.v],[dot.w]]
-        skew = [[0,-state.r, state.q],[state.q, 0, -state.p],[-state.r, state.p, 0]]
+        skew = [[0.0,-state.r, state.q],[state.q, 0.0, -state.p],[-state.r, state.p, 0.0]]
         v = [[state.u],[state.v],[state.w]]
         gravityBVec = MatrixMath.multiply(state.R, [[0],[0],[VPC.g0]])
 
@@ -170,7 +170,7 @@ class SensorsModel():
         hbaro = VPC.rho * VPC.g0  * state.pn
         pitot = VPC.rho * (state.Va**2/2)
 
-        return [hbaro, pitot]
+        return [hbaro]
 
     def updateSensorsTrue(self,prevTrueSensors, state, dot):
         #no noise or biases
