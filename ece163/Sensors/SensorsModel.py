@@ -158,8 +158,8 @@ class SensorsModel():
 
     def updateMagsTrue(self,state):
         forces = MatrixMath.multiply(state.R, VSC.magfield)
-        
-        return forces
+
+        return [forces[0][0], forces[1][0], forces[2][0]]
 
     def updateGyrosTrue(self,state):
         forces = [state.p, state.q, state.r]
