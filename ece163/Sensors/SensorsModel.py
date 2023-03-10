@@ -145,7 +145,7 @@ class SensorsModel():
         baro = 0 
 
 
-        return baro
+        return [baro]
 
     def updateSensorsTrue(self,prevTrueSensors, state, dot):
         #no noise or biases
