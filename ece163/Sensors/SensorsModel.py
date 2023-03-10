@@ -170,7 +170,7 @@ class SensorsModel():
         hbaro = VSC.Pground + VPC.rho * VPC.g0  * state.pd
         pitot = VPC.rho * (state.Va**2) * 0.5
 
-        return [hbaro, 5.706900]
+        return [hbaro, pitot]
 
     def updateSensorsTrue(self,prevTrueSensors, state, dot):
         #no noise or biases
@@ -203,7 +203,7 @@ class SensorsModel():
         trueOutputs.mag_y = magT[1]
         trueOutputs.mag_z = magT[2]
 
-        trueOutputs.pitot = 5.706900
+        trueOutputs.pitot = baroT[1]
 
         
         return trueOutputs
