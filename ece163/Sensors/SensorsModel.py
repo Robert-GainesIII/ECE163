@@ -30,7 +30,7 @@ class GaussMarkov():
         return self.v
 
 
-class GuassMarkovXYZ():
+class GaussMarkovXYZ():
 
     def __init__(self, dT = VPC.dT, tauX =1000000, etaX=0.0, tauY =None, etaY=None, tauZ=None, etaZ=None):
         
