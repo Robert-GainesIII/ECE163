@@ -109,8 +109,14 @@ class SensorsModel():
         sensorBiases.gyro_x = gyroBias * random.uniform(-1, 1)
         sensorBiases.gyro_y = gyroBias * random.uniform(-1, 1)
         sensorBiases.gyro_z = gyroBias * random.uniform(-1, 1)
+        sensorBiases.accel_x = accelBias * random.uniform(-1, 1)
+        sensorBiases.accel_y = accelBias * random.uniform(-1, 1)
+        sensorBiases.accel_z = accelBias * random.uniform(-1, 1)
         sensorBiases.baro = baroBias * random.uniform(-1,1)
         sensorBiases.pitot = pitotBias * random.uniform(-1,1)
+        sensorBiases.mag_x = magBias * random.uniform(-1, 1)
+        sensorBiases.mag_y = magBias * random.uniform(-1, 1)
+        sensorBiases.mag_z = magBias * random.uniform(-1, 1)
 
 
     def initializeSigmas(self, gyroSigma=0.002617993877991494, accelSigma=0.24525000000000002, magSigma=25.0, baroSigma=10.0, pitotSigma=2.0, gpsSigmaHorizontal=0.4, gpsSigmaVertical=0.7,gpsSigmaSOG=0.05, gpsSigmaCOG=0.002):
@@ -118,17 +124,37 @@ class SensorsModel():
         sensorSigmas.gyro_x = gyroSigma
         sensorSigmas.gyro_y = gyroSigma
         sensorSigmas.gyro_z = gyroSigma
+  
+        sensorSigmas.accel_x = accelSigma
+        sensorSigmas.accel_y = accelSigma
+        sensorSigmas.accel_z = accelSigma
+        sensorSigmas.baro = baroSigma
+        sensorSigmas.pitot = pitotSigma
+        sensorSigmas.mag_x = magSigma
+        sensorSigmas.mag_y = magSigma
+        sensorSigmas.mag_z = magSigma
+        
     
 
 
     def updateGPSTrue(self, state, dot):
         returnVector = [0,0,0,0,0]
 
+
         return returnVector
 
     def updateAccelsTrue(self, state, dot):
         forces = [0,0,0]
+        velocity_derivatives = [[dot.u],[dot.v],[dot.w]]
+        skew = [[0,-state.r, state.q],[state.q, 0, -state.p],[-state.r, state.p, 0]]
+        v = [[state.u],[state.v],[state.w]]
+        gravityBVec = MatrixMath.multiply(state.R, [[0],[0],[VPC.g0]])
 
+        skewTimesV = MatrixMath.multiply(skew, v)
+        aMeas = MatrixMath.subtract(MatrixMath.add(velocity_derivatives, skewTimesV), gravityBVec)
+        forces[0] = aMeas[0][0]
+        forces[1] = aMeas[1][0]
+        forces[2] = aMeas[2][0]
         return forces
 
     def updateMagsTrue(self,state):
@@ -137,15 +163,15 @@ class SensorsModel():
         return forces
 
     def updateGyrosTrue(self,state):
-        forces = [0,0,0]
+        forces = [state.p, state.q, state.r]
 
         return forces
 
     def updatePressureSensorsTrue(self, state):
-        baro = 0 
+        hbaro = VPC.rho * VPC.g0  * state.pn
+        pitot = VPC.rho * (state.Va**2/2)
 
-
-        return [baro, baro]
+        return [hbaro, pitot]
 
     def updateSensorsTrue(self,prevTrueSensors, state, dot):
         #no noise or biases
