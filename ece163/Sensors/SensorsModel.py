@@ -170,7 +170,7 @@ class SensorsModel():
         hbaro = VPC.rho * VPC.g0  * state.pn
         pitot = VPC.rho * (state.Va**2/2)
 
-        return [hbaro]
+        return [hbaro, pitot]
 
     def updateSensorsTrue(self,prevTrueSensors, state, dot):
         #no noise or biases
