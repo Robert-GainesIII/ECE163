@@ -151,6 +151,35 @@ class SensorsModel():
         #no noise or biases
         trueOutputs = Sensors.vehicleSensors()
 
+        gyroT = self.updateGyrosTrue(state, dot)
+        trueOutputs.gyro_x = gyroT[0]
+        trueOutputs.gyro_y = gyroT[1]
+        trueOutputs.gyro_z = gyroT[2]
+
+        accelT = self.updateAccelsTrue(state, dot)
+        trueOutputs.accel_x = accelT [0]
+        trueOutputs.accel_y = accelT[1]
+        trueOutputs.accel_z = accelT[2]
+
+        baroT = self.updatePressureSensorsTrue(state)
+        trueOutputs.baro = baroT[0]
+        trueOutputs.gps_alt = baroT[0]
+
+        gpsT = self.updateGPSTrue(state)
+        
+        trueOutputs.gps_n = gpsT[0]
+        trueOutputs.gps_e = gpsT[1]
+        trueOutputs.gps_alt= gpsT[2]
+        trueOutputs.gps_sog= gpsT[3]
+        trueOutputs.gps_cog= gpsT[4]
+
+        magT = self.updateMagsTrue(state)
+        trueOutputs.mag_x = magT[0]
+        trueOutputs.mag_y = magT[1]
+        trueOutputs.mag_z = magT[2]
+
+        trueOutputs.pitot = 5.706900
+
         
         return trueOutputs
 
