@@ -103,6 +103,7 @@ class SensorsModel():
         self.sensorSigmas = self.initializeSigmas()
         self.GPS = GaussMarkovXYZ(1/gpsUpdateHz, tauGPS, etaGPSHorizontal, tauGPS, etaGPSHorizontal, tauGPS, etaGPSVertical)
         self.Gyro = GaussMarkovXYZ(dT=self.dT, tauX=taugyro, etaX=etagyro)
+        self.updateTicks = 0
 
     def initializeBiases(self, gyroBias = 0.08726646259971647, accelBias=0.9810000000000001, magBias=500.0, baroBias = 100.0, pitotBias = 20.0):
         sensorBiases = Sensors.vehicleSensors()
@@ -174,6 +175,8 @@ class SensorsModel():
 
     def updateSensorsTrue(self,prevTrueSensors, state, dot):
         #no noise or biases
+        self.updateTicks += 1
+
         trueOutputs = Sensors.vehicleSensors()
 
         gyroT = self.updateGyrosTrue(state)
@@ -181,10 +184,15 @@ class SensorsModel():
         trueOutputs.gyro_y = gyroT[1]
         trueOutputs.gyro_z = gyroT[2]
 
-        accelT = self.updateAccelsTrue(state, dot)
-        trueOutputs.accel_x = accelT [0]
-        trueOutputs.accel_y = accelT[1]
-        trueOutputs.accel_z = accelT[2]
+        if self.updateTicks % (self.dT * 1.0):
+            accelT = self.updateAccelsTrue(state, dot)
+            trueOutputs.accel_x = accelT [0]
+            trueOutputs.accel_y = accelT[1]
+            trueOutputs.accel_z = accelT[2]
+        else:
+            trueOutputs.accel_x = self.sensorsTrue.accel_x
+            trueOutputs.accel_y = self.sensorsTrue.accel_y
+            trueOutputs.accel_z = self.sensorsTrue.accel_z
 
         baroT = self.updatePressureSensorsTrue(state)
         trueOutputs.baro = baroT[0]
