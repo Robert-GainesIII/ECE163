@@ -93,14 +93,33 @@ class GaussMarkovXYZ():
 
 class SensorsModel():
 
-    def __init__(self):
-        pass
+    def __init__(self,aeroModel=VehicleAerodynamicsModel.VehicleAerodynamicsModel(),taugyro=400.0,etagyro=0.0012740903539558606, tauGPS = 1100.0, etaGPSHorizontal=0.21, etaGPSVertical=0.4, gpsUpdateHz=1.0):
+        self.aeroModel = aeroModel
+        self.dynamicModel = aeroModel.getVehicleDynamicsModel()
+        self.dT = self.dynamicModel.dT
+        self.sensorsTrue = Sensors.vehicleSensors()
+        self.sensorsNoisy = Sensors.vehicleSensors()
+        self.sensorBiases = self.initializeBiases()
+        self.sensorSigmas = self.initializeSigmas()
+        self.GPS = GaussMarkovXYZ(1/gpsUpdateHz, tauGPS, etaGPSHorizontal, tauGPS, etaGPSHorizontal, tauGPS, etaGPSVertical)
+        self.Gyro = GaussMarkovXYZ(dT=self.dT, tauX=taugyro, etaX=etagyro)
 
-    def initializeBiases(self):
-        pass
+    def initializeBiases(self, gyroBias = 0.08726646259971647, accelBias=0.9810000000000001, magBias=500.0, baroBias = 100.0, pitotBias = 20.0):
+        sensorBiases = Sensors.vehicleSensors()
+        sensorBiases.gyro_x = gyroBias * random.uniform(-1, 1)
+        sensorBiases.gyro_y = gyroBias * random.uniform(-1, 1)
+        sensorBiases.gyro_z = gyroBias * random.uniform(-1, 1)
+        sensorBiases.baro = baroBias * random.uniform(-1,1)
+        sensorBiases.pitot = pitotBias * random.uniform(-1,1)
 
-    def initializeSigmas(self):
-        pass
+
+    def initializeSigmas(self, gyroSigma=0.002617993877991494, accelSigma=0.24525000000000002, magSigma=25.0, baroSigma=10.0, pitotSigma=2.0, gpsSigmaHorizontal=0.4, gpsSigmaVertical=0.7,gpsSigmaSOG=0.05, gpsSigmaCOG=0.002):
+        sensorSigmas = Sensors.vehicleSensors()
+        sensorSigmas.gyro_x = gyroSigma
+        sensorSigmas.gyro_y = gyroSigma
+        sensorSigmas.gyro_z = gyroSigma
+    
+
 
     def updateGPSTrue(self):
         pass
