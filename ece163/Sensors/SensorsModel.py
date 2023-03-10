@@ -151,7 +151,7 @@ class SensorsModel():
         #no noise or biases
         trueOutputs = Sensors.vehicleSensors()
 
-        gyroT = self.updateGyrosTrue(state, dot)
+        gyroT = self.updateGyrosTrue(state)
         trueOutputs.gyro_x = gyroT[0]
         trueOutputs.gyro_y = gyroT[1]
         trueOutputs.gyro_z = gyroT[2]
