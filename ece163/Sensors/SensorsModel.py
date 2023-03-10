@@ -168,7 +168,7 @@ class SensorsModel():
 
     def updatePressureSensorsTrue(self, state):
         hbaro = VSC.Pground + VPC.rho * VPC.g0  * state.pd
-        pitot = VPC.rho * (state.Va**2/2)
+        pitot = VPC.rho * (state.Va**2) * 0.5
 
         return [hbaro, pitot]
 
