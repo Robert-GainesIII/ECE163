@@ -138,7 +138,7 @@ class SensorsModel():
 
 
     def updateGPSTrue(self, state, dot):
-        GPS = [state.pn,state.pe,state.pd,math.hypot(state.u, state.v.state.w),math.atan2(dot.pe, dot.pn)]
+        GPS = [state.pn,state.pe,state.pd,math.hypot(state.u, state.v,state.w),math.atan2(dot.pe, dot.pn)]
         
         return GPS
 
